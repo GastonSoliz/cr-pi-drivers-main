@@ -17,6 +17,8 @@ export default function Detail() {
     };
   }, [dispatch]);
 
+  console.log(driver);
+
   return (
     <div>
       <h1>PRUEBA DE PAGINA DETAIL</h1>
@@ -30,8 +32,8 @@ export default function Detail() {
       <p>Fecha de nacimiento:{driver.birthdate}</p>
       Teams:
       <ul>
-        {driver.teams?.split(",").map((team) => (
-          <li>{team}</li>
+        {driver.teams?.map((team) => (
+          <li>{team.name}</li>
         ))}
       </ul>
       {/* Teams:{driver.teams} */}

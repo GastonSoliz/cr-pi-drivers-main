@@ -37,37 +37,12 @@ const createDriver = async (
     birthdate,
   });
 
-  //await newDriver.setTeams(teamsN);
-
-  // const teams_arr = teams.split(",");
-  // for (let i = 0; i < teams_arr.length; i++) {
-  //   let newTeam = await Team.findOne({ where: { name: teams_arr[i] } });
-  //   if (newTeam) {
-  //     await newDriver.addTeam(newTeam);
-  //   } else {
-  //     newTeam = await Team.create({ name: teams_arr[i] });
-  //     await newDriver.addTeam(newTeam);
-  //   }
-  // }
-
-  // let newTeam = await Team.findOne({ where: { name: teams } });
-  // if (newTeam) {
-  //   await newDriver.addTeam(newTeam);
-  // } else {
-  //   newTeam = await Team.create({ name: teams });
-  //   await newDriver.addTeam(newTeam);
-  // }
-
-  //const newTeam = await Team.findOrCreate({ where: { name: teams } });
-
   for (let i = 0; i < teams.length; i++) {
     const teamName = await Team.findOne({ where: { name: teams[i] } });
     await newDriver.addTeam(teamName);
   }
-  //const newTeam = await Team.findAll({ where: { name: teams } });
-  //newDriver.addTeam(newTeam);
 
-  return "SE CREO EL USUARIO";
+  return { newDriver };
 };
 
 const getDriverId = async (id, source) => {
@@ -77,11 +52,16 @@ const getDriverId = async (id, source) => {
       : await Driver.findByPk(id, {
           include: {
             model: Team,
+            as: "teams",
             attributes: ["name"],
             through: { attributes: [] },
           },
         });
-  if (source === "api")
+
+  if (source === "api") {
+    const teamObjects = driver.teams
+      .split(",")
+      .map((teamName) => ({ name: teamName }));
     return {
       id: driver.id,
       name: driver.name.forename,
@@ -90,9 +70,11 @@ const getDriverId = async (id, source) => {
       image: driver.image.url ? driver.image.url : default_image,
       nationality: driver.nationality,
       birthdate: driver.dob,
-      teams: driver.teams,
+      teams: teamObjects,
     };
-  else return driver;
+  } else {
+    return driver;
+  }
 };
 
 const getAllDrivers = async () => {

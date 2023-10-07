@@ -10,6 +10,14 @@ export function getTeams() {
   };
 }
 
+export function getDriverByName(name) {
+  const endpoint = `${URL}drivers?name=${name}`;
+  return async (dispatch) => {
+    const { data } = await axios.get(endpoint);
+    return dispatch({ type: "GET_DRIVER_BY_NAME", payload: data });
+  };
+}
+
 export function getDriverById(id) {
   const endpoint = `${URL}drivers/${id}`;
   return async (dispatch) => {

@@ -5,11 +5,12 @@ import { useEffect } from "react";
 
 export default function Home() {
   const dispatch = useDispatch();
-  const allDrivers = useSelector((state) => state.allDrivers);
+  let allDrivers = useSelector((state) => state.allDrivers);
+  const driversName = useSelector((state) => state.driverName);
 
   useEffect(() => {
     dispatch(getDrivers());
-  }, [dispatch]);
+  }, [dispatch, driversName]);
 
   // function onSearch(id) {
   //   dispatch(searchById(id));

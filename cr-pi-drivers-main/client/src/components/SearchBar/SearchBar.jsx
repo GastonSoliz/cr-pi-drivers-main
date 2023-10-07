@@ -1,22 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getDriverByName } from "../../redux/actions";
 
 export default function SearchBar() {
-  const [id, setId] = useState("");
+  const [name, setName] = useState("");
+  const dispatch = useDispatch();
+  const driverName = useSelector((state) => state.driverName);
+  let allDrivers = useSelector((state) => state.allDrivers);
 
   function handleChange(event) {
     event.preventDefault();
-    setId(event.target.value);
+    setName(event.target.value);
   }
+
+  function onSearch() {
+    dispatch(getDriverByName(name));
+  }
+
+  useEffect(() => {
+    console.log(allDrivers);
+  }, [allDrivers]);
 
   return (
     <div>
       <input
-        placeholder="Ingresar un ID..."
+        placeholder="Ingresar un name..."
         type="search"
-        value={id}
         onChange={handleChange}
       />
-      <button onClick={()=>onSearch()}>BUSCAR</button>
+      <button onClick={onSearch}>BUSCAR</button>
     </div>
   );
 }

@@ -9,11 +9,11 @@ export default function Form() {
   const dispatch = useDispatch();
 
   const [driver, setDriver] = useState({
-    forename: "",
+    name: "",
     surname: "",
     nationality: "",
     image: "",
-    dob: "",
+    birthdate: "",
     description: "",
     teams: [],
   });
@@ -30,19 +30,23 @@ export default function Form() {
 
   function handleChange(event) {
     setDriver({ ...driver, [event.target.name]: event.target.value });
-    setErrors(
-      validateForm({ ...driver, [event.target.name]: event.target.value })
-    );
+    // setErrors(
+    //   validateForm({ ...driver, [event.target.name]: event.target.value })
+    // );
   }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    const newTeams = selectedTeams.map((team) => team.name);
-    setDriver({ ...driver, [driver.teams]: newTeams });
-    //console.log(newTeams);
+    //    console.log(driver);
+    let newTeams = selectedTeams?.map((team) => team.name);
+    //newTeams = newTeams.join(",");
+    console.log(newTeams);
+    setDriver({ ...driver, teams: newTeams });
+    setErrors(
+      validateForm({ ...driver, [event.target.name]: event.target.value })
+    );
+
     dispatch(postDriver(driver));
-    console.log(driver);
-    console.log(driver.teams);
   };
 
   const handleSelected = (event) => {
@@ -57,7 +61,8 @@ export default function Form() {
 
   useEffect(() => {
     dispatch(getTeams());
-  }, []);
+    console.log(driver);
+  }, [driver]);
 
   return (
     <div>
@@ -66,12 +71,12 @@ export default function Form() {
         <h2>INGRESAR DATOS DEL CORREDOR</h2>
         <label>Nombre:</label>
         <input
-          name="forename"
+          name="name"
           placeholder="Ingrese un nombre..."
           type="text"
           onChange={handleChange}
         />
-        <span>{errors.forename}</span>
+        <span>{errors.name}</span>
         <br />
         <label>Apellido:</label>
         <input
@@ -93,11 +98,12 @@ export default function Form() {
         <br />
         <label>Imagen:</label>
         <input name="image" type="file" onChange={handleChange} />
+        <input name="image" type="url" onChange={handleChange} />
         <span>{errors.image}</span>
         <br />
         <label>Fecha de Nacimiento:</label>
-        <input name="dob" type="date" onChange={handleChange} />
-        <span>{errors.dob}</span>
+        <input name="birthdate" type="date" onChange={handleChange} />
+        <span>{errors.birthdate}</span>
         <br />
         <label>Descripcion:</label>
         <input
@@ -135,9 +141,7 @@ export default function Form() {
           })}
         </div>
         <span>{errors.teams}</span>
-        <button type="submit" disabled={handleDisabled()}>
-          SUBIR
-        </button>
+        <button type="submit">SUBIR</button>
       </form>
     </div>
   );
