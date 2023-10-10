@@ -44,6 +44,22 @@ export function postDriver(driver) {
   };
 }
 
+export function sortOrigin(origin_id) {
+  return { type: "SORT_ORIGIN", payload: origin_id };
+}
+
+export function sortDate(date) {
+  return { type: "SORT_DATE", payload: date };
+}
+
+export function sortName(name) {
+  return { type: "SORT_NAME", payload: name };
+}
+
+export function sortTeam(team) {
+  return { type: "SORT_TEAM", payload: team };
+}
+
 export function cleanDetail() {
   return { type: "CLEAN_DETAIL", payload: [] };
 }

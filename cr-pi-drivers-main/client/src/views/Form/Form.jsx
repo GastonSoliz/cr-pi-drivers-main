@@ -15,7 +15,7 @@ export default function Form() {
     image: "",
     birthdate: "",
     description: "",
-    teams: [],
+    teams: "",
   });
   const [errors, setErrors] = useState({});
 

@@ -5,7 +5,7 @@ export default function CardList({ allDrivers }) {
     <div>
       <h1>SOY LA CARD LIST</h1>
       {allDrivers?.map((driver) => (
-        <Card driver={driver} />
+        <Card key={driver.id} driver={driver} />
       ))}
     </div>
   );

@@ -7,7 +7,7 @@ export default function Card({ driver }) {
         <img src={driver.image} alt="Imagen corredor" />
       </Link>
       <h2>Nombre: {driver.name}</h2>
-      <p>Apellido:{driver.surname}</p>)
+      <p>Apellido:{driver.surname}</p>
     </div>
   );
 }

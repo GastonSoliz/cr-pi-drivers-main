@@ -1,25 +1,80 @@
 import { useDispatch, useSelector } from "react-redux";
-import { getDrivers } from "../../redux/actions";
+import {
+  getDrivers,
+  getTeams,
+  sortDate,
+  sortOrigin,
+  sortTeam,
+} from "../../redux/actions";
 import CardList from "../../components/CardList/CardList";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import Pagination from "../../components/Pagination/Pagination";
 
 export default function Home() {
   const dispatch = useDispatch();
-  let allDrivers = useSelector((state) => state.allDrivers);
-  const driversName = useSelector((state) => state.driverName);
+
+  const driverName = useSelector((state) => state.driverName);
+  const allDrivers = useSelector((state) => state.filteredDrivers);
+  const allTeams = useSelector((state) => state.allTeams);
+  //const allDrivers = useSelector((state) => state.allDrivers);
+
+  const [currentPage, setCurrentPage] = useState(1);
+  const driversPerPage = 9;
+
+  const startIndex = (currentPage - 1) * driversPerPage;
+  const endIndex = startIndex + driversPerPage;
+
+  const currentDrivers = allDrivers?.slice(startIndex, endIndex);
+  const totalPages = Math.ceil(allDrivers.length / driversPerPage);
+
+  function pageHandler(pageNumber) {
+    setCurrentPage(pageNumber);
+  }
+
+  function handleOrigin(event) {
+    dispatch(sortOrigin(event.target.value));
+  }
+
+  function handleDate(event) {
+    dispatch(sortDate(event.target.value));
+    console.log("HOME-DATE:", allDrivers);
+  }
+
+  function handleTeams(event) {
+    dispatch(sortTeam(event.target.value));
+    console.log("HOME-TEAM:", allDrivers);
+  }
 
   useEffect(() => {
     dispatch(getDrivers());
-  }, [dispatch, driversName]);
-
-  // function onSearch(id) {
-  //   dispatch(searchById(id));
-  // }
+    dispatch(getTeams());
+  }, [dispatch]);
 
   return (
     <div>
-      <h1>PRUEBA DE PAGINA HOME</h1>
-      <CardList allDrivers={allDrivers} />
+      <select onChange={handleOrigin} defaultValue="ALL">
+        <option value="ALL">ALL</option>
+        <option value="ID">API</option>
+        <option value="BDD">BDD</option>
+      </select>
+      <select onChange={handleDate}>
+        <option value="NONE">AÑO</option>
+        <option value="ASCENDENTE">ASCENDENTE</option>
+        <option value="DESCENDENTE">DESCENDEN TE</option>
+      </select>
+      <select onChange={handleTeams}>
+        <option value="NONE">EQUIPOS</option>
+        {allTeams?.map((team) => {
+          return (
+            <option value={team.name} key={team.id}>
+              {team.name}
+            </option>
+          );
+        })}
+      </select>
+      {/* {driverName.length === 0 && <CardList allDrivers={driverName} />} */}
+      <CardList allDrivers={currentDrivers} />
+      <Pagination page={pageHandler} total={totalPages} />
     </div>
   );
 }

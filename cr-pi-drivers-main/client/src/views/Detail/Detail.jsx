@@ -17,7 +17,7 @@ export default function Detail() {
     };
   }, [dispatch]);
 
-  console.log(driver);
+  console.log(driver.teams);
 
   return (
     <div>
