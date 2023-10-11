@@ -1,0 +1,52 @@
+.detailContainer {
+  display: flex;
+  gap: 20px;
+
+  justify-content: center;
+  align-items: center;
+
+  background-color: rgb(29, 128, 167);
+}
+
+.detailContainer img {
+  display: block;
+  width: 400px;
+  height: 500px;
+
+  margin: 80px 10px;
+}
+
+.textContainer {
+  border: 1px solid black;
+  background-color: rgb(125, 153, 156);
+}
+
+.textContainer p {
+  border-bottom: 1px solid black;
+}
+
+.textContainer ul li {
+  list-style: none;
+}
+
+.descriptionContainer {
+  max-height: 300px;
+  max-width: 400px;
+  overflow-x: hidden;
+  position: relative;
+
+  border-bottom: 1px solid black;
+}
+
+.descriptionContainer label {
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.descriptionContainer label.show {
+  max-height: none;
+  white-space: normal;
+  text-overflow: clip;
+}

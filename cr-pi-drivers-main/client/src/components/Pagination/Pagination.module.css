@@ -1,0 +1,19 @@
+.paginationContainer {
+  display: flex;
+  gap: 10px;
+
+  justify-content: center;
+  margin: 20px;
+}
+
+.paginationContainer button {
+  border-radius: 50%;
+
+  width: 20px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+}
+
+.paginationContainer button.active {
+  background-color: #00cc00;
+}

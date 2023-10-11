@@ -9,6 +9,7 @@ import {
 import CardList from "../../components/CardList/CardList";
 import { useEffect, useState } from "react";
 import Pagination from "../../components/Pagination/Pagination";
+import style from "./Home.module.css";
 
 export default function Home() {
   const dispatch = useDispatch();
@@ -37,12 +38,12 @@ export default function Home() {
 
   function handleDate(event) {
     dispatch(sortDate(event.target.value));
-    console.log("HOME-DATE:", allDrivers);
+    //console.log("HOME-DATE:", allDrivers);
   }
 
   function handleTeams(event) {
     dispatch(sortTeam(event.target.value));
-    console.log("HOME-TEAM:", allDrivers);
+    //console.log("HOME-TEAM:", allDrivers);
   }
 
   useEffect(() => {
@@ -52,29 +53,43 @@ export default function Home() {
 
   return (
     <div>
-      <select onChange={handleOrigin} defaultValue="ALL">
-        <option value="ALL">ALL</option>
-        <option value="ID">API</option>
-        <option value="BDD">BDD</option>
-      </select>
-      <select onChange={handleDate}>
-        <option value="NONE">AÑO</option>
-        <option value="ASCENDENTE">ASCENDENTE</option>
-        <option value="DESCENDENTE">DESCENDEN TE</option>
-      </select>
-      <select onChange={handleTeams}>
-        <option value="NONE">EQUIPOS</option>
-        {allTeams?.map((team) => {
-          return (
-            <option value={team.name} key={team.id}>
-              {team.name}
-            </option>
-          );
-        })}
-      </select>
-      {/* {driverName.length === 0 && <CardList allDrivers={driverName} />} */}
-      <CardList allDrivers={currentDrivers} />
-      <Pagination page={pageHandler} total={totalPages} />
+      <div className={style.selectsContainer}>
+        <select onChange={handleOrigin} defaultValue="ALL">
+          <option value="ALL">ALL</option>
+          <option value="ID">API</option>
+          <option value="BDD">BDD</option>
+        </select>
+        <select onChange={handleDate}>
+          <option value="NONE">AÑO</option>
+          <option value="ASCENDENTE">ASCENDENTE</option>
+          <option value="DESCENDENTE">DESCENDEN TE</option>
+        </select>
+        <select onChange={handleTeams}>
+          <option value="NONE">EQUIPOS</option>
+          {allTeams?.map((team) => {
+            return (
+              <option value={team.name} key={team.id}>
+                {team.name}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      {driverName.length > 0 && (
+        <div className={style.cardListContainer}>
+          <h2>Drivers buscados por name:</h2>
+          <CardList allDrivers={driverName} />
+        </div>
+      )}
+      <div className={style.cardListContainer}>
+        <h2>Todos los drivers:</h2>
+        <CardList allDrivers={currentDrivers} />
+      </div>
+      <Pagination
+        page={pageHandler}
+        total={totalPages}
+        currentPage={currentPage}
+      />
     </div>
   );
 }

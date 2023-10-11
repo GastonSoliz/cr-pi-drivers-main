@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import validateForm from "../../utils/validateForm";
 import { useDispatch, useSelector } from "react-redux";
 import { getTeams, postDriver } from "../../redux/actions";
+import style from "./Form.module.css";
 
 export default function Form() {
   const [selectedTeams, setSelectedTeams] = useState([]);
@@ -65,9 +66,8 @@ export default function Form() {
   }, [driver]);
 
   return (
-    <div>
-      <h1>PRUEBA DE PAGINA FORM</h1>
-      <form onSubmit={handleSubmit}>
+    <div className={style.formContainer}>
+      <form onSubmit={handleSubmit} className={style.form}>
         <h2>INGRESAR DATOS DEL CORREDOR</h2>
         <label>Nombre:</label>
         <input
@@ -98,7 +98,12 @@ export default function Form() {
         <br />
         <label>Imagen:</label>
         <input name="image" type="file" onChange={handleChange} />
-        <input name="image" type="url" onChange={handleChange} />
+        <input
+          name="image"
+          type="url"
+          onChange={handleChange}
+          placeholder="Ingrese una URL..."
+        />
         <span>{errors.image}</span>
         <br />
         <label>Fecha de Nacimiento:</label>
@@ -116,32 +121,40 @@ export default function Form() {
         <br />
         <label>Escuderias:</label>
         {/* {console.log(allTeams)} */}
-        <select onChange={handleSelected} name="teams">
-          <option disabled selected>
-            Seleccionar minimo un equipo
-          </option>
-          {allTeams?.map((team) => {
-            return <option value={team.id}>{team.name}</option>;
-          })}
-        </select>
-        <div>
-          {selectedTeams.map((team) => {
-            return (
-              <div>
-                <span>{team.name}</span>
-                <button
-                  onClick={() => {
-                    handleRemoveTeam(team.id);
-                  }}
-                >
-                  X
-                </button>
-              </div>
-            );
-          })}
+        <div className={style.formSelect}>
+          <select onChange={handleSelected} name="teams">
+            <option disabled selected>
+              Seleccionar minimo un equipo
+            </option>
+            {allTeams?.map((team) => {
+              return (
+                <option value={team.id} key={team.id}>
+                  {team.name}
+                </option>
+              );
+            })}
+          </select>
+          <div className={style.selectedTeams}>
+            {selectedTeams.map((team) => {
+              return (
+                <div key={team.id} className={style.selectTeam}>
+                  <p>{team.name}</p>
+                  <button
+                    onClick={() => {
+                      handleRemoveTeam(team.id);
+                    }}
+                  >
+                    X
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+          <span>{errors.teams}</span>
         </div>
-        <span>{errors.teams}</span>
-        <button type="submit">SUBIR</button>
+        <button type="submit" className={style.submitButton}>
+          SUBIR
+        </button>
       </form>
     </div>
   );

@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getDriverByName } from "../../redux/actions";
+import style from "./SearchBar.module.css";
 
 export default function SearchBar() {
   const [name, setName] = useState("");
@@ -18,13 +19,13 @@ export default function SearchBar() {
   }
 
   useEffect(() => {
-    console.log(allDrivers);
-  }, [allDrivers]);
+    console.log(driverName);
+  }, [driverName]);
 
   return (
-    <div>
+    <div className={style.searchBarContainer}>
       <input
-        placeholder="Ingresar un name..."
+        placeholder="Ingresar un nombre..."
         type="search"
         onChange={handleChange}
       />

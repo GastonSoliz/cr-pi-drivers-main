@@ -54,6 +54,9 @@ const getDriverId = async (id, source) => {
             model: Team,
             as: "teams",
             attributes: ["name"],
+            through: {
+              attributes: [],
+            },
           },
         });
 
