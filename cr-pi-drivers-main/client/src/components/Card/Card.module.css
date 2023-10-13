@@ -10,6 +10,12 @@
 
 .imageContainer {
   height: 100%;
+  position: relative;
+}
+
+.imageContainer button {
+  position: absolute;
+  z-index: 1;
 }
 
 .imageContainer img {
@@ -17,6 +23,16 @@
 
   height: 100%;
   width: 150px;
+}
+
+.noImageContainer {
+  display: flex;
+  flex-direction: column;
+
+  justify-content: center;
+  align-items: center;
+
+  padding-left: 35px;
 }
 
 .textContainer {
@@ -29,7 +45,7 @@
 
   font-size: 18px;
 
-  padding: 12px;
+  padding: 1px;
   overflow: hidden;
 }
 

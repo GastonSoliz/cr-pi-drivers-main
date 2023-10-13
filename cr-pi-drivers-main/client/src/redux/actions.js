@@ -44,6 +44,22 @@ export function postDriver(driver) {
   };
 }
 
+export function deleteDriver(id) {
+  const endpoint = `${URL}drivers/${id}`;
+  return async (dispatch) => {
+    const { data } = await axios.delete(endpoint);
+    return dispatch({ type: "DELETE_DRIVER", payload: data });
+  };
+}
+
+export function updateDriver(driver, id) {
+  const endpoint = `${URL}drivers/${id}`;
+  return async (dispatch) => {
+    const { data } = await axios.put(endpoint, driver);
+    return dispatch({ type: "UPDATE_DRIVER", payload: data });
+  };
+}
+
 export function sortOrigin(origin_id) {
   return { type: "SORT_ORIGIN", payload: origin_id };
 }

@@ -12,9 +12,6 @@ export default function NavBar() {
         <Link to="/form">
           <button>FORM</button>
         </Link>
-        <Link to="/detail">
-          <button>DETAIL</button>
-        </Link>
       </div>
       <SearchBar />
     </div>

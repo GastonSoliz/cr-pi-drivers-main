@@ -1,4 +1,74 @@
 .formContainer {
+  border: 1px solid blueviolet;
+  display: flex;
+  justify-content: center;
+
+  height: 100vh;
+}
+
+.formContainer span {
+  color: red;
+  font-size: 12px;
+}
+
+.textContainer {
+  border: 1px solid black;
+  background-color: rgb(231, 231, 204);
+
+  width: 500px;
+  height: 500px;
+
+  margin: 40px 40px 0px 40px;
+}
+
+.textContainer h2 {
+  text-align: center;
+}
+
+.textContainer label {
+  display: block;
+  margin: 10px 15px;
+}
+
+.textContainer input {
+  margin: 0px 15px;
+  border: none;
+  border-radius: 8px;
+  height: 30px;
+}
+
+.teamsContainer {
+  border: 1px solid black;
+  background-color: rgb(231, 231, 204);
+
+  width: 500px;
+  max-height: 500px;
+
+  margin: 40px 40px 0px 40px;
+
+  overflow-x: hidden;
+}
+
+.teamsContainer div {
+  display: inline-block;
+  margin: 1px 2px;
+}
+
+.buttonContainer {
+  position: absolute;
+  bottom: 0;
+  text-align: center;
+}
+
+.buttonContainer button {
+  background-color: antiquewhite;
+
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+}
+/* 
+.formContainer {
   border: 1px solid black;
   background-color: rgb(231, 231, 204);
 
@@ -72,4 +142,4 @@
   padding: 5px;
   border: 1px solid #ccc;
   border-radius: 5px;
-}
+} */

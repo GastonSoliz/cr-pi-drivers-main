@@ -14,7 +14,7 @@ import style from "./Home.module.css";
 export default function Home() {
   const dispatch = useDispatch();
 
-  const driverName = useSelector((state) => state.driverName);
+  //const driverName = useSelector((state) => state.driverName);
   const allDrivers = useSelector((state) => state.filteredDrivers);
   const allTeams = useSelector((state) => state.allTeams);
   //const allDrivers = useSelector((state) => state.allDrivers);
@@ -43,13 +43,13 @@ export default function Home() {
 
   function handleTeams(event) {
     dispatch(sortTeam(event.target.value));
-    //console.log("HOME-TEAM:", allDrivers);
   }
 
   useEffect(() => {
     dispatch(getDrivers());
     dispatch(getTeams());
   }, [dispatch]);
+  console.log("DRIVER-NAME:", allDrivers);
 
   return (
     <div>
@@ -75,12 +75,13 @@ export default function Home() {
           })}
         </select>
       </div>
-      {driverName.length > 0 && (
+      {/* {driverName.length > 0 && (
         <div className={style.cardListContainer}>
           <h2>Drivers buscados por name:</h2>
           <CardList allDrivers={driverName} />
         </div>
-      )}
+      )} */}
+
       <div className={style.cardListContainer}>
         <h2>Todos los drivers:</h2>
         <CardList allDrivers={currentDrivers} />

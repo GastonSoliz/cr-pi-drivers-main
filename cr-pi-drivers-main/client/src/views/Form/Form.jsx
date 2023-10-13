@@ -16,7 +16,7 @@ export default function Form() {
     image: "",
     birthdate: "",
     description: "",
-    teams: "",
+    teams: [],
   });
   const [errors, setErrors] = useState({});
 
@@ -30,34 +30,119 @@ export default function Form() {
   };
 
   function handleChange(event) {
-    setDriver({ ...driver, [event.target.name]: event.target.value });
-    // setErrors(
-    //   validateForm({ ...driver, [event.target.name]: event.target.value })
-    // );
+    if (event.target.name !== "teams") {
+      setDriver({ ...driver, [event.target.name]: event.target.value });
+      setErrors(
+        validateForm({ ...driver, [event.target.name]: event.target.value })
+      );
+    }
+    // } else {
+    //   if (!selectedTeams.includes(event.target.value)) {
+    //     setSelectedTeams([...selectedTeams, event.target.value]);
+
+    //     setDriver({ ...driver, teams: selectedTeams });
+    //     setErrors(
+    //       validateForm({
+    //         ...driver,
+    //         teams: selectedTeams,
+    //       })
+    //     );
+    //   }
+    // }
   }
+
+  // function handleChange(event) {
+  //   const { name, value, type, checked } = event.target;
+
+  //   setDriver((prevDriver) => {
+  //     if (type === "checkbox") {
+  //       return {
+  //         ...prevDriver,
+  //         teams: checked
+  //           ? [...prevDriver.teams, value]
+  //           : prevDriver.teams.filter((team) => team !== value),
+  //       };
+  //     } else {
+  //       return {
+  //         ...prevDriver,
+  //         [name]: value,
+  //       };
+  //     }
+  //   });
+
+  //   setErrors((prevErrors) => {
+  //     if (type === "checkbox") {
+  //       return {
+  //         ...prevErrors,
+  //         teams: validateForm({ ...driver, teams: driver.teams }),
+  //       };
+  //     } else {
+  //       return {
+  //         ...prevErrors,
+  //         [name]: validateForm({ ...driver, [name]: value }),
+  //       };
+  //     }
+  //   });
+  // }
+
+  const handleTeamChange = (event) => {
+    const teamsName = event.target.value;
+    const isCheked = event.target.checked;
+
+    let updateDriver;
+
+    if (isCheked) {
+      updateDriver = [...driver.teams, teamsName];
+    } else {
+      updateDriver = driver.teams.filter((team) => team !== teamsName);
+    }
+
+    setDriver({ ...driver, teams: updateDriver });
+    setErrors(validateForm({ ...driver, [event.target.name]: updateDriver }));
+    console.log(updateDriver);
+  };
+
+  // function handleTeamsChange(name, value) {
+  //   return driver.teams.includes(value)
+  //     ? driver.teams.filter((team) => team !== value)
+  //     : [...driver.teams, value];
+  // }
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    //    console.log(driver);
-    let newTeams = selectedTeams?.map((team) => team.name);
-    //newTeams = newTeams.join(",");
-    console.log(newTeams);
-    setDriver({ ...driver, teams: newTeams });
-    setErrors(
-      validateForm({ ...driver, [event.target.name]: event.target.value })
-    );
-
+    console.log(driver);
     dispatch(postDriver(driver));
   };
 
-  const handleSelected = (event) => {
-    const teamId = event.target.value;
-    const selectTeam = allTeams.find((team) => teamId === team.id);
-    setSelectedTeams([...selectedTeams, selectTeam]);
-  };
+  // const handleSubmit = (event) => {
+  //   event.preventDefault();
+  //   //    console.log(driver);
+  //   let newTeams = selectedTeams?.map((team) => team.name);
+  //   //newTeams = newTeams.join(",");
+  //   console.log(newTeams);
+  //   setDriver({ ...driver, teams: newTeams });
+  //   setErrors(
+  //     validateForm({ ...driver, [event.target.name]: event.target.value })
+  //   );
 
-  const handleRemoveTeam = (teamId) => {
-    setSelectedTeams(selectedTeams.filter((team) => team.id !== teamId));
+  //   dispatch(postDriver(driver));
+  // };
+
+  // const handleSelected = (event) => {
+  //   const teamId = event.target.value;
+  //   const selectTeam = allTeams.find((team) => teamId === team.id);
+  //   setSelectedTeams([...selectedTeams, selectTeam]);
+  // };
+
+  const handleRemoveTeam = (teamName) => {
+    setSelectedTeams(selectedTeams.filter((team) => team !== teamName));
+    setDriver({ ...driver, teams: selectedTeams });
+    setErrors(
+      validateForm({
+        ...driver,
+        teams: selectedTeams,
+      })
+    );
   };
 
   useEffect(() => {
@@ -66,8 +151,8 @@ export default function Form() {
   }, [driver]);
 
   return (
-    <div className={style.formContainer}>
-      <form onSubmit={handleSubmit} className={style.form}>
+    <form onSubmit={handleSubmit} className={style.formContainer}>
+      <div className={style.textContainer}>
         <h2>INGRESAR DATOS DEL CORREDOR</h2>
         <label>Nombre:</label>
         <input
@@ -119,29 +204,25 @@ export default function Form() {
         />
         <span>{errors.description}</span>
         <br />
-        <label>Escuderias:</label>
-        {/* {console.log(allTeams)} */}
+        {/* <label>Escuderias:</label>
+
         <div className={style.formSelect}>
-          <select onChange={handleSelected} name="teams">
+          <select onChange={handleChange} name="teams">
             <option disabled selected>
               Seleccionar minimo un equipo
             </option>
             {allTeams?.map((team) => {
-              return (
-                <option value={team.id} key={team.id}>
-                  {team.name}
-                </option>
-              );
+              return <option key={team.id}>{team.name}</option>;
             })}
           </select>
           <div className={style.selectedTeams}>
             {selectedTeams.map((team) => {
               return (
                 <div key={team.id} className={style.selectTeam}>
-                  <p>{team.name}</p>
+                  <p>{team}</p>
                   <button
                     onClick={() => {
-                      handleRemoveTeam(team.id);
+                      handleRemoveTeam(team);
                     }}
                   >
                     X
@@ -151,11 +232,31 @@ export default function Form() {
             })}
           </div>
           <span>{errors.teams}</span>
+        </div> */}
+      </div>
+      <div className={style.teamsContainer}>
+        <label>Escuderias:</label>
+        <span>{errors.teams}</span>
+        <div className={style.formSelect}>
+          {allTeams?.map((team) => (
+            <div key={team.id}>
+              <label>
+                <input
+                  type="checkbox"
+                  name="teams"
+                  value={team.name}
+                  checked={driver.teams.includes(team.name)}
+                  onChange={handleTeamChange}
+                />
+                {team.name}
+              </label>
+            </div>
+          ))}
         </div>
-        <button type="submit" className={style.submitButton}>
-          SUBIR
-        </button>
-      </form>
-    </div>
+      </div>
+      <div className={style.buttonContainer}>
+        <button type="submit">SUBIR</button>
+      </div>
+    </form>
   );
 }

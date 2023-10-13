@@ -23,9 +23,30 @@ export default function rootReducer(state = initialState, action) {
     case "GET_DRIVER_BY_ID":
       return { ...state, driverDetail: action.payload };
     case "GET_DRIVER_BY_NAME":
-      return { ...state, driverName: action.payload };
+      return { ...state, filteredDrivers: action.payload };
     case "POST_DRIVER":
-      return { ...state, allDrivers: [...state.allDrivers, action.payload] };
+      return {
+        ...state,
+        allDrivers: [...state.allDrivers, action.payload],
+      };
+    case "DELETE_DRIVER":
+      return {
+        ...state,
+        allDrivers: [
+          ...state.allDrivers.filter(
+            (driver) => driver.id === action.payload.id
+          ),
+        ],
+      };
+    case "UPDATE_DRIVER":
+      return {
+        ...state,
+        allDrivers: [
+          ...state.allDrivers.map((driver) =>
+            driver.id === action.payload.id ? action.payload : driver
+          ),
+        ],
+      };
     case "CLEAN_DETAIL":
       return { ...state, driverDetail: action.payload };
     case "GET_TEAMS":
@@ -44,12 +65,6 @@ export default function rootReducer(state = initialState, action) {
       } else {
         filterOriginDriversRaw = state.allDrivers;
       }
-      // previousFilters = state.filteredDrivers;
-      // filteredDrivers.filter((driver) =>
-      //   filterOriginDriversRaw.includes(driver)
-      // );
-      // return { ...state, filteredDrivers };
-      //console.log("SORT_ORIGIN:", state.filteredDrivers);
       return { ...state, filteredDrivers: filterOriginDriversRaw };
 
     case "SORT_DATE":
@@ -70,12 +85,6 @@ export default function rootReducer(state = initialState, action) {
       } else if (action.payload === "NONE") {
         filterDateDriversRaw = state.allDrivers;
       }
-      // previousFilters = state.filteredDrivers;
-      // filteredDrivers = previousFilters.filter((driver) =>
-      //   filterDateDriversRaw.includes(driver)
-      // );
-      // return { ...state, filteredDrivers };
-
       console.log("SORT_DATE:", filterDateDriversRaw);
       return { ...state, filteredDrivers: filterDateDriversRaw };
     case "SORT_TEAM":
@@ -85,11 +94,17 @@ export default function rootReducer(state = initialState, action) {
         filterTeamDriversRaw = copyDrivers;
       } else {
         filterTeamDriversRaw = copyDrivers.filter((driver) => {
-          // Verifica si driver.teams está definido y no es null antes de dividirlo
-          const teams = driver.teams
-            ? driver.teams.split(",").map((teamName) => teamName.trim())
-            : [];
-          return teams.length > 0 && teams.includes(action.payload);
+          if (regExUUID.test(driver.id)) {
+            const teams = driver.teams || [];
+            const teamNames = teams.map((team) => team.name.trim());
+
+            return teamNames.includes(action.payload);
+          } else if (regExID.test(driver.id)) {
+            const teams = driver.teams
+              ? driver.teams.split(",").map((teamName) => teamName.trim())
+              : [];
+            return teams.length > 0 && teams.includes(action.payload);
+          }
         });
       }
       return { ...state, filteredDrivers: filterTeamDriversRaw };
