@@ -2,7 +2,6 @@ const initialState = {
   allDrivers: [],
   filteredDrivers: [],
   driverDetail: [],
-  driverName: [],
   allTeams: [],
 };
 
@@ -108,7 +107,14 @@ export default function rootReducer(state = initialState, action) {
         });
       }
       return { ...state, filteredDrivers: filterTeamDriversRaw };
-
+    case "SORT_2TEAMS":
+      copyDrivers: [...state.allDrivers];
+      const filterNowRaw = copyDrivers.filter((driver) => {
+        const teams = driver.teams;
+        const teamName = teams.map((team) => team.name.trim());
+        return teamName.includes("McLaren") || teamName.includes("Alfa Romeo");
+      });
+      return { ...state, filteredDriver: filterNowRaw };
     default:
       return { ...state };
   }

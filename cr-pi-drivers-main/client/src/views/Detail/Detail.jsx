@@ -24,11 +24,8 @@ export default function Detail() {
     };
   }, [dispatch]);
 
-  //console.log(driver.teams);
-
   return (
     <div className={style.detailContainer}>
-      {console.log(driver)}
       <img src={driver.image} alt="Imagen corredor" />
       <div className={style.textContainer}>
         <p>ID: {driver.id}</p>

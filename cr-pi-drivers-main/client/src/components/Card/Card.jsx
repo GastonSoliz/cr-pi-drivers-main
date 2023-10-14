@@ -1,4 +1,4 @@
-import { Link, useLocation, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 import style from "./Card.module.css";
 import { useDispatch } from "react-redux";
 import { deleteDriver } from "../../redux/actions";

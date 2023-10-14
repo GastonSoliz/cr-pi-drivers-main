@@ -79,3 +79,7 @@ export function sortTeam(team) {
 export function cleanDetail() {
   return { type: "CLEAN_DETAIL", payload: [] };
 }
+
+export function sort2Teams() {
+  return { type: "SORT_2TEAMS", payload: [] };
+}

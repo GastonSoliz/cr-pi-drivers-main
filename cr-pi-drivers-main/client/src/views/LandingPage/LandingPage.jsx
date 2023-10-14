@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
+import style from "./LandingPage.module.css";
 
 export default function LandingPage() {
   return (
-    <div>
-      <h1>PRUEBA LANDING PAGE</h1>
+    <div className={style.landingPageContainer}>
+      <h1>BIENVENIDO A MI DRIVERS APP!</h1>
       <Link to="/home">
         <button>HOME</button>
       </Link>

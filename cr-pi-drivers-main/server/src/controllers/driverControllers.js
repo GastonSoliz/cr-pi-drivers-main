@@ -27,10 +27,6 @@ const createDriver = async (
   birthdate,
   teams
 ) => {
-  //const allDrivers = await getAllDrivers();
-  // const driver = allDrivers.find((driver) => driver.name === name);
-  // if (!driver) {
-
   const newDriver = await Driver.create({
     name,
     surname,
@@ -46,7 +42,6 @@ const createDriver = async (
   }
 
   return { newDriver };
-  //} else throw new Error("YA EXISTE UN PERSONAJE CON ESE NOMBRE");
 };
 
 const getDriverId = async (id, source) => {

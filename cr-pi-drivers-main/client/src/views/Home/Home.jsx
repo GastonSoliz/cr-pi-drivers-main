@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   getDrivers,
   getTeams,
+  sort2Teams,
   sortDate,
   sortOrigin,
   sortTeam,
@@ -14,7 +15,6 @@ import style from "./Home.module.css";
 export default function Home() {
   const dispatch = useDispatch();
 
-  //const driverName = useSelector((state) => state.driverName);
   const allDrivers = useSelector((state) => state.filteredDrivers);
   const allTeams = useSelector((state) => state.allTeams);
   //const allDrivers = useSelector((state) => state.allDrivers);
@@ -38,21 +38,24 @@ export default function Home() {
 
   function handleDate(event) {
     dispatch(sortDate(event.target.value));
-    //console.log("HOME-DATE:", allDrivers);
   }
 
   function handleTeams(event) {
     dispatch(sortTeam(event.target.value));
   }
 
+  function handleNow() {
+    dispatch(sort2Teams());
+  }
+
   useEffect(() => {
     dispatch(getDrivers());
     dispatch(getTeams());
   }, [dispatch]);
-  console.log("DRIVER-NAME:", allDrivers);
 
   return (
     <div>
+      <button onClick={handleNow}>NOW!</button>
       <div className={style.selectsContainer}>
         <select onChange={handleOrigin} defaultValue="ALL">
           <option value="ALL">ALL</option>
@@ -62,7 +65,7 @@ export default function Home() {
         <select onChange={handleDate}>
           <option value="NONE">AÑO</option>
           <option value="ASCENDENTE">ASCENDENTE</option>
-          <option value="DESCENDENTE">DESCENDEN TE</option>
+          <option value="DESCENDENTE">DESCENDENTE</option>
         </select>
         <select onChange={handleTeams}>
           <option value="NONE">EQUIPOS</option>
@@ -75,15 +78,7 @@ export default function Home() {
           })}
         </select>
       </div>
-      {/* {driverName.length > 0 && (
-        <div className={style.cardListContainer}>
-          <h2>Drivers buscados por name:</h2>
-          <CardList allDrivers={driverName} />
-        </div>
-      )} */}
-
       <div className={style.cardListContainer}>
-        <h2>Todos los drivers:</h2>
         <CardList allDrivers={currentDrivers} />
       </div>
       <Pagination

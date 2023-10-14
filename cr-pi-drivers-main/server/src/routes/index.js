@@ -2,7 +2,6 @@ const { Router } = require("express");
 const {
   getDriverById,
   getDrivers,
-  getDriversByName,
   postDrivers,
   deleteDriver,
   updateDriver,
@@ -30,7 +29,6 @@ const validateDriver = (req, res, next) => {
 
 router.get("/drivers", getDrivers);
 router.get("/drivers/:idDriver", getDriverById);
-//router.get("/drivers/", getDriversByName);
 router.post("/drivers", validateDriver, postDrivers);
 router.get("/teams", getTeams);
 router.delete("/drivers/:idDriver", deleteDriver);

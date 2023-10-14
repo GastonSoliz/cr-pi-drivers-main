@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import style from "./Pagination.module.css";
 
 export default function Pagination({ page, total, currentPage }) {
@@ -7,17 +6,11 @@ export default function Pagination({ page, total, currentPage }) {
     pageNumbers.push(i);
   }
 
-  const maxButtons = 9;
+  const maxButtons = 8;
   const visiblePageNumbers = pageNumbers.slice(
     Math.max(currentPage - Math.floor(maxButtons / 2), 0),
     Math.min(currentPage + Math.floor(maxButtons / 2), total)
   );
-
-  // useEffect(() => {
-  //   console.log(currentPage);
-  // }, [currentPage]);
-
-  //COMO FUNCIONA ESTO? CHATGPT
 
   return (
     <div className={style.paginationContainer}>

@@ -9,6 +9,7 @@ export default function Edit() {
   const allTeams = useSelector((state) => state.allTeams);
   let driver = useSelector((state) => state.driverDetail);
   const [errors, setErrors] = useState({});
+
   const initialSelectedTeams = driver.teams?.map((team) => team.name);
   const [formData, setFormData] = useState({
     name: driver.name,
@@ -44,21 +45,31 @@ export default function Edit() {
 
     setFormData({ ...formData, teams: updatedTeams });
     setErrors(validateForm({ ...formData, teams: updatedTeams }));
-    //console.log("EQUIPOS:", updatedTeams);
   }
 
   function handleSubmit(event) {
     event.preventDefault();
-    //console.log("ESTO SE SUBE: ", formData, id);
     dispatch(updateDriver(formData, id));
   }
 
   useEffect(() => {
-    dispatch(getDriverById(id));
     dispatch(getTeams());
-  }, []);
+  }, [dispatch]);
 
-  console.log("FORM-DATA:", formData);
+  useEffect(() => {
+    if (driver.name) {
+      setFormData({
+        name: driver.name,
+        surname: driver.surname,
+        nationality: driver.nationality,
+        image: driver.image,
+        birthdate: driver.birthdate,
+        description: driver.description,
+        teams: initialSelectedTeams || [],
+      });
+    } else dispatch(getDriverById(id));
+  }, [driver, dispatch]);
+
   return (
     <form className={style.formContainer} onSubmit={handleSubmit}>
       <div className={style.textContainer}>
