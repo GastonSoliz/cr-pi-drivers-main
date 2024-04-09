@@ -1,7 +1,27 @@
 const regexLetters = /^[A-Za-zÀ-ÖØ-öø-ÿ]+$/;
 
-export default function validateForm(inputs) {
-  let errors = {};
+type DriverError = {
+  birthdate?: string;
+  description?: string;
+  image?: string;
+  name?: string;
+  nationality?: string;
+  surname?: string;
+  teams?: string;
+};
+
+type Driver = {
+  birthdate: string;
+  description: string;
+  image: string;
+  name: string;
+  nationality: string;
+  surname: string;
+  teams: string[];
+};
+
+export default function validateForm(inputs: Driver) {
+  let errors: DriverError = {};
   if (!inputs.name) errors.name = "Se debe ingresar un nombre";
   else if (!regexLetters.test(inputs.name))
     errors.name = "El nombre solo puede contener letras";
