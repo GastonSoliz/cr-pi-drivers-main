@@ -3,19 +3,34 @@ import { useDispatch, useSelector } from "react-redux";
 import { cleanDetail, getDriverById } from "../../redux/actions.ts";
 import { useParams } from "react-router-dom";
 import style from "./Detail.module.css";
+import React from "react";
+
+type Team = { id: number; name: string };
+type someTeams = Team[];
+
+type Driver = {
+  birthdate: string;
+  id: number;
+  description: string;
+  image: string;
+  name: string;
+  nationality: string;
+  surname: string;
+  teams: someTeams;
+};
 
 export default function Detail() {
-  const [showMore, setShowMore] = useState(false);
+  const [showMore, setShowMore] = useState<boolean>(false);
 
-  const driver = useSelector((state) => state.driverDetail);
+  const driver: Driver = useSelector((state) => state.driverDetail);
 
   const dispatch = useDispatch();
 
   const { id } = useParams();
 
-  function handleShowMore() {
+  void function handleShowMore() {
     setShowMore(!showMore);
-  }
+  };
 
   useEffect(() => {
     dispatch(getDriverById(id));
