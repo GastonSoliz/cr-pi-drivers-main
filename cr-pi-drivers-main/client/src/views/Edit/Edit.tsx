@@ -2,15 +2,43 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getDriverById, getTeams, updateDriver } from "../../redux/actions.ts";
 import { useParams } from "react-router-dom";
-import validateForm from "../../utils/validateForm";
+import validateForm from "../../utils/validateForm.ts";
 import style from "./Edit.module.css";
+import React from "react";
+
+type Team = {
+  id: number;
+  name: string;
+};
+
+type someTeams = Team[];
+
+type Driver = {
+  birthdate: string;
+  description: string;
+  image: string;
+  name: string;
+  nationality: string;
+  surname: string;
+  teams: someTeams;
+};
+
+type DriverError = {
+  birthdate?: string;
+  description?: string;
+  image?: string;
+  name?: string;
+  nationality?: string;
+  surname?: string;
+  teams?: string;
+};
 
 export default function Edit() {
-  const allTeams = useSelector((state) => state.allTeams);
-  let driver = useSelector((state) => state.driverDetail);
-  const [errors, setErrors] = useState({});
+  const allTeams: someTeams = useSelector((state) => state.allTeams);
+  let driver: Driver = useSelector((state) => state.driverDetail);
+  const [errors, setErrors] = useState<DriverError>({});
 
-  const initialSelectedTeams = driver.teams?.map((team) => team.name);
+  const initialSelectedTeams = driver.teams?.map((team: Team) => team.name);
   const [formData, setFormData] = useState({
     name: driver.name,
     surname: driver.surname,
@@ -24,18 +52,18 @@ export default function Edit() {
   const { id } = useParams();
   const dispatch = useDispatch();
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [event.target.name]: event.target.value });
     setErrors(
       validateForm({ ...formData, [event.target.name]: event.target.value })
     );
   }
 
-  function handleTeamChange(event) {
+  function handleTeamChange(event: React.ChangeEvent<HTMLInputElement>) {
     const teamName = event.target.value;
     const isChecked = event.target.checked;
 
-    let updatedTeams;
+    let updatedTeams: string[];
 
     if (isChecked) {
       updatedTeams = [...formData.teams, teamName];
@@ -47,7 +75,7 @@ export default function Edit() {
     setErrors(validateForm({ ...formData, teams: updatedTeams }));
   }
 
-  function handleSubmit(event) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     dispatch(updateDriver(formData, id));
   }
