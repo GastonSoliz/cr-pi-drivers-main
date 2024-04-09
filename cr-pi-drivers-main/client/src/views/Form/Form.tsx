@@ -1,14 +1,38 @@
 import { useEffect, useState } from "react";
-import validateForm from "../../utils/validateForm";
+import validateForm from "../../utils/validateForm.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { getTeams, postDriver } from "../../redux/actions.ts";
 import style from "./Form.module.css";
+import React from "react";
+
+type Team = { id: number; name: string };
+type someTeams = Team[];
+
+type Driver = {
+  birthdate: string;
+  description: string;
+  image: string;
+  name: string;
+  nationality: string;
+  surname: string;
+  teams: string[];
+};
+
+type DriverError = {
+  birthdate?: string;
+  description?: string;
+  image?: string;
+  name?: string;
+  nationality?: string;
+  surname?: string;
+  teams?: string;
+};
 
 export default function Form() {
-  const allTeams = useSelector((state) => state.allTeams);
+  const allTeams: someTeams = useSelector((state) => state.allTeams);
   const dispatch = useDispatch();
 
-  const [driver, setDriver] = useState({
+  const [driver, setDriver] = useState<Driver>({
     name: "",
     surname: "",
     nationality: "",
@@ -17,7 +41,8 @@ export default function Form() {
     description: "",
     teams: [],
   });
-  const [errors, setErrors] = useState({});
+
+  const [errors, setErrors] = useState<DriverError>({});
 
   const handleDisabled = () => {
     if (errors) {
@@ -28,7 +53,7 @@ export default function Form() {
     return false;
   };
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     if (event.target.name !== "teams") {
       setDriver({ ...driver, [event.target.name]: event.target.value });
       setErrors(
@@ -37,23 +62,25 @@ export default function Form() {
     }
   }
 
-  function handleTeamChange(event) {
-    const teamsName = event.target.value;
-    const isCheked = event.target.checked;
+  function handleTeamChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const teamsName: string = event.target.value;
+    const isChecked: boolean = event.target.checked;
 
-    let updateDriver;
+    let updateDriver: string[];
 
-    if (isCheked) {
-      updateDriver = [...driver.teams, teamsName];
-    } else {
-      updateDriver = driver.teams.filter((team) => team !== teamsName);
+    if (driver && driver.teams) {
+      if (isChecked) {
+        updateDriver = [...driver.teams, teamsName];
+      } else {
+        updateDriver = driver.teams.filter((team) => team !== teamsName);
+      }
+
+      setDriver({ ...driver, teams: updateDriver });
+      setErrors(validateForm({ ...driver, teams: updateDriver }));
     }
-
-    setDriver({ ...driver, teams: updateDriver });
-    setErrors(validateForm({ ...driver, teams: updateDriver }));
   }
 
-  function handleSubmit(event) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
     dispatch(postDriver(driver));
@@ -129,7 +156,7 @@ export default function Form() {
                   type="checkbox"
                   name="teams"
                   value={team.name}
-                  checked={driver.teams.includes(team.name)}
+                  checked={driver.teams?.includes(team.name)}
                   onChange={handleTeamChange}
                 />
                 {team.name}
