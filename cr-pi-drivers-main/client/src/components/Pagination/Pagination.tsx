@@ -1,13 +1,25 @@
 import style from "./Pagination.module.css";
+import React from "react";
 
-export default function Pagination({ page, total, currentPage }) {
-  const pageNumbers = [];
-  for (let i = 1; i <= total; i++) {
+interface PaginationProps {
+  page: (pageNumber: number) => void;
+  total: number;
+  currentPage: number;
+}
+
+export default function Pagination({
+  page,
+  total,
+  currentPage,
+}: PaginationProps) {
+  const pageNumbers: number[] = [];
+
+  for (let i: number = 1; i <= total; i++) {
     pageNumbers.push(i);
   }
 
-  const maxButtons = 8;
-  const visiblePageNumbers = pageNumbers.slice(
+  const maxButtons: number = 8;
+  const visiblePageNumbers: number[] = pageNumbers.slice(
     Math.max(currentPage - Math.floor(maxButtons / 2), 0),
     Math.min(currentPage + Math.floor(maxButtons / 2), total)
   );

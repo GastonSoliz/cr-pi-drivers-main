@@ -2,17 +2,18 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { getDriverByName } from "../../redux/actions.ts";
 import style from "./SearchBar.module.css";
+import React from "react";
 
 export default function SearchBar() {
-  const [name, setName] = useState("");
+  const [name, setName] = useState<string>("");
   const dispatch = useDispatch();
 
-  function handleChange(event) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
     event.preventDefault();
     setName(event.target.value);
   }
 
-  function onSearch() {
+  function onSearch(): void {
     dispatch(getDriverByName(name));
   }
 

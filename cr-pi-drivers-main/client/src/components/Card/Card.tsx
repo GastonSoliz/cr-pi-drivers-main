@@ -23,7 +23,7 @@ export default function Card({ driver }: CardProps) {
   const dispatch = useDispatch();
 
   //Tener en cuenta si funciona deleteDriver, sino modificar en el action
-  function handleClose(id: number) {
+  function handleClose(id: number): void {
     dispatch(deleteDriver(id));
   }
 

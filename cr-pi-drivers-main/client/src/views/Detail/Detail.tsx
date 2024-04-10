@@ -28,9 +28,9 @@ export default function Detail() {
 
   const { id } = useParams();
 
-  void function handleShowMore() {
+  function handleShowMore(): void {
     setShowMore(!showMore);
-  };
+  }
 
   useEffect(() => {
     dispatch(getDriverById(id));
