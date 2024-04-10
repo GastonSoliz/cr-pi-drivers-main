@@ -1,4 +1,4 @@
-const regexLetters = /^[A-Za-zÀ-ÖØ-öø-ÿ]+$/;
+const regexLetters: RegExp = /^[A-Za-zÀ-ÖØ-öø-ÿ]+$/;
 
 type DriverError = {
   birthdate?: string;
