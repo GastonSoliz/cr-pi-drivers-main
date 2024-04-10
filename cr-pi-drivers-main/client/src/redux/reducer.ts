@@ -1,3 +1,21 @@
+type Team = {
+  id: number;
+  name: string;
+};
+
+type Driver = {
+  birthdate: string;
+  description: string;
+  image: string;
+  name: string;
+  nationality: string;
+  surname: string;
+  teams: string;
+};
+
+type someTeams = Team[];
+type someDrivers = Driver[];
+
 const initialState = {
   allDrivers: [],
   filteredDrivers: [],
@@ -5,13 +23,32 @@ const initialState = {
   allTeams: [],
 };
 
-export default function rootReducer(state = initialState, action) {
+type Action =
+  | { type: "GET_TEAMS"; payload: someTeams }
+  //[{Driver}]
+  | { type: "GET_DRIVER_BY_NAME"; payload: Driver }
+  | { type: "GET_DRIVER_BY_ID"; payload: Driver }
+  | { type: "GET_DRIVERS"; payload: someDrivers }
+  //{newDriver:{Driver}} deberia ir todo de la misma manera... sino lo hace... ARREGLAR TODO EL PROYECTO
+  //Si no, es quilombo de tipo de datos
+  | { type: "POST_DRIVER"; payload: Driver }
+  | { type: "DELETE_DRIVER"; payload: number }
+  | { type: "UPDATE_DRIVER"; payload: Driver }
+  | { type: "SORT_ORIGIN"; payload: number }
+  | { type: "SORT_DATE"; payload: string }
+  //Falta implementar
+  | { type: "SORT_NAME"; payload: string }
+  | { type: "SORT_TEAM"; payload: string }
+  | { type: "CLEAN_DETAIL"; payload: null };
+
+const regExUUID: RegExp =
+  /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
+const regExID: RegExp = /^\d+(\.\d+)?$/;
+
+export default function rootReducer(state = initialState, action: Action) {
   let previousFilters;
   let filteredDrivers;
   let copyDrivers;
-  const regExUUID =
-    /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-5][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
-  const regExID = /^\d+(\.\d+)?$/;
   switch (action.type) {
     case "GET_DRIVERS":
       return {
@@ -107,14 +144,6 @@ export default function rootReducer(state = initialState, action) {
         });
       }
       return { ...state, filteredDrivers: filterTeamDriversRaw };
-    case "SORT_2TEAMS":
-      copyDrivers: [...state.allDrivers];
-      const filterNowRaw = copyDrivers.filter((driver) => {
-        const teams = driver.teams;
-        const teamName = teams.map((team) => team.name.trim());
-        return teamName.includes("McLaren") || teamName.includes("Alfa Romeo");
-      });
-      return { ...state, filteredDriver: filterNowRaw };
     default:
       return { ...state };
   }

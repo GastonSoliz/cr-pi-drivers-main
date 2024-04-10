@@ -44,7 +44,7 @@ export function postDriver(driver) {
   };
 }
 
-export function deleteDriver(id: number) {
+export function deleteDriver(id) {
   const endpoint = `${URL}drivers/${id}`;
   return async (dispatch) => {
     const { data } = await axios.delete(endpoint);
@@ -77,9 +77,5 @@ export function sortTeam(team) {
 }
 
 export function cleanDetail() {
-  return { type: "CLEAN_DETAIL", payload: [] };
-}
-
-export function sort2Teams() {
-  return { type: "SORT_2TEAMS", payload: [] };
+  return { type: "CLEAN_DETAIL", payload: null };
 }
