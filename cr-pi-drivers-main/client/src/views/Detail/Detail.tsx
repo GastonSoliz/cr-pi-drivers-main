@@ -41,27 +41,27 @@ export default function Detail() {
 
   return (
     <div className={style.detailContainer}>
-      <img src={driver.image} alt="Imagen corredor" />
+      <img src={driver?.image} alt="Imagen corredor" />
       <div className={style.textContainer}>
-        <p>ID: {driver.id}</p>
-        <p>Nombre: {driver.name}</p>
-        <p>Apellido: {driver.surname}</p>
-        <p>Nacionalidad: {driver.nationality}</p>
+        <p>ID: {driver?.id}</p>
+        <p>Nombre: {driver?.name}</p>
+        <p>Apellido: {driver?.surname}</p>
+        <p>Nacionalidad: {driver?.nationality}</p>
         <div className={style.descriptionContainer}>
           <label className={showMore ? style.show : ""}>
-            Descripcion: {driver.description ? driver.description : "-"}
+            Descripcion: {driver?.description ? driver?.description : "-"}
           </label>
-          {driver.description?.length > 100 && (
+          {driver?.description.length > 100 && (
             <button onClick={handleShowMore}>
               {showMore ? "Mostrar menos" : "Leer más"}
             </button>
           )}
         </div>
-        <p>Fecha de nacimiento: {driver.birthdate}</p>
+        <p>Fecha de nacimiento: {driver?.birthdate}</p>
 
         <ul>
           Teams:
-          {driver.teams?.map((team) => (
+          {driver?.teams.map((team) => (
             <li key={team.id}>{team.name}</li>
           ))}
         </ul>

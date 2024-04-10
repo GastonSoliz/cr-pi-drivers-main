@@ -38,17 +38,17 @@ export default function Edit() {
   let driver: Driver = useSelector((state) => state.driverDetail);
   const [errors, setErrors] = useState<DriverError>({});
 
-  const initialSelectedTeams: string[] = driver.teams?.map(
+  const initialSelectedTeams: string[] = driver?.teams.map(
     (team: Team) => team.name
   );
   //ARREGLAR TIPOS ENTRE ESTOS DOS...
   const [formData, setFormData] = useState({
-    name: driver.name,
-    surname: driver.surname,
-    nationality: driver.nationality,
-    image: driver.image,
-    birthdate: driver.birthdate,
-    description: driver.description,
+    name: driver?.name,
+    surname: driver?.surname,
+    nationality: driver?.nationality,
+    image: driver?.image,
+    birthdate: driver?.birthdate,
+    description: driver?.description,
     teams: initialSelectedTeams,
   });
 
@@ -88,7 +88,7 @@ export default function Edit() {
   }, [dispatch]);
 
   useEffect(() => {
-    if (driver.name) {
+    if (driver?.name) {
       setFormData({
         name: driver.name,
         surname: driver.surname,
