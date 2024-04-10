@@ -47,19 +47,19 @@ export default function Home() {
   const currentDrivers: someDrivers = allDrivers?.slice(startIndex, endIndex);
   const totalPages: number = Math.ceil(allDrivers.length / driversPerPage);
 
-  function pageHandler(pageNumber: number) {
+  function pageHandler(pageNumber: number): void {
     setCurrentPage(pageNumber);
   }
 
-  function handleOrigin(event) {
+  function handleOrigin(event: React.ChangeEvent<HTMLSelectElement>): void {
     dispatch(sortOrigin(event.target.value));
   }
 
-  function handleDate(event) {
+  function handleDate(event: React.ChangeEvent<HTMLSelectElement>): void {
     dispatch(sortDate(event.target.value));
   }
 
-  function handleTeams(event) {
+  function handleTeams(event: React.ChangeEvent<HTMLSelectElement>): void {
     dispatch(sortTeam(event.target.value));
   }
 

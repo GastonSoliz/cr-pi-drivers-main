@@ -38,7 +38,10 @@ export default function Edit() {
   let driver: Driver = useSelector((state) => state.driverDetail);
   const [errors, setErrors] = useState<DriverError>({});
 
-  const initialSelectedTeams = driver.teams?.map((team: Team) => team.name);
+  const initialSelectedTeams: string[] = driver.teams?.map(
+    (team: Team) => team.name
+  );
+  //ARREGLAR TIPOS ENTRE ESTOS DOS...
   const [formData, setFormData] = useState({
     name: driver.name,
     surname: driver.surname,
@@ -60,8 +63,8 @@ export default function Edit() {
   }
 
   function handleTeamChange(event: React.ChangeEvent<HTMLInputElement>) {
-    const teamName = event.target.value;
-    const isChecked = event.target.checked;
+    const teamName: string = event.target.value;
+    const isChecked: boolean = event.target.checked;
 
     let updatedTeams: string[];
 

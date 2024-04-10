@@ -53,7 +53,7 @@ export default function Form() {
     return false;
   };
 
-  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
     if (event.target.name !== "teams") {
       setDriver({ ...driver, [event.target.name]: event.target.value });
       setErrors(
@@ -62,7 +62,7 @@ export default function Form() {
     }
   }
 
-  function handleTeamChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleTeamChange(event: React.ChangeEvent<HTMLInputElement>): void {
     const teamsName: string = event.target.value;
     const isChecked: boolean = event.target.checked;
 
@@ -80,7 +80,7 @@ export default function Form() {
     }
   }
 
-  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
 
     dispatch(postDriver(driver));
