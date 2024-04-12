@@ -10,6 +10,11 @@ type DriverError = {
   teams?: string;
 };
 
+type Team = {
+  id?: number;
+  name: string;
+};
+
 type Driver = {
   birthdate: string;
   description: string;
@@ -17,7 +22,7 @@ type Driver = {
   name: string;
   nationality: string;
   surname: string;
-  teams: string;
+  teams: Team[];
 };
 
 export default function validateForm(inputs: Driver) {
