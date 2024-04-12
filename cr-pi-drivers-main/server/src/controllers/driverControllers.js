@@ -79,7 +79,7 @@ const getDriverId = async (id, source) => {
 };
 
 const getAllDrivers = async () => {
-  const dbDrivers = await Driver.findAll({
+  const dbDriversRaw = await Driver.findAll({
     include: {
       model: Team,
       as: "teams",
@@ -88,6 +88,20 @@ const getAllDrivers = async () => {
         attributes: [],
       },
     },
+  });
+
+  const dbDrivers = dbDriversRaw.map((driver) => {
+    const teamsString = driver.teams.map((team) => team.name).join(", ");
+    return {
+      id: driver.id,
+      name: driver.name,
+      surname: driver.surname,
+      description: driver.description,
+      image: driver.image,
+      nationality: driver.nationality,
+      birthdate: driver.birthdate,
+      teams: teamsString,
+    };
   });
 
   const apiDriversRaw = (await axios.get(URL)).data;
