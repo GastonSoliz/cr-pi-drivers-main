@@ -11,31 +11,15 @@ import { useEffect, useState } from "react";
 import Pagination from "../../components/Pagination/Pagination";
 import style from "./Home.module.css";
 import React from "react";
-
-type Driver = {
-  birthdate: string;
-  description: string;
-  id: number;
-  image: string;
-  name: string;
-  nationality: string;
-  surname: string;
-  teams: string;
-};
-
-type Team = {
-  id: number;
-  name: string;
-};
-
-type someTeams = Team[];
-type someDrivers = Driver[];
+import { DriverError, State, Team } from "../../types/types.ts";
 
 export default function Home() {
   const dispatch = useDispatch();
 
-  const allDrivers: someDrivers = useSelector((state) => state.filteredDrivers);
-  const allTeams: someTeams = useSelector((state) => state.allTeams);
+  const allDrivers: DriverError[] = useSelector(
+    (state) => state.filteredDrivers
+  );
+  const allTeams: Team[] = useSelector((state: State) => state.allTeams);
   //const allDrivers = useSelector((state) => state.allDrivers);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -44,7 +28,7 @@ export default function Home() {
   const startIndex: number = (currentPage - 1) * driversPerPage;
   const endIndex: number = startIndex + driversPerPage;
 
-  const currentDrivers: someDrivers = allDrivers?.slice(startIndex, endIndex);
+  const currentDrivers: DriverError[] = allDrivers?.slice(startIndex, endIndex);
   const totalPages: number = Math.ceil(allDrivers.length / driversPerPage);
 
   function pageHandler(pageNumber: number): void {

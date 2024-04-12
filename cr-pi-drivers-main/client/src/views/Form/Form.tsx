@@ -4,33 +4,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { getTeams, postDriver } from "../../redux/actions.ts";
 import style from "./Form.module.css";
 import React from "react";
-
-type Team = { id?: number; name: string };
-type someTeams = Team[];
-
-type Driver = {
-  birthdate: string;
-  description: string;
-  image: string;
-  name: string;
-  nationality: string;
-  surname: string;
-  teams: Team[];
-};
-
-type DriverError = {
-  birthdate?: string;
-  description?: string;
-  image?: string;
-  name?: string;
-  nationality?: string;
-  surname?: string;
-  teams?: string;
-};
+import { Team, Driver, DriverError, State } from "../../types/types.ts";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
 
 export default function Form() {
-  const allTeams: someTeams = useSelector((state) => state.allTeams);
-  const dispatch = useDispatch();
+  const allTeams: Team[] = useSelector((state: State) => state.allTeams);
+  const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
 
   const [driver, setDriver] = useState<Driver>({
     name: "",
@@ -44,14 +24,14 @@ export default function Form() {
 
   const [errors, setErrors] = useState<DriverError>({});
 
-  const handleDisabled = () => {
+  function handleDisabled(): boolean {
     if (errors) {
-      for (let error in errors) {
-        if (errors[error] !== "") return true;
+      for (const error in errors) {
+        if (errors[error as keyof DriverError] !== "") return true;
       }
     }
     return false;
-  };
+  }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
     if (event.target.name !== "teams") {
