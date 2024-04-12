@@ -18,6 +18,31 @@ type Driver = {
   teams: string;
 };
 
+type State = {
+  allDrivers: Driver[];
+  filteredDrivers: Driver[] | Driver;
+  driverDetail: Driver | null;
+  allTeams: Team[];
+};
+
+type Action =
+  | { type: "GET_TEAMS"; payload: Team[] }
+  //[{Driver}]
+  | { type: "GET_DRIVER_BY_NAME"; payload: Driver[] | Driver }
+  | { type: "GET_DRIVER_BY_ID"; payload: Driver }
+  | { type: "GET_DRIVERS"; payload: Driver[] }
+  //{newDriver:{Driver}} deberia ir todo de la misma manera... sino lo hace... ARREGLAR TODO EL PROYECTO
+  //Si no, es quilombo de tipo de datos
+  | { type: "POST_DRIVER"; payload: Driver }
+  | { type: "DELETE_DRIVER"; payload: number }
+  | { type: "UPDATE_DRIVER"; payload: Driver }
+  | { type: "SORT_ORIGIN"; payload: string }
+  | { type: "SORT_DATE"; payload: string }
+  //Falta implementar
+  | { type: "SORT_NAME"; payload: string }
+  | { type: "SORT_TEAM"; payload: string }
+  | { type: "CLEAN_DETAIL"; payload: null };
+
 const URL: string = "http://localhost:3001/";
 
 export function getTeams() {
@@ -30,7 +55,7 @@ export function getTeams() {
 
 export function getDriverByName(name: string) {
   const endpoint: string = `${URL}drivers?name=${name}`;
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<Action>) => {
     const { data } = await axios.get<Driver[] | Driver>(endpoint);
     return dispatch({ type: "GET_DRIVER_BY_NAME", payload: data });
   };
@@ -66,36 +91,39 @@ export function postDriver(driver: Driver) {
 export function deleteDriver(id: number) {
   const endpoint: string = `${URL}drivers/${id}`;
   return async (dispatch: Dispatch) => {
-    await axios.delete<Driver>(endpoint);
+    await axios.delete(endpoint);
     return dispatch({ type: "DELETE_DRIVER", payload: id });
   };
 }
 
 //QUE DEBERIA PONER EN EL GENERCO DEL AXIOS.PUT?
-export function updateDriver(driver: Driver, id: number) {
+export function updateDriver(
+  driver: Driver,
+  id: number
+): (dispatch: Dispatch<Action>) => Promise<void> {
   const endpoint: string = `${URL}drivers/${id}`;
-  return async (dispatch: Dispatch) => {
+  return async (dispatch: Dispatch<Action>) => {
     const { data } = await axios.put(endpoint, driver);
-    return dispatch({ type: "UPDATE_DRIVER", payload: data });
+    dispatch({ type: "UPDATE_DRIVER", payload: data });
   };
 }
 
-export function sortOrigin(origin_id: string) {
+export function sortOrigin(origin_id: string): Action {
   return { type: "SORT_ORIGIN", payload: origin_id };
 }
 
-export function sortDate(date: string) {
+export function sortDate(date: string): Action {
   return { type: "SORT_DATE", payload: date };
 }
 
-export function sortName(name: string) {
+export function sortName(name: string): Action {
   return { type: "SORT_NAME", payload: name };
 }
 
-export function sortTeam(team: string) {
+export function sortTeam(team: string): Action {
   return { type: "SORT_TEAM", payload: team };
 }
 
-export function cleanDetail() {
+export function cleanDetail(): Action {
   return { type: "CLEAN_DETAIL", payload: null };
 }
