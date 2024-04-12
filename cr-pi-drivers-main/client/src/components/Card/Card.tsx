@@ -3,26 +3,17 @@ import style from "./Card.module.css";
 import { useDispatch } from "react-redux";
 import { deleteDriver } from "../../redux/actions";
 import React from "react";
-
-type Driver = {
-  birthdate: string;
-  description: string;
-  id: number;
-  image: string;
-  name: string;
-  nationality: string;
-  surname: string;
-  teams: string;
-};
+import { DriverError, State } from "../../types/types";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
 
 interface CardProps {
-  driver: Driver;
+  driver: DriverError;
 }
 
 export default function Card({ driver }: CardProps) {
-  const dispatch = useDispatch();
+  const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
 
-  //Tener en cuenta si funciona deleteDriver, sino modificar en el action
   function handleClose(id: number): void {
     dispatch(deleteDriver(id));
   }

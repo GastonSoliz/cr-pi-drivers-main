@@ -1,20 +1,10 @@
 import Card from "../Card/Card";
 import style from "./CardList.module.css";
 import React from "react";
-
-type Driver = {
-  birthdate: string;
-  description: string;
-  id: number;
-  image: string;
-  name: string;
-  nationality: string;
-  surname: string;
-  teams: string;
-};
+import { DriverError } from "../../types/types";
 
 interface DriverList {
-  allDrivers: Driver[];
+  allDrivers: DriverError[];
 }
 
 export default function CardList({ allDrivers }: DriverList) {

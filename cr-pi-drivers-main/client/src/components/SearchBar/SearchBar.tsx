@@ -3,10 +3,13 @@ import { useDispatch } from "react-redux";
 import { getDriverByName } from "../../redux/actions.ts";
 import style from "./SearchBar.module.css";
 import React from "react";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
+import { State } from "../../types/types.ts";
 
 export default function SearchBar() {
   const [name, setName] = useState<string>("");
-  const dispatch = useDispatch();
+  const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
     event.preventDefault();
