@@ -1,29 +1,6 @@
+import { DriverError, Driver, Team } from "../types/types";
+
 const regexLetters: RegExp = /^[A-Za-zÀ-ÖØ-öø-ÿ]+$/;
-
-type DriverError = {
-  birthdate?: string;
-  description?: string;
-  image?: string;
-  name?: string;
-  nationality?: string;
-  surname?: string;
-  teams?: string;
-};
-
-type Team = {
-  id?: number;
-  name: string;
-};
-
-type Driver = {
-  birthdate: string;
-  description: string;
-  image: string;
-  name: string;
-  nationality: string;
-  surname: string;
-  teams: Team[];
-};
 
 export default function validateForm(inputs: Driver) {
   let errors: DriverError = {};
