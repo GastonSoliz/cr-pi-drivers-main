@@ -5,7 +5,7 @@ import { getTeams, postDriver } from "../../redux/actions.ts";
 import style from "./Form.module.css";
 import React from "react";
 
-type Team = { id: number; name: string };
+type Team = { id?: number; name: string };
 type someTeams = Team[];
 
 type Driver = {
@@ -15,7 +15,7 @@ type Driver = {
   name: string;
   nationality: string;
   surname: string;
-  teams: string[];
+  teams: Team[];
 };
 
 type DriverError = {
@@ -66,13 +66,13 @@ export default function Form() {
     const teamsName: string = event.target.value;
     const isChecked: boolean = event.target.checked;
 
-    let updateDriver: string[];
+    let updateDriver: Team[];
 
     if (driver && driver.teams) {
       if (isChecked) {
-        updateDriver = [...driver.teams, teamsName];
+        updateDriver = [...driver.teams, { name: teamsName }];
       } else {
-        updateDriver = driver.teams.filter((team) => team !== teamsName);
+        updateDriver = driver.teams.filter((team) => team.name !== teamsName);
       }
 
       setDriver({ ...driver, teams: updateDriver });
@@ -156,7 +156,7 @@ export default function Form() {
                   type="checkbox"
                   name="teams"
                   value={team.name}
-                  checked={driver.teams?.includes(team.name)}
+                  checked={driver.teams?.some((t) => t.name === team.name)}
                   onChange={handleTeamChange}
                 />
                 {team.name}

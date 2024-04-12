@@ -10,22 +10,23 @@ import { AnyAction } from "redux";
 import { Team, Driver, DriverError, State } from "../../types/types.ts";
 
 export default function Edit() {
-  const allTeams: someTeams = useSelector((state) => state.allTeams);
+  const allTeams: Team[] = useSelector((state) => state.allTeams);
   let driver: Driver = useSelector((state) => state.driverDetail);
   const [errors, setErrors] = useState<DriverError>({});
 
-  const initialSelectedTeams: string = driver?.teams
-    .map((team: Team) => team.name)
-    .join(", ");
+  console.log(driver);
+  // const initialSelectedTeams: string = driver?.teams
+  //   .map((team: Team) => team.name)
+  //   .join(", ");
   //ARREGLAR TIPOS ENTRE ESTOS DOS...
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Driver>({
     name: driver?.name,
     surname: driver?.surname,
     nationality: driver?.nationality,
     image: driver?.image,
     birthdate: driver?.birthdate,
     description: driver?.description,
-    teams: initialSelectedTeams,
+    teams: driver?.teams,
   });
 
   const { id } = useParams();
@@ -41,14 +42,16 @@ export default function Edit() {
   function handleTeamChange(event: React.ChangeEvent<HTMLInputElement>) {
     const teamName: string = event.target.value;
     const isChecked: boolean = event.target.checked;
+    console.log("value:", teamName);
 
-    let updatedTeams: string[];
+    let updatedTeams: Team[];
 
     if (isChecked) {
-      updatedTeams = [...formData.teams, teamName];
+      updatedTeams = [...formData.teams, { name: teamName }];
     } else {
-      updatedTeams = formData.teams.filter((team) => team !== teamName);
+      updatedTeams = formData.teams.filter((team) => team.name !== teamName);
     }
+    console.log("teams:", updatedTeams);
 
     setFormData({ ...formData, teams: updatedTeams });
     setErrors(validateForm({ ...formData, teams: updatedTeams }));
@@ -56,18 +59,9 @@ export default function Edit() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    //Manera de pasar id a number siempre
-    // if (typeof id === 'string' && id.trim() !== '') {
-    //   const driverId = parseInt(id, 10);
-    //   dispatch(updateDriver(driver, driverId));
-    // }
-
-    //EL PROBLEMA ACA ES LA MANERA EN QUE SE ENVIA FORMDATA Y QUE ID TIENE QUE SER NUMBER
-    //MAS QUE NADA LA MANERA EN QUE SE MANEJA TEAM COMO STRING O ARRAY
-    //ARREGLAR DESDE EL BACKEND YA
-    //SI LE MANDAS LA VARIABLE DRIVER FUNCIONA PORQUE DRIVER EN EL ACTION ESPERA UN TEAM:string
-    //ACA LE ESTAMOS MANDANDO UN team:string[] o team:Team[]
-    dispatch(updateDriver(formData, id));
+    if (typeof id === "string") {
+      dispatch(updateDriver(formData, id));
+    }
   }
 
   useEffect(() => {
@@ -83,7 +77,7 @@ export default function Edit() {
         image: driver.image,
         birthdate: driver.birthdate,
         description: driver.description,
-        teams: initialSelectedTeams || [],
+        teams: driver.teams,
       });
     } else dispatch(getDriverById(id));
   }, [driver, dispatch]);
@@ -160,7 +154,7 @@ export default function Edit() {
                   type="checkbox"
                   name="teams"
                   value={team.name}
-                  checked={formData.teams?.includes(team.name)}
+                  checked={formData.teams?.some((t) => t.name === team.name)}
                   onChange={handleTeamChange}
                 ></input>
                 {team.name}
