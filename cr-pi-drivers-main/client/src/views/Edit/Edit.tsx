@@ -5,42 +5,18 @@ import { useParams } from "react-router-dom";
 import validateForm from "../../utils/validateForm.ts";
 import style from "./Edit.module.css";
 import React from "react";
-
-type Team = {
-  id: number;
-  name: string;
-};
-
-type someTeams = Team[];
-
-type Driver = {
-  birthdate: string;
-  description: string;
-  image: string;
-  name: string;
-  nationality: string;
-  surname: string;
-  teams: someTeams;
-};
-
-type DriverError = {
-  birthdate?: string;
-  description?: string;
-  image?: string;
-  name?: string;
-  nationality?: string;
-  surname?: string;
-  teams?: string;
-};
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
+import { Team, Driver, DriverError, State } from "../../types/types.ts";
 
 export default function Edit() {
   const allTeams: someTeams = useSelector((state) => state.allTeams);
   let driver: Driver = useSelector((state) => state.driverDetail);
   const [errors, setErrors] = useState<DriverError>({});
 
-  const initialSelectedTeams: string[] = driver?.teams.map(
-    (team: Team) => team.name
-  );
+  const initialSelectedTeams: string = driver?.teams
+    .map((team: Team) => team.name)
+    .join(", ");
   //ARREGLAR TIPOS ENTRE ESTOS DOS...
   const [formData, setFormData] = useState({
     name: driver?.name,
@@ -53,7 +29,7 @@ export default function Edit() {
   });
 
   const { id } = useParams();
-  const dispatch = useDispatch();
+  const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
     setFormData({ ...formData, [event.target.name]: event.target.value });
@@ -80,6 +56,17 @@ export default function Edit() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    //Manera de pasar id a number siempre
+    // if (typeof id === 'string' && id.trim() !== '') {
+    //   const driverId = parseInt(id, 10);
+    //   dispatch(updateDriver(driver, driverId));
+    // }
+
+    //EL PROBLEMA ACA ES LA MANERA EN QUE SE ENVIA FORMDATA Y QUE ID TIENE QUE SER NUMBER
+    //MAS QUE NADA LA MANERA EN QUE SE MANEJA TEAM COMO STRING O ARRAY
+    //ARREGLAR DESDE EL BACKEND YA
+    //SI LE MANDAS LA VARIABLE DRIVER FUNCIONA PORQUE DRIVER EN EL ACTION ESPERA UN TEAM:string
+    //ACA LE ESTAMOS MANDANDO UN team:string[] o team:Team[]
     dispatch(updateDriver(formData, id));
   }
 
