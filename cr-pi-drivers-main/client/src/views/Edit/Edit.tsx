@@ -37,7 +37,6 @@ export default function Edit() {
   function handleTeamChange(event: React.ChangeEvent<HTMLInputElement>) {
     const teamName: string = event.target.value;
     const isChecked: boolean = event.target.checked;
-    console.log("value:", teamName);
 
     let updatedTeams: Team[];
 
@@ -46,7 +45,6 @@ export default function Edit() {
     } else {
       updatedTeams = formData.teams.filter((team) => team.name !== teamName);
     }
-    console.log("teams:", updatedTeams);
 
     setFormData({ ...formData, teams: updatedTeams });
     setErrors(validateForm({ ...formData, teams: updatedTeams }));
