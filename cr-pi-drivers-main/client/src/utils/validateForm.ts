@@ -17,7 +17,7 @@ type Driver = {
   name: string;
   nationality: string;
   surname: string;
-  teams: string[];
+  teams: string;
 };
 
 export default function validateForm(inputs: Driver) {
