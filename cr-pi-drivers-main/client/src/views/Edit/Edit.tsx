@@ -10,15 +10,10 @@ import { AnyAction } from "redux";
 import { Team, Driver, DriverError, State } from "../../types/types.ts";
 
 export default function Edit() {
-  const allTeams: Team[] = useSelector((state) => state.allTeams);
-  let driver: Driver = useSelector((state) => state.driverDetail);
+  const allTeams: Team[] = useSelector((state: State) => state.allTeams);
+  const driver: Driver = useSelector((state) => state.driverDetail);
   const [errors, setErrors] = useState<DriverError>({});
 
-  console.log(driver);
-  // const initialSelectedTeams: string = driver?.teams
-  //   .map((team: Team) => team.name)
-  //   .join(", ");
-  //ARREGLAR TIPOS ENTRE ESTOS DOS...
   const [formData, setFormData] = useState<Driver>({
     name: driver?.name,
     surname: driver?.surname,
@@ -66,6 +61,9 @@ export default function Edit() {
 
   useEffect(() => {
     dispatch(getTeams());
+    if (id) {
+      dispatch(getDriverById(id));
+    }
   }, [dispatch]);
 
   useEffect(() => {
@@ -79,8 +77,20 @@ export default function Edit() {
         description: driver.description,
         teams: driver.teams,
       });
-    } else dispatch(getDriverById(id));
+    }
   }, [driver, dispatch]);
+
+  useEffect(() => {
+    return setFormData({
+      name: "",
+      surname: "",
+      nationality: "",
+      image: "",
+      birthdate: "",
+      description: "",
+      teams: [],
+    });
+  }, []);
 
   return (
     <form className={style.formContainer} onSubmit={handleSubmit}>
