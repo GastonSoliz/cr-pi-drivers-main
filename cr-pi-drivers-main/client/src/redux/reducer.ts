@@ -1,31 +1,16 @@
-type Team = {
-  id: number;
-  name: string;
-};
-
-type Driver = {
-  id?: number;
-  birthdate: string;
-  description: string;
-  image: string;
-  name: string;
-  nationality: string;
-  surname: string;
-  //DECIDIR SI AL FINAL TEAM VIENE COMO STRING O ARRAY
-  teams: string;
-};
+import { Team, DriverError } from "../types/types";
 
 type Action =
   | { type: "GET_TEAMS"; payload: Team[] }
   //[{Driver}]
-  | { type: "GET_DRIVER_BY_NAME"; payload: Driver[] | Driver }
-  | { type: "GET_DRIVER_BY_ID"; payload: Driver }
-  | { type: "GET_DRIVERS"; payload: Driver[] }
+  | { type: "GET_DRIVER_BY_NAME"; payload: DriverError[] | DriverError }
+  | { type: "GET_DRIVER_BY_ID"; payload: DriverError }
+  | { type: "GET_DRIVERS"; payload: DriverError[] }
   //{newDriver:{Driver}} deberia ir todo de la misma manera... sino lo hace... ARREGLAR TODO EL PROYECTO
   //Si no, es quilombo de tipo de datos
-  | { type: "POST_DRIVER"; payload: Driver }
+  | { type: "POST_DRIVER"; payload: DriverError }
   | { type: "DELETE_DRIVER"; payload: number }
-  | { type: "UPDATE_DRIVER"; payload: Driver }
+  | { type: "UPDATE_DRIVER"; payload: DriverError }
   | { type: "SORT_ORIGIN"; payload: string }
   | { type: "SORT_DATE"; payload: string }
   //Falta implementar
@@ -34,9 +19,9 @@ type Action =
   | { type: "CLEAN_DETAIL"; payload: null };
 
 type State = {
-  allDrivers: Driver[];
-  filteredDrivers: Driver[] | Driver;
-  driverDetail: Driver | null;
+  allDrivers: DriverError[];
+  filteredDrivers: DriverError[] | DriverError;
+  driverDetail: DriverError | null;
   allTeams: Team[];
 };
 
@@ -57,7 +42,7 @@ export default function rootReducer(
 ): State {
   // let previousFilters;
   // let filteredDrivers;
-  let copyDrivers: Driver[];
+  let copyDrivers: DriverError[];
   switch (action.type) {
     case "GET_DRIVERS":
       return {
@@ -96,7 +81,7 @@ export default function rootReducer(
       return { ...state, allTeams: action.payload };
     case "SORT_ORIGIN":
       copyDrivers = [...state.allDrivers];
-      let filterOriginDriversRaw: Driver[];
+      let filterOriginDriversRaw: DriverError[];
       if (action.payload === "ID") {
         filterOriginDriversRaw = copyDrivers.filter((driver) =>
           regExID.test(driver.id?.toString() ?? "")
@@ -112,7 +97,7 @@ export default function rootReducer(
 
     case "SORT_DATE":
       copyDrivers = [...state.allDrivers];
-      let filterDateDriversRaw: Driver[] = [];
+      let filterDateDriversRaw: DriverError[] = [];
       if (action.payload === "ASCENDENTE") {
         filterDateDriversRaw = copyDrivers.sort((a, b) => {
           const dateA = new Date(a.birthdate).getTime();
@@ -131,7 +116,7 @@ export default function rootReducer(
       return { ...state, filteredDrivers: filterDateDriversRaw };
     case "SORT_TEAM":
       copyDrivers = [...state.allDrivers];
-      let filterTeamDriversRaw: Driver[] = [];
+      let filterTeamDriversRaw: DriverError[] = [];
       if (action.payload === "NONE") {
         filterTeamDriversRaw = copyDrivers;
       } else {
