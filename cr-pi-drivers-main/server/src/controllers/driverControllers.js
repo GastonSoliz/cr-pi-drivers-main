@@ -190,7 +190,7 @@ const updateDriverId = async (
           (currentTeam) => currentTeam.name === newTeam.name
         );
       });
-      console.log("teamsToAdd:", teamsToAdd);
+      //console.log("teamsToAdd:", teamsToAdd);
 
       const teamsToRemoveNames = currentTeams
         .filter(
@@ -198,7 +198,7 @@ const updateDriverId = async (
             !teams.some((newTeam) => newTeam.name === currentTeam.name)
         )
         .map((team) => team.name);
-      console.log("teamsOut", teamsToRemoveNames);
+      //console.log("teamsOut", teamsToRemoveNames);
 
       // if (teamsToAdd.length > 0) {
       //   const teamsToAddInstances = await Team.findAll({
