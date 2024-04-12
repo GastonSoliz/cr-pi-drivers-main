@@ -4,6 +4,7 @@ export type Team = {
 };
 
 export type Driver = {
+  id?: number;
   birthdate: string;
   description: string;
   image: string;
@@ -14,6 +15,7 @@ export type Driver = {
 };
 
 export type DriverError = {
+  id?: number;
   birthdate?: string;
   description?: string;
   image?: string;
