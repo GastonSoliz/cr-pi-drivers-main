@@ -1,22 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-
-type Team = {
-  id: number;
-  name: string;
-};
-
-type Driver = {
-  id?: number;
-  birthdate: string;
-  description: string;
-  image: string;
-  name: string;
-  nationality: string;
-  surname: string;
-  //DECIDIR SI AL FINAL TEAM VIENE COMO STRING O ARRAY
-  teams: string;
-};
+import { Team, Driver } from "../types/types";
 
 type State = {
   allDrivers: Driver[];
@@ -99,7 +83,7 @@ export function deleteDriver(id: number) {
 //QUE DEBERIA PONER EN EL GENERCO DEL AXIOS.PUT?
 export function updateDriver(
   driver: Driver,
-  id: number
+  id: string
 ): (dispatch: Dispatch<Action>) => Promise<void> {
   const endpoint: string = `${URL}drivers/${id}`;
   return async (dispatch: Dispatch<Action>) => {
