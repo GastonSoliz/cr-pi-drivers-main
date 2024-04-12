@@ -37,7 +37,7 @@ const createDriver = async (
   });
 
   for (let i = 0; i < teams.length; i++) {
-    const teamName = await Team.findOne({ where: { name: teams[i] } });
+    const teamName = await Team.findOne({ where: { name: teams[i].name } });
     await newDriver.addTeam(teamName);
   }
 
@@ -187,19 +187,36 @@ const updateDriverId = async (
       const currentTeams = await driverToUpdate.getTeams();
       const teamsToAdd = teams.filter((newTeam) => {
         return !currentTeams.some(
-          (currentTeam) => currentTeam.name === newTeam
+          (currentTeam) => currentTeam.name === newTeam.name
         );
       });
+      console.log("teamsToAdd:", teamsToAdd);
+
       const teamsToRemoveNames = currentTeams
-        .filter((currentTeam) => !teams.includes(currentTeam.name))
+        .filter(
+          (currentTeam) =>
+            !teams.some((newTeam) => newTeam.name === currentTeam.name)
+        )
         .map((team) => team.name);
+      console.log("teamsOut", teamsToRemoveNames);
+
+      // if (teamsToAdd.length > 0) {
+      //   const teamsToAddInstances = await Team.findAll({
+      //     where: {
+      //       name: teamsToAdd,
+      //     },
+      //   });
+      //   await driverToUpdate.addTeams(teamsToAddInstances);
+      // }
       if (teamsToAdd.length > 0) {
-        const teamsToAddInstances = await Team.findAll({
-          where: {
-            name: teamsToAdd,
-          },
+        teamsToAdd.map(async (team) => {
+          const teamsToAddInstances = await Team.findAll({
+            where: {
+              name: team.name,
+            },
+          });
+          await driverToUpdate.addTeams(teamsToAddInstances);
         });
-        await driverToUpdate.addTeams(teamsToAddInstances);
       }
 
       if (teamsToRemoveNames.length > 0) {
