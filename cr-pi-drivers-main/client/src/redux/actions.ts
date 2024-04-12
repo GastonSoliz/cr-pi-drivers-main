@@ -45,7 +45,7 @@ export function getDriverByName(name: string) {
   };
 }
 
-export function getDriverById(id: number) {
+export function getDriverById(id: number | string) {
   const endpoint: string = `${URL}drivers/${id}`;
   return async (dispatch: Dispatch) => {
     const { data } = await axios.get<Driver>(endpoint);
