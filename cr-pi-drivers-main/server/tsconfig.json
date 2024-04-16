@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ESNext", // Versión de ECMAScript a la que se compilará el código
+    "module": "CommonJS", // Sistema de módulos a utilizar (en Node.js se utiliza CommonJS)
+    "outDir": "./dist", // Directorio de salida para los archivos compilados
+    "strict": true, // Habilita todas las opciones estrictas de TypeScript
+    "esModuleInterop": true, // Habilita la interoperabilidad de módulos entre ESM y CommonJS
+    "skipLibCheck": true, // Omitir la comprobación de las declaraciones de tipo de las librerías externas
+    "forceConsistentCasingInFileNames": true // Forzar consistencia de mayúsculas y minúsculas en los nombres de los archivos
+  },
+  // "include": [
+  //   "src/**/*.ts" // Especifica los archivos a incluir en la compilación
+  // ],
+  "exclude": [
+    "node_modules" // Especifica los directorios a excluir de la compilación
+  ]
+}
