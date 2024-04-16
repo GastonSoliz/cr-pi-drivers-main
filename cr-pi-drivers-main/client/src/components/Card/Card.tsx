@@ -19,32 +19,29 @@ export default function Card({ driver }: CardProps) {
   }
 
   return (
-    <div className={style.cardContainer}>
-      <div className={style.imageContainer}>
-        {typeof driver.id !== "number" ? (
-          <button onClick={() => handleClose(driver.id)}>❌</button>
-        ) : (
-          ""
-        )}
-        <img src={driver.image} alt="Imagen corredor" />
-      </div>
-      <div className={style.noImageContainer}>
-        <div className={style.textContainer}>
-          <p>Nombre:</p>
-          <h2>{driver.name}</h2>
-          <p>Apellido:</p>
-          <h2>{driver.surname}</h2>
-        </div>
-        <div className={style.buttonContainer}>
-          <Link to={`/detail/${driver.id}`}>
-            <button>MAS INFO</button>
+    <div className="card" style={{ width: "18rem" }}>
+      {typeof driver.id !== "number" ? (
+        <button onClick={() => handleClose(driver.id)}>❌</button>
+      ) : (
+        ""
+      )}
+      <img
+        src={driver.image}
+        className="card-img-top"
+        alt="Imagen corredor"
+        style={{ objectFit: "cover", height: "300px" }}
+      />
+      <div className="card-body">
+        <h5 className="card-title">{driver.name}</h5>
+        <p className="card-text">{driver.surname}</p>
+        <div className="d-grid gap-2">
+          <Link to={`/detail/${driver.id}`} className="btn btn-primary">
+            MAS INFO
           </Link>
-          {typeof driver.id !== "number" ? (
-            <Link to={`/edit/${driver.id}`}>
-              <button>EDITAR</button>
+          {typeof driver.id !== "number" && (
+            <Link to={`/edit/${driver.id}`} className="btn btn-secondary">
+              EDITAR
             </Link>
-          ) : (
-            ""
           )}
         </div>
       </div>

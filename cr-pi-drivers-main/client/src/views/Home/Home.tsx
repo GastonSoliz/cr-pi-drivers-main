@@ -9,12 +9,15 @@ import {
 import CardList from "../../components/CardList/CardList";
 import { useEffect, useState } from "react";
 import Pagination from "../../components/Pagination/Pagination";
-import style from "./Home.module.css";
+//import style from "./Home.module.css";
 import React from "react";
 import { DriverError, State, Team } from "../../types/types.ts";
+import { ThunkDispatch } from "redux-thunk";
+import { AnyAction } from "redux";
+import SearchBar from "../../components/SearchBar/SearchBar.tsx";
 
 export default function Home() {
-  const dispatch = useDispatch();
+  const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
 
   const allDrivers: DriverError[] = useSelector(
     (state) => state.filteredDrivers
@@ -53,32 +56,43 @@ export default function Home() {
   }, [dispatch]);
 
   return (
-    <div>
-      <div className={style.selectsContainer}>
-        <select onChange={handleOrigin} defaultValue="ALL">
-          <option value="ALL">ALL</option>
-          <option value="ID">API</option>
-          <option value="BDD">BDD</option>
-        </select>
-        <select onChange={handleDate}>
-          <option value="NONE">AÑO</option>
-          <option value="ASCENDENTE">ASCENDENTE</option>
-          <option value="DESCENDENTE">DESCENDENTE</option>
-        </select>
-        <select onChange={handleTeams}>
-          <option value="NONE">EQUIPOS</option>
-          {allTeams?.map((team) => {
-            return (
+    <div className="container mt-4">
+      <div className="row mb-6">
+        <div className="col-md-1">
+          <select
+            className="form-select"
+            onChange={handleOrigin}
+            defaultValue="ALL"
+          >
+            <option value="ALL">ALL</option>
+            <option value="ID">API</option>
+            <option value="BDD">BDD</option>
+          </select>
+        </div>
+        <div className="col-md-2">
+          <select className="form-select" onChange={handleDate}>
+            <option value="NONE">AÑO</option>
+            <option value="ASCENDENTE">ASCENDENTE</option>
+            <option value="DESCENDENTE">DESCENDENTE</option>
+          </select>
+        </div>
+        <div className="col-md-4">
+          {" "}
+          {/* Aquí debería ser "col-md-4" en lugar de "col-md-6" para alinear correctamente con los otros select */}
+          <select className="form-select" onChange={handleTeams}>
+            <option value="NONE">EQUIPOS</option>
+            {allTeams?.map((team) => (
               <option value={team.name} key={team.id}>
                 {team.name}
               </option>
-            );
-          })}
-        </select>
+            ))}
+          </select>
+        </div>
+        <div className="col-md-4">
+          <SearchBar />
+        </div>
       </div>
-      <div className={style.cardListContainer}>
-        <CardList allDrivers={currentDrivers} />
-      </div>
+      <CardList allDrivers={currentDrivers} />
       <Pagination
         page={pageHandler}
         total={totalPages}

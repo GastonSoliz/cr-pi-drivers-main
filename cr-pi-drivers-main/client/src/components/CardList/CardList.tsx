@@ -9,9 +9,11 @@ interface DriverList {
 
 export default function CardList({ allDrivers }: DriverList) {
   return (
-    <div className={style.cardList}>
+    <div className="row row-cols-1 row-cols-md-3 g-4 mt-4">
       {allDrivers?.map((driver) => (
-        <Card key={driver.id} driver={driver} />
+        <div key={driver.id} className="cols">
+          <Card driver={driver} />
+        </div>
       ))}
     </div>
   );
