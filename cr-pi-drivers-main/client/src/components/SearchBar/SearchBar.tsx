@@ -21,13 +21,16 @@ export default function SearchBar() {
   }
 
   return (
-    <div className={style.searchBarContainer}>
+    <div className="input-group">
       <input
+        className="form-control"
         placeholder="Ingresar un nombre..."
         type="search"
         onChange={handleChange}
       />
-      <button onClick={onSearch}>BUSCAR</button>
+      <button onClick={onSearch} className="btn btn-light">
+        BUSCAR
+      </button>
     </div>
   );
 }
