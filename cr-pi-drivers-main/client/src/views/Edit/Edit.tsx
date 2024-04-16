@@ -91,88 +91,132 @@ export default function Edit() {
   }, []);
 
   return (
-    <form className={style.formContainer} onSubmit={handleSubmit}>
-      <div className={style.textContainer}>
-        <label>Nombre:</label>
-        <input
-          name="name"
-          placeholder="Ingrese un nombre..."
-          type="text"
-          onChange={handleChange}
-          value={formData.name}
-        />
-        <span>{errors.name}</span>
-        <br />
-        <label>Apellido:</label>
-        <input
-          name="surname"
-          placeholder="Ingrese un apellido..."
-          type="text"
-          onChange={handleChange}
-          value={formData.surname}
-        />
-        <span>{errors.surname}</span>
-        <br />
-        <label>Nacionalidad:</label>
-        <input
-          name="nationality"
-          placeholder="Ingrese la nacionalidad..."
-          type="text"
-          onChange={handleChange}
-          value={formData.nationality}
-        />
-        <span>{errors.nationality}</span>
-        <br />
-        <label>Imagen:</label>
-        <input name="image" type="file" onChange={handleChange} />
-        <input
-          name="image"
-          type="url"
-          value={formData.image}
-          onChange={handleChange}
-        />
-        <span>{errors.image}</span>
-        <br />
-        <label>Fecha de nacimiento:</label>
-        <input
-          name="birthdate"
-          type="date"
-          onChange={handleChange}
-          value={formData.birthdate}
-        />
-        <span>{errors.birthdate}</span>
-        <br />
-        <label>Descripcion</label>
-        <input
-          name="description"
-          type="text"
-          onChange={handleChange}
-          value={formData.description}
-        />
-        <span>{errors.description}</span>
-        <br />
+    <form className="container mt-4" onSubmit={handleSubmit}>
+      <div className="row">
+        <div className="col-md-6">
+          <label htmlFor="name" className="form-label">
+            Nombre:
+          </label>
+          <input
+            id="name"
+            name="name"
+            className="form-control"
+            placeholder="Ingrese un nombre..."
+            type="text"
+            onChange={handleChange}
+            value={formData.name}
+          />
+          <span className="text-danger">{errors.name}</span>
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="surname" className="form-label">
+            Apellido:
+          </label>
+          <input
+            id="surname"
+            name="surname"
+            className="form-control"
+            placeholder="Ingrese un apellido..."
+            type="text"
+            onChange={handleChange}
+            value={formData.surname}
+          />
+          <span className="text-danger">{errors.surname}</span>
+        </div>
       </div>
-      <div className={style.teamsContainer}>
-        <label>Escuderias:</label>
-        <div className={style.formSelect}>
+      <div className="row">
+        <div className="col-md-6">
+          <label htmlFor="nationality" className="form-label">
+            Nacionalidad:
+          </label>
+          <input
+            id="nationality"
+            name="nationality"
+            className="form-control"
+            placeholder="Ingrese la nacionalidad..."
+            type="text"
+            onChange={handleChange}
+            value={formData.nationality}
+          />
+          <span className="text-danger">{errors.nationality}</span>
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="image" className="form-label">
+            Imagen:
+          </label>
+          <input
+            id="image"
+            name="image"
+            className="form-control"
+            type="file"
+            onChange={handleChange}
+          />
+          <input
+            name="image"
+            className="form-control mt-2"
+            type="url"
+            value={formData.image}
+            onChange={handleChange}
+            placeholder="Ingrese una URL..."
+          />
+          <span className="text-danger">{errors.image}</span>
+        </div>
+      </div>
+      <div className="row">
+        <div className="col-md-6">
+          <label htmlFor="birthdate" className="form-label">
+            Fecha de nacimiento:
+          </label>
+          <input
+            id="birthdate"
+            name="birthdate"
+            className="form-control"
+            type="date"
+            onChange={handleChange}
+            value={formData.birthdate}
+          />
+          <span className="text-danger">{errors.birthdate}</span>
+        </div>
+        <div className="col-md-6">
+          <label htmlFor="description" className="form-label">
+            Descripcion:
+          </label>
+          <input
+            id="description"
+            name="description"
+            className="form-control"
+            type="text"
+            onChange={handleChange}
+            value={formData.description}
+            placeholder="Ingrese una breve descripcion..."
+          />
+          <span className="text-danger">{errors.description}</span>
+        </div>
+      </div>
+      <div className="mb-3 row mt-4">
+        <label className="col-sm-2 col-form-label">Escuderias:</label>
+        <div className="col-sm-10">
           {allTeams?.map((team) => (
-            <div key={team.id}>
-              <label>
-                <input
-                  type="checkbox"
-                  name="teams"
-                  value={team.name}
-                  checked={formData.teams?.some((t) => t.name === team.name)}
-                  onChange={handleTeamChange}
-                ></input>
-                {team.name}
-              </label>
+            <div key={team.id} className="form-check form-check-inline">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                name="teams"
+                value={team.name}
+                checked={formData.teams?.some((t) => t.name === team.name)}
+                onChange={handleTeamChange}
+              />
+              <label className="form-check-label">{team.name}</label>
             </div>
           ))}
         </div>
       </div>
-      <div className={style.buttonContainer}>
-        <button type="submit">SUBIR</button>
+      <div className="row">
+        <div className="col-md-6">
+          <button type="submit" className="btn btn-primary">
+            SUBIR
+          </button>
+        </div>
       </div>
     </form>
   );
