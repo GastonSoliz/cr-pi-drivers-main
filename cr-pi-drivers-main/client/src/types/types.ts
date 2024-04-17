@@ -30,7 +30,8 @@ export type State = {
   filteredDrivers: Driver[] | Driver;
   driverDetail: Driver | null;
   allTeams: Team[];
-  msj: string | null;
+  msjPost: string | null;
+  msjUpdate: string | null;
 };
 
 export type Action =
@@ -45,7 +46,9 @@ export type Action =
   | { type: "POST_DRIVER_SUCCESS"; payload: Driver }
   | { type: "POST_DRIVER_FAILURE"; payload: string }
   | { type: "DELETE_DRIVER"; payload: number }
-  | { type: "UPDATE_DRIVER"; payload: Driver }
+  | { type: "UPDATE_DRIVER_REQUEST"; payload: string }
+  | { type: "UPDATE_DRIVER_SUCCESS"; payload: Driver }
+  | { type: "UPDATE_DRIVER_FAILURE"; payload: string }
   | { type: "SORT_ORIGIN"; payload: string }
   | { type: "SORT_DATE"; payload: string }
   //Falta implementar
