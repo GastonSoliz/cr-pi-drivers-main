@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import validateForm from "../../utils/validateForm.ts";
 import { useDispatch, useSelector } from "react-redux";
 import { getTeams, postDriver } from "../../redux/actions.ts";
-import style from "./Form.module.css";
+//import style from "./Form.module.css";
 import React from "react";
 import { Team, Driver, DriverError, State } from "../../types/types.ts";
 import { ThunkDispatch } from "redux-thunk";
@@ -11,6 +11,7 @@ import { AnyAction } from "redux";
 export default function Form() {
   const allTeams: Team[] = useSelector((state: State) => state.allTeams);
   const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
+  const msj: string | null = useSelector((state: State) => state.msjPost);
 
   const [driver, setDriver] = useState<Driver>({
     name: "",
@@ -195,11 +196,30 @@ export default function Form() {
         <div className="col-sm-10 offset-sm-2">
           <button
             type="submit"
-            className="btn btn-primary"
+            className="btn btn-primary me-2"
             disabled={handleDisabled()}
           >
             SUBIR
           </button>
+
+          {msj === "Solicitud en proceso" && (
+            <img
+              src="../../../public/loading.gif"
+              className="img-fluid"
+              alt="Cargando..."
+              style={{ maxWidth: "200px", maxHeight: "200px" }}
+            />
+          )}
+          {msj === "Solicitud exitosa" && (
+            <span className="text-success">
+              El conductor ha sido creado correctamente
+            </span>
+          )}
+          {msj === "Solicitud fallida" && (
+            <span className="text-danger">
+              Hubo un error al crear un conductor
+            </span>
+          )}
         </div>
       </div>
     </form>
