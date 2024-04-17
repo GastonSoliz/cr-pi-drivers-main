@@ -1,6 +1,8 @@
+import { Sequelize } from "sequelize";
+
 const { DataTypes, UUIDV4 } = require("sequelize");
 
-module.exports = (sequelize) => {
+module.exports = (sequelize: Sequelize) => {
   sequelize.define(
     "Team",
     {
@@ -12,6 +14,6 @@ module.exports = (sequelize) => {
       },
       name: { type: DataTypes.STRING, allowNull: false },
     },
-    { timestamp: false, createdAt: false, updatedAt: false }
+    { timestamps: false, createdAt: false, updatedAt: false }
   );
 };

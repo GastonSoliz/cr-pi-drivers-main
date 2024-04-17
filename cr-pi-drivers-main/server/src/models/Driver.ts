@@ -1,5 +1,6 @@
-const { DataTypes, UUIDV4 } = require("sequelize");
-module.exports = (sequelize) => {
+//const { DataTypes, UUIDV4 } = require("sequelize");
+import { DataTypes, Sequelize, UUIDV4 } from "sequelize";
+module.exports = (sequelize: Sequelize) => {
   sequelize.define(
     "Driver",
     {
@@ -21,7 +22,7 @@ module.exports = (sequelize) => {
       birthdate: { type: DataTypes.STRING, allowNull: false },
     },
     {
-      timestamp: false,
+      timestamps: false,
       createdAt: false,
       updatedAt: false,
     }
