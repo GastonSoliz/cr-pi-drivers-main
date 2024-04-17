@@ -1,4 +1,4 @@
-const { Router } = require("express");
+import { Router, Request, Response, NextFunction } from "express";
 import {
   getDriverById,
   getDrivers,
@@ -6,11 +6,11 @@ import {
   deleteDriver,
   updateDriver,
 } from "../handlers/driversHandlers";
-const getTeams = require("../handlers/teamsHandlers");
+import getTeams from "../handlers/teamsHandlers";
 
 const router = Router();
 
-const validateDriver = (req, res, next) => {
+const validateDriver = (req: Request, res: Response, next: NextFunction) => {
   const { name, surname, description, image, nationality, birthdate, teams } =
     req.body;
   if (!name) return res.status(400).json({ error: "FALTA EL NOMBRE" });
@@ -34,4 +34,4 @@ router.get("/teams", getTeams);
 router.delete("/drivers/:idDriver", deleteDriver);
 router.put("/drivers/:idDriver", validateDriver, updateDriver);
 
-module.exports = router;
+export default router;
