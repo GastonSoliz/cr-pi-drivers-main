@@ -1,35 +1,11 @@
-import { Team, DriverError } from "../types/types";
-
-type Action =
-  | { type: "GET_TEAMS"; payload: Team[] }
-  //[{Driver}]
-  | { type: "GET_DRIVER_BY_NAME"; payload: DriverError[] | DriverError }
-  | { type: "GET_DRIVER_BY_ID"; payload: DriverError }
-  | { type: "GET_DRIVERS"; payload: DriverError[] }
-  //{newDriver:{Driver}} deberia ir todo de la misma manera... sino lo hace... ARREGLAR TODO EL PROYECTO
-  //Si no, es quilombo de tipo de datos
-  | { type: "POST_DRIVER"; payload: DriverError }
-  | { type: "DELETE_DRIVER"; payload: number }
-  | { type: "UPDATE_DRIVER"; payload: DriverError }
-  | { type: "SORT_ORIGIN"; payload: string }
-  | { type: "SORT_DATE"; payload: string }
-  //Falta implementar
-  | { type: "SORT_NAME"; payload: string }
-  | { type: "SORT_TEAM"; payload: string }
-  | { type: "CLEAN_DETAIL"; payload: null };
-
-type State = {
-  allDrivers: DriverError[];
-  filteredDrivers: DriverError[] | DriverError;
-  driverDetail: DriverError | null;
-  allTeams: Team[];
-};
+import { Team, DriverError, State, Action } from "../types/types";
 
 const initialState: State = {
   allDrivers: [],
   filteredDrivers: [],
   driverDetail: null,
   allTeams: [],
+  msj: null,
 };
 
 const regExUUID: RegExp =
@@ -54,10 +30,21 @@ export default function rootReducer(
       return { ...state, driverDetail: action.payload };
     case "GET_DRIVER_BY_NAME":
       return { ...state, filteredDrivers: action.payload };
-    case "POST_DRIVER":
+    case "POST_DRIVER_REQUEST":
+      return {
+        ...state,
+        msj: action.payload,
+      };
+    case "POST_DRIVER_SUCCESS":
       return {
         ...state,
         allDrivers: [...state.allDrivers, action.payload],
+        msj: "Solicitud exitosa",
+      };
+    case "POST_DRIVER_FAILURE":
+      return {
+        ...state,
+        msj: action.payload,
       };
     case "DELETE_DRIVER":
       return {
@@ -100,14 +87,14 @@ export default function rootReducer(
       let filterDateDriversRaw: DriverError[] = [];
       if (action.payload === "ASCENDENTE") {
         filterDateDriversRaw = copyDrivers.sort((a, b) => {
-          const dateA = new Date(a.birthdate).getTime();
-          const dateB = new Date(b.birthdate).getTime();
+          const dateA = new Date(a.birthdate ?? "").getTime();
+          const dateB = new Date(b.birthdate ?? "").getTime();
           return dateA - dateB;
         });
       } else if (action.payload === "DESCENDENTE") {
         filterDateDriversRaw = copyDrivers.sort((a, b) => {
-          const dateA = new Date(a.birthdate).getTime();
-          const dateB = new Date(b.birthdate).getTime();
+          const dateA = new Date(a.birthdate ?? "").getTime();
+          const dateB = new Date(b.birthdate ?? "").getTime();
           return dateB - dateA;
         });
       } else if (action.payload === "NONE") {
