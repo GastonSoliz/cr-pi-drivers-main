@@ -1,10 +1,11 @@
-const axios = require("axios");
+import axios from "axios";
+import { DriverNative, Drivers, Teams } from "../types/types";
 const { Driver, Team } = require("../db");
-const URL = "http://localhost:5000/drivers/";
-const default_image =
+const URL: string = "http://localhost:5000/drivers/";
+const default_image: string =
   "https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg";
 
-const cleanArray = (arr) =>
+export const cleanArray = (arr: DriverNative[]) =>
   arr.map((elem) => {
     return {
       id: elem.id,
@@ -18,14 +19,14 @@ const cleanArray = (arr) =>
     };
   });
 
-const createDriver = async (
-  name,
-  surname,
-  description,
-  image,
-  nationality,
-  birthdate,
-  teams
+export const createDriver = async (
+  name: string,
+  surname: string,
+  description: string,
+  image: string,
+  nationality: string,
+  birthdate: string,
+  teams: Teams[]
 ) => {
   const newDriver = await Driver.create({
     name,
@@ -44,7 +45,9 @@ const createDriver = async (
   return { newDriver };
 };
 
-const getDriverId = async (id, source) => {
+export const getDriverId = async (id: number | string, source: string) => {
+  console.log("source:", source);
+  console.log("id:", id);
   const driver =
     source === "api"
       ? (await axios.get(URL + id)).data
@@ -58,11 +61,12 @@ const getDriverId = async (id, source) => {
             },
           },
         });
-
+  console.log("0", driver);
   if (source === "api") {
+    console.log("1", driver);
     const teamObjects = driver.teams
       .split(",")
-      .map((teamName) => ({ name: teamName }));
+      .map((teamName: string) => ({ name: teamName }));
     return {
       id: driver.id,
       name: driver.name.forename,
@@ -74,11 +78,12 @@ const getDriverId = async (id, source) => {
       teams: teamObjects,
     };
   } else {
+    console.log("2", driver);
     return driver;
   }
 };
 
-const getAllDrivers = async () => {
+export const getAllDrivers = async () => {
   const dbDriversRaw = await Driver.findAll({
     include: {
       model: Team,
@@ -90,7 +95,7 @@ const getAllDrivers = async () => {
     },
   });
 
-  const dbDrivers = dbDriversRaw.map((driver) => {
+  const dbDrivers = dbDriversRaw.map((driver: Drivers) => {
     const teamsString = driver.teams.map((team) => team.name).join(", ");
     return {
       id: driver.id,
@@ -111,7 +116,7 @@ const getAllDrivers = async () => {
   return [...dbDrivers, ...apiDrivers];
 };
 
-const searchDriversByName = async (name) => {
+export const searchDriversByName = async (name: string) => {
   let dbDrivers = await Driver.findAll({ where: { name: name } });
   let apiDriversRaw = (await axios.get(URL)).data;
   let apiDrivers = cleanArray(apiDriversRaw);
@@ -137,7 +142,7 @@ const searchDriversByName = async (name) => {
   }
 };
 
-const deleteDriverId = async (id) => {
+export const deleteDriverId = async (id: number) => {
   const dbDriver = await Driver.findByPk(id);
   if (dbDriver) {
     Driver.destroy({ where: { id: id } });
@@ -145,19 +150,27 @@ const deleteDriverId = async (id) => {
   } else throw new Error("NO SE ENCONTRO EL DRIVER CON ESE ID");
 };
 
-const updateDriverId = async (
-  idDriver,
-  name,
-  surname,
-  description,
-  image,
-  nationality,
-  birthdate,
-  teams
+export const updateDriverId = async (
+  idDriver: number | string,
+  name: string,
+  surname: string,
+  description: string,
+  image: string,
+  nationality: string,
+  birthdate: string,
+  teams: Teams[]
 ) => {
   const driverToUpdate = await Driver.findByPk(idDriver);
 
-  const updateData = {};
+  const updateData: Drivers = {
+    name: "",
+    surname: "",
+    description: "",
+    image: "",
+    nationality: "",
+    birthdate: "",
+    teams: [],
+  };
 
   if (name) {
     updateData.name = name;
@@ -169,13 +182,13 @@ const updateDriverId = async (
     updateData.image = image;
   }
   if (birthdate) {
-    updateData.dob = birthdate;
+    updateData.birthdate = birthdate;
   }
   if (nationality) {
     updateData.nationality = nationality;
   }
   if (image) {
-    updateData.url = image;
+    updateData.image = image;
   }
   if (description) {
     updateData.description = description;
@@ -187,17 +200,17 @@ const updateDriverId = async (
       const currentTeams = await driverToUpdate.getTeams();
       const teamsToAdd = teams.filter((newTeam) => {
         return !currentTeams.some(
-          (currentTeam) => currentTeam.name === newTeam.name
+          (currentTeam: Teams) => currentTeam.name === newTeam.name
         );
       });
       //console.log("teamsToAdd:", teamsToAdd);
 
       const teamsToRemoveNames = currentTeams
         .filter(
-          (currentTeam) =>
+          (currentTeam: Teams) =>
             !teams.some((newTeam) => newTeam.name === currentTeam.name)
         )
-        .map((team) => team.name);
+        .map((team: Teams) => team.name);
       //console.log("teamsOut", teamsToRemoveNames);
 
       // if (teamsToAdd.length > 0) {
@@ -232,11 +245,11 @@ const updateDriverId = async (
   } else throw new Error("NO SE ENCONTRO EL DRIVER CON ESE ID");
 };
 
-module.exports = {
-  createDriver,
-  getDriverId,
-  getAllDrivers,
-  searchDriversByName,
-  deleteDriverId,
-  updateDriverId,
-};
+// module.exports = {
+//   createDriver,
+//   getDriverId,
+//   getAllDrivers,
+//   searchDriversByName,
+//   deleteDriverId,
+//   updateDriverId,
+// };

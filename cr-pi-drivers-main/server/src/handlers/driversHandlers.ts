@@ -1,13 +1,14 @@
-const {
+import {
   createDriver,
   getDriverId,
   searchDriversByName,
   getAllDrivers,
   deleteDriverId,
   updateDriverId,
-} = require("../controllers/driverControllers");
+} from "../controllers/driverControllers";
+import { Request, Response } from "express";
 
-const getDrivers = async (req, res) => {
+export const getDrivers = async (req: Request, res: Response) => {
   try {
     let { name } = req.query;
     const drivers = name
@@ -15,22 +16,24 @@ const getDrivers = async (req, res) => {
       : await getAllDrivers();
     res.status(200).json(drivers);
   } catch (error) {
-    res.status(400).json({ error: error.message });
+    res.status(400).json({ error: (error as Error).message });
   }
 };
 
-const getDriverById = async (req, res) => {
+export const getDriverById = async (req: Request, res: Response) => {
   const { idDriver } = req.params;
-  const source = isNaN(idDriver) ? "bdd" : "api";
+  console.log(idDriver);
+
+  const source = isNaN(parseInt(idDriver)) ? "bdd" : "api";
   try {
     const driver = await getDriverId(idDriver, source);
     res.status(200).json(driver);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-const postDrivers = async (req, res) => {
+export const postDrivers = async (req: Request, res: Response) => {
   const { name, surname, description, image, nationality, birthdate, teams } =
     req.body;
   try {
@@ -45,21 +48,21 @@ const postDrivers = async (req, res) => {
     );
     res.status(201).json(newDriver);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-const deleteDriver = async (req, res) => {
+export const deleteDriver = async (req: Request, res: Response) => {
   const { idDriver } = req.params;
   try {
-    const driver = await deleteDriverId(idDriver);
+    const driver = await deleteDriverId(parseInt(idDriver));
     res.status(200).json(driver);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-const updateDriver = async (req, res) => {
+export const updateDriver = async (req: Request, res: Response) => {
   const { idDriver } = req.params;
   const { name, surname, description, image, nationality, birthdate, teams } =
     req.body;
@@ -76,14 +79,14 @@ const updateDriver = async (req, res) => {
     );
     res.status(200).json(newDriver);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    res.status(500).json({ error: (error as Error).message });
   }
 };
 
-module.exports = {
-  getDrivers,
-  getDriverById,
-  postDrivers,
-  deleteDriver,
-  updateDriver,
-};
+// module.exports = {
+//   getDrivers,
+//   getDriverById,
+//   postDrivers,
+//   deleteDriver,
+//   updateDriver,
+// };
