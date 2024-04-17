@@ -5,7 +5,8 @@ const initialState: State = {
   filteredDrivers: [],
   driverDetail: null,
   allTeams: [],
-  msj: null,
+  msjPost: null,
+  msjUpdate: null,
 };
 
 const regExUUID: RegExp =
@@ -33,18 +34,18 @@ export default function rootReducer(
     case "POST_DRIVER_REQUEST":
       return {
         ...state,
-        msj: action.payload,
+        msjPost: action.payload,
       };
     case "POST_DRIVER_SUCCESS":
       return {
         ...state,
         allDrivers: [...state.allDrivers, action.payload],
-        msj: "Solicitud exitosa",
+        msjPost: "Solicitud exitosa",
       };
     case "POST_DRIVER_FAILURE":
       return {
         ...state,
-        msj: action.payload,
+        msjPost: action.payload,
       };
     case "DELETE_DRIVER":
       return {
@@ -53,7 +54,12 @@ export default function rootReducer(
           ...state.allDrivers.filter((driver) => driver.id === action.payload),
         ],
       };
-    case "UPDATE_DRIVER":
+    case "UPDATE_DRIVER_REQUEST":
+      return {
+        ...state,
+        msjUpdate: action.payload,
+      };
+    case "UPDATE_DRIVER_SUCCESS":
       return {
         ...state,
         allDrivers: [
@@ -61,6 +67,12 @@ export default function rootReducer(
             driver.id === action.payload.id ? action.payload : driver
           ),
         ],
+        msjUpdate: "Solicitud exitosa",
+      };
+    case "UPDATE_DRIVER_FAILURE":
+      return {
+        ...state,
+        msjUpdate: action.payload,
       };
     case "CLEAN_DETAIL":
       return { ...state, driverDetail: action.payload };
