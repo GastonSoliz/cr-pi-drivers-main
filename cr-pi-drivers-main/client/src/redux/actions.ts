@@ -83,8 +83,16 @@ export function updateDriver(
 ): (dispatch: Dispatch<Action>) => Promise<void> {
   const endpoint: string = `${URL}drivers/${id}`;
   return async (dispatch: Dispatch<Action>) => {
-    const { data } = await axios.put(endpoint, driver);
-    dispatch({ type: "UPDATE_DRIVER", payload: data });
+    dispatch({
+      type: "UPDATE_DRIVER_REQUEST",
+      payload: "Solicitud en proceso",
+    });
+    try {
+      const { data } = await axios.put(endpoint, driver);
+      dispatch({ type: "UPDATE_DRIVER_SUCCESS", payload: data });
+    } catch (error) {
+      dispatch({ type: "UPDATE_DRIVER_FAILURE", payload: "Solicitud fallida" });
+    }
   };
 }
 
