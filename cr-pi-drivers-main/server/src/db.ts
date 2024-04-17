@@ -8,7 +8,7 @@ import { Sequelize } from "sequelize";
 import fs from "fs";
 import path from "path";
 
-const sequelize = new Sequelize(
+export const sequelize = new Sequelize(
   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/drivers`,
   {
     logging: false,
@@ -22,7 +22,7 @@ const modelDefiners: any[] = [];
 fs.readdirSync(path.join(__dirname, "/models"))
   .filter(
     (file) =>
-      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".js"
+      file.indexOf(".") !== 0 && file !== basename && file.slice(-3) === ".ts"
   )
   .forEach((file) => {
     modelDefiners.push(require(path.join(__dirname, "/models", file)));
@@ -36,9 +36,9 @@ let capsEntries = entries.map((entry) => [
   entry[1],
 ]);
 
-sequelize.models = Object.fromEntries(capsEntries);
+//sequelize.models = Object.fromEntries(capsEntries);
 
-const { Driver, Team } = sequelize.models;
+export const { Driver, Team } = sequelize.models;
 
 Driver.belongsToMany(Team, {
   through: "driver_team",
@@ -54,4 +54,4 @@ Team.belongsToMany(Driver, {
 //   conn: sequelize, // para importart la conexión { conn } = require('./db.js');
 // };
 
-export default { ...sequelize.models, conn: sequelize };
+export const conn = sequelize;
