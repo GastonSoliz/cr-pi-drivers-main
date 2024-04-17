@@ -12,6 +12,8 @@ import { Team, Driver, DriverError, State } from "../../types/types.ts";
 export default function Edit() {
   const allTeams: Team[] = useSelector((state: State) => state.allTeams);
   const driver: Driver = useSelector((state) => state.driverDetail);
+  const msj: string | null = useSelector((state: State) => state.msjUpdate);
+
   const [errors, setErrors] = useState<DriverError>({});
 
   const [formData, setFormData] = useState<Driver>({
@@ -216,6 +218,24 @@ export default function Edit() {
           <button type="submit" className="btn btn-primary">
             SUBIR
           </button>
+          {msj === "Solicitud en proceso" && (
+            <img
+              src="../../../public/loading.gif"
+              className="img-fluid"
+              alt="Cargando..."
+              style={{ maxWidth: "200px", maxHeight: "200px" }}
+            />
+          )}
+          {msj === "Solicitud exitosa" && (
+            <span className="text-success">
+              El conductor ha sido editado correctamente
+            </span>
+          )}
+          {msj === "Solicitud fallida" && (
+            <span className="text-danger">
+              Hubo un error al editar al conductor
+            </span>
+          )}
         </div>
       </div>
     </form>
