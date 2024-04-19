@@ -4,7 +4,7 @@ export type Team = {
 };
 
 export type Driver = {
-  id?: number;
+  id?: number | string;
   birthdate: string;
   description: string;
   image: string;
@@ -15,7 +15,7 @@ export type Driver = {
 };
 
 export type DriverError = {
-  id?: number;
+  id?: number | string;
   birthdate?: string;
   description?: string;
   image?: string;
@@ -45,7 +45,7 @@ export type Action =
   | { type: "POST_DRIVER_REQUEST"; payload: string }
   | { type: "POST_DRIVER_SUCCESS"; payload: Driver }
   | { type: "POST_DRIVER_FAILURE"; payload: string }
-  | { type: "DELETE_DRIVER"; payload: number }
+  | { type: "DELETE_DRIVER"; payload: string }
   | { type: "UPDATE_DRIVER_REQUEST"; payload: string }
   | { type: "UPDATE_DRIVER_SUCCESS"; payload: Driver }
   | { type: "UPDATE_DRIVER_FAILURE"; payload: string }
