@@ -46,8 +46,7 @@ export const createDriver = async (
 };
 
 export const getDriverId = async (id: number | string, source: string) => {
-  console.log("source:", source);
-  console.log("id:", id);
+  console.log("controller", id);
   const driver =
     source === "api"
       ? (await axios.get(URL + id)).data
@@ -61,9 +60,8 @@ export const getDriverId = async (id: number | string, source: string) => {
             },
           },
         });
-  console.log("0", driver);
+
   if (source === "api") {
-    console.log("1", driver);
     const teamObjects = driver.teams
       .split(",")
       .map((teamName: string) => ({ name: teamName }));
@@ -78,7 +76,6 @@ export const getDriverId = async (id: number | string, source: string) => {
       teams: teamObjects,
     };
   } else {
-    console.log("2", driver);
     return driver;
   }
 };
@@ -142,7 +139,7 @@ export const searchDriversByName = async (name: string) => {
   }
 };
 
-export const deleteDriverId = async (id: number) => {
+export const deleteDriverId = async (id: string) => {
   const dbDriver = await Driver.findByPk(id);
   if (dbDriver) {
     Driver.destroy({ where: { id: id } });

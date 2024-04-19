@@ -22,7 +22,7 @@ export const getDrivers = async (req: Request, res: Response) => {
 
 export const getDriverById = async (req: Request, res: Response) => {
   const { idDriver } = req.params;
-  console.log(idDriver);
+  console.log("ACA", idDriver);
 
   const source = isNaN(parseInt(idDriver)) ? "bdd" : "api";
   try {
@@ -55,7 +55,7 @@ export const postDrivers = async (req: Request, res: Response) => {
 export const deleteDriver = async (req: Request, res: Response) => {
   const { idDriver } = req.params;
   try {
-    const driver = await deleteDriverId(parseInt(idDriver));
+    const driver = await deleteDriverId(idDriver);
     res.status(200).json(driver);
   } catch (error) {
     res.status(500).json({ error: (error as Error).message });
