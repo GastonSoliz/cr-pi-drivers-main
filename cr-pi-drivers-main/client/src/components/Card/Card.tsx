@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import style from "./Card.module.css";
+//import style from "./Card.module.css";
 import { useDispatch } from "react-redux";
 import { deleteDriver } from "../../redux/actions";
 import React from "react";
@@ -14,23 +14,30 @@ interface CardProps {
 export default function Card({ driver }: CardProps) {
   const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
 
-  function handleClose(id: number): void {
+  function handleClose(id: string): void {
     dispatch(deleteDriver(id));
   }
 
   return (
     <div className="card" style={{ width: "18rem" }}>
-      {typeof driver.id !== "number" ? (
-        <button onClick={() => handleClose(driver.id)}>❌</button>
-      ) : (
-        ""
-      )}
-      <img
-        src={driver.image}
-        className="card-img-top"
-        alt="Imagen corredor"
-        style={{ objectFit: "cover", height: "300px" }}
-      />
+      <div className={`position-relative`} style={{ height: "300px" }}>
+        {typeof driver.id !== "number" ? (
+          <button
+            className={`position-absolute top-0 start-0`}
+            onClick={() => handleClose(driver.id as string)}
+          >
+            ❌
+          </button>
+        ) : (
+          ""
+        )}
+        <img
+          src={driver.image}
+          className="card-img-top"
+          alt="Imagen corredor"
+          style={{ objectFit: "cover", height: "100%", width: "100%" }}
+        />
+      </div>
       <div className="card-body">
         <h5 className="card-title">{driver.name}</h5>
         <p className="card-text">{driver.surname}</p>

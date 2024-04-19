@@ -1,5 +1,5 @@
 import Card from "../Card/Card";
-import style from "./CardList.module.css";
+//import style from "./CardList.module.css";
 import React from "react";
 import { DriverError } from "../../types/types";
 
