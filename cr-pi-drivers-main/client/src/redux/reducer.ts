@@ -50,8 +50,10 @@ export default function rootReducer(
     case "DELETE_DRIVER":
       return {
         ...state,
-        allDrivers: [
-          ...state.allDrivers.filter((driver) => driver.id === action.payload),
+        filteredDrivers: [
+          ...state.filteredDrivers.filter(
+            (driver) => driver.id !== action.payload
+          ),
         ],
       };
     case "UPDATE_DRIVER_REQUEST":

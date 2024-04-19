@@ -69,7 +69,7 @@ export function postDriver(driver: Driver) {
   };
 }
 
-export function deleteDriver(id: number) {
+export function deleteDriver(id: string) {
   const endpoint: string = `${URL}drivers/${id}`;
   return async (dispatch: Dispatch<Action>) => {
     await axios.delete(endpoint);
