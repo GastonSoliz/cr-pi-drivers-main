@@ -42,7 +42,7 @@ export const createDriver = async (
     await newDriver.addTeam(teamName);
   }
 
-  return { newDriver };
+  return newDriver;
 };
 
 export const getDriverId = async (id: number | string, source: string) => {
