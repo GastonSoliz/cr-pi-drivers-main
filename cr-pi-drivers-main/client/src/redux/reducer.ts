@@ -7,6 +7,7 @@ const initialState: State = {
   allTeams: [],
   msjPost: null,
   msjUpdate: null,
+  captchaRequest: false,
 };
 
 const regExUUID: RegExp =
@@ -139,6 +140,10 @@ export default function rootReducer(
         });
       }
       return { ...state, filteredDrivers: filterTeamDriversRaw };
+    case "VALIDATE_CAPTCHA":
+      if (action.payload.success) {
+        return { ...state, captchaRequest: true };
+      } else return { ...state, captchaRequest: false };
     default:
       return { ...state };
   }
