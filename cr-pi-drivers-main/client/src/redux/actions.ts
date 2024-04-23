@@ -115,3 +115,13 @@ export function sortTeam(team: string): Action {
 export function cleanDetail(): Action {
   return { type: "CLEAN_DETAIL", payload: null };
 }
+
+export function validateCaptcha(token) {
+  const endpoint: string = `${URL}captcha`;
+  console.log("lo que llega al action:", token);
+  return async (dispatch: Dispatch) => {
+    const { data } = await axios.post(endpoint, token);
+    console.log("devuelve el back: ", data);
+    dispatch({ type: "VALIDATE_CAPTCHA", payload: data });
+  };
+}
