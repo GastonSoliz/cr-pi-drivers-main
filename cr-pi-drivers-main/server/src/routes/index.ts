@@ -7,6 +7,7 @@ import {
   updateDriver,
 } from "../handlers/driversHandlers";
 import getTeams from "../handlers/teamsHandlers";
+import { validateCaptchaHandler } from "../handlers/captchaHandlers";
 
 const router = Router();
 
@@ -33,5 +34,6 @@ router.post("/drivers", validateDriver, postDrivers);
 router.get("/teams", getTeams);
 router.delete("/drivers/:idDriver", deleteDriver);
 router.put("/drivers/:idDriver", validateDriver, updateDriver);
+router.post("/captcha", validateCaptchaHandler);
 
 export default router;
