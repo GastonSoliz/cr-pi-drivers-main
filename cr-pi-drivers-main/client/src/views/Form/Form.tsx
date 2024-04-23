@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import validateForm from "../../utils/validateForm.ts";
 import { useDispatch, useSelector } from "react-redux";
-import { getTeams, postDriver } from "../../redux/actions.ts";
+import { getTeams, postDriver, validateCaptcha } from "../../redux/actions.ts";
 //import style from "./Form.module.css";
 import React from "react";
 import { Team, Driver, DriverError, State } from "../../types/types.ts";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Form() {
   const allTeams: Team[] = useSelector((state: State) => state.allTeams);
   const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
   const msj: string | null = useSelector((state: State) => state.msjPost);
+  const msjCaptcha = useSelector((state) => state.captchaRequest);
+  console.log("el captcha pa ca: ", msjCaptcha);
 
   const [driver, setDriver] = useState<Driver>({
     name: "",
@@ -106,6 +109,12 @@ export default function Form() {
     event.preventDefault();
 
     dispatch(postDriver(driver));
+  }
+
+  function handleCaptcha(value) {
+    console.log("en el form: ", value);
+    const token = { token: value };
+    dispatch(validateCaptcha(token));
   }
 
   useEffect(() => {
@@ -258,6 +267,10 @@ export default function Form() {
           >
             SUBIR
           </button>
+          <ReCAPTCHA
+            sitekey="6Le368MpAAAAAFK8yYYtnzY30wUnZzmLdkNIDEWo"
+            onChange={handleCaptcha}
+          ></ReCAPTCHA>
 
           {msj === "Solicitud en proceso" && (
             <img
