@@ -23,8 +23,9 @@ export const getDrivers = async (req: Request, res: Response) => {
 export const getDriverById = async (req: Request, res: Response) => {
   const { idDriver } = req.params;
   console.log("ACA", idDriver);
-
-  const source = isNaN(parseInt(idDriver)) ? "bdd" : "api";
+  const numericRegex = /^[0-9]+$/;
+  const source = numericRegex.test(idDriver) ? "api" : "bdd";
+  //const source = isNaN(parseInt(idDriver)) ? "bdd" : "api";
   try {
     const driver = await getDriverId(idDriver, source);
     res.status(200).json(driver);

@@ -39,6 +39,7 @@ export const createDriver = async (
 
   for (let i = 0; i < teams.length; i++) {
     const teamName = await Team.findOne({ where: { name: teams[i].name } });
+    console.log("Se le agrega este team:", teams[i].name);
     await newDriver.addTeam(teamName);
   }
 
@@ -47,6 +48,7 @@ export const createDriver = async (
 
 export const getDriverId = async (id: number | string, source: string) => {
   console.log("controller", id);
+  console.log("a donde va:", source);
   const driver =
     source === "api"
       ? (await axios.get(URL + id)).data
