@@ -50,55 +50,22 @@ export default function Form() {
     handleDisabled();
   }
 
-  // function handleTeamChange(event: React.ChangeEvent<HTMLInputElement>): void {
-  //   const teamsName: string = event.target.value;
-  //   const isChecked: boolean = event.target.checked;
-
-  //   let updateDriver: Team[];
-
-  //   if (driver && driver.teams) {
-  //     if (isChecked) {
-  //       updateDriver = [...driver.teams, { name: teamsName }];
-  //     } else {
-  //       updateDriver = driver.teams.filter((team) => team.name !== teamsName);
-  //     }
-
-  //     setDriver({ ...driver, teams: updateDriver });
-  //     setErrors(validateForm({ ...driver, teams: updateDriver }));
-  //   }
-  // }
-
   function handleTeams(event: React.ChangeEvent<HTMLSelectElement>): void {
-    // const teamName: string = event.target.value;
-    // let isSelected: boolean = false;
-    // let updateTeams: Team[] = [];
-    // console.log(isSelected);
-    // if (updateTeams.length > 0) {
-    //   isSelected = updateTeams.some((team) => team.name === teamName);
-    //   console.log("prueba:", isSelected);
-    // }
-    // if (!isSelected) {
-    //   updateTeams = [...driver.teams, { name: teamName }];
-    // }
-
-    // console.log(updateTeams);
-    // setDriver({ ...driver, teams: updateTeams });
-    // setErrors(validateForm({ ...driver, teams: updateTeams }));
     const teamName: string = event.target.value;
-    let updateTeams: Team[] = [...driver.teams]; // Copia los equipos actuales del conductor
+    let updateTeams: Team[] = [...driver.teams];
     let isSelected: boolean = updateTeams.some(
       (team) => team.name === teamName
-    ); // Verifica si el equipo ya está en la lista
+    );
 
     console.log(isSelected);
 
     if (!isSelected) {
-      updateTeams.push({ name: teamName }); // Agrega el nuevo equipo solo si no está en la lista
+      updateTeams.push({ name: teamName });
     }
 
     console.log(updateTeams);
 
-    setDriver({ ...driver, teams: updateTeams }); // Actualiza el estado del conductor
+    setDriver({ ...driver, teams: updateTeams });
     setErrors(validateForm({ ...driver, teams: updateTeams }));
     handleDisabled();
   }
@@ -117,7 +84,7 @@ export default function Form() {
     dispatch(postDriver(driver));
   }
 
-  function handleCaptcha(value) {
+  function handleCaptcha(value: string) {
     console.log("en el form: ", value);
     const token = { token: value };
     dispatch(validateCaptcha(token));
@@ -232,19 +199,6 @@ export default function Form() {
           Escuderías:
         </label>
         <div className="col-sm-10">
-          {/* {allTeams?.map((team) => (
-            <div key={team.id} className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                name="teams"
-                value={team.name}
-                checked={driver.teams?.some((t) => t.name === team.name)}
-                onChange={handleTeamChange}
-              />
-              <label className="form-check-label">{team.name}</label>
-            </div>
-          ))} */}
           <select className="form-select" onChange={handleTeams}>
             <option value="NONE">Seleccione equipos</option>
             {allTeams?.map((team) => (
