@@ -14,7 +14,9 @@ export default function Form() {
   const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
   const msj: string | null = useSelector((state: State) => state.msjPost);
   const msjCaptcha = useSelector((state) => state.captchaRequest);
-  console.log("el captcha pa ca: ", msjCaptcha);
+  const [eState, setEState] = useState(false);
+  console.log("errores: ", eState);
+  console.log("captcha: ", msjCaptcha);
 
   const [driver, setDriver] = useState<Driver>({
     name: "",
@@ -27,14 +29,15 @@ export default function Form() {
   });
 
   const [errors, setErrors] = useState<DriverError>({});
+  console.log(errors);
+  console.log("dato: ", Object.keys(errors).length);
 
-  function handleDisabled(): boolean {
-    if (errors) {
-      for (const error in errors) {
-        if (errors[error as keyof DriverError] !== "") return true;
-      }
-    }
-    return false;
+  function handleDisabled() {
+    let hasError = false;
+    if (Object.keys(errors).length > 0) {
+      hasError = false;
+    } else hasError = true;
+    setEState(hasError);
   }
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -44,6 +47,7 @@ export default function Form() {
         validateForm({ ...driver, [event.target.name]: event.target.value })
       );
     }
+    handleDisabled();
   }
 
   // function handleTeamChange(event: React.ChangeEvent<HTMLInputElement>): void {
@@ -96,6 +100,7 @@ export default function Form() {
 
     setDriver({ ...driver, teams: updateTeams }); // Actualiza el estado del conductor
     setErrors(validateForm({ ...driver, teams: updateTeams }));
+    handleDisabled();
   }
   function handleTeamClose(teamName: string): void {
     const updateTeams: Team[] = driver.teams.filter(
@@ -103,6 +108,7 @@ export default function Form() {
     );
     setDriver({ ...driver, teams: updateTeams });
     setErrors(validateForm({ ...driver, teams: updateTeams }));
+    handleDisabled();
   }
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
@@ -249,9 +255,13 @@ export default function Form() {
           </select>
           <span className="text-danger">{errors.teams}</span>
           {driver.teams?.map((team) => (
-            <div>
+            <div className="rounded-pill bg-light p-2 m-2 d-inline-block">
               <span>{team.name}</span>
-              <button type="button" onClick={() => handleTeamClose(team.name)}>
+              <button
+                className="btn btn-outline-danger btn-sm rounded-circle"
+                type="button"
+                onClick={() => handleTeamClose(team.name)}
+              >
                 X
               </button>
             </div>
@@ -260,18 +270,22 @@ export default function Form() {
       </div>
       <div className="mb-3 row">
         <div className="col-sm-10 offset-sm-2">
-          <button
-            type="submit"
-            className="btn btn-primary me-2"
-            disabled={handleDisabled()}
-          >
-            SUBIR
-          </button>
+          {msjCaptcha ? null : (
+            <span className="text-success">
+              Asegurate de validar el captcha!
+            </span>
+          )}{" "}
           <ReCAPTCHA
             sitekey="6Le368MpAAAAAFK8yYYtnzY30wUnZzmLdkNIDEWo"
             onChange={handleCaptcha}
           ></ReCAPTCHA>
-
+          <button
+            type="submit"
+            className="btn btn-primary me-2"
+            disabled={!eState && !msjCaptcha}
+          >
+            SUBIR
+          </button>
           {msj === "Solicitud en proceso" && (
             <img
               src="../../../public/loading.gif"
