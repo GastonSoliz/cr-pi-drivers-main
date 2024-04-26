@@ -25,6 +25,10 @@ export type DriverError = {
   teams?: string;
 };
 
+export interface Token {
+  token: string | null;
+}
+
 export type State = {
   allDrivers: Driver[];
   filteredDrivers: Driver[] | Driver;
@@ -32,7 +36,15 @@ export type State = {
   allTeams: Team[];
   msjPost: string | null;
   msjUpdate: string | null;
+  captchaRequest: boolean;
 };
+
+interface CaptchaRequest {
+  success: boolean;
+  challenge_ts?: string;
+  hostname?: string;
+  "error-codes"?: string[];
+}
 
 export type Action =
   | { type: "GET_TEAMS"; payload: Team[] }
@@ -54,4 +66,5 @@ export type Action =
   //Falta implementar
   | { type: "SORT_NAME"; payload: string }
   | { type: "SORT_TEAM"; payload: string }
-  | { type: "CLEAN_DETAIL"; payload: null };
+  | { type: "CLEAN_DETAIL"; payload: null }
+  | { type: "VALIDATE_CAPTCHA"; payload: CaptchaRequest };
