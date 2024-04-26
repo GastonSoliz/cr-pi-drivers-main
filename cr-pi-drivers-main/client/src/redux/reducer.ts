@@ -1,4 +1,4 @@
-import { Team, DriverError, State, Action } from "../types/types";
+import { DriverError, State, Action } from "../types/types";
 
 const initialState: State = {
   allDrivers: [],

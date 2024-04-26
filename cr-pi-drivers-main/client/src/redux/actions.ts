@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Dispatch } from "redux";
-import { Team, Driver, Action } from "../types/types";
+import { Team, Driver, Action, Token } from "../types/types";
 
 // type Action =
 //   | { type: "GET_TEAMS"; payload: Team[] }
@@ -116,7 +116,7 @@ export function cleanDetail(): Action {
   return { type: "CLEAN_DETAIL", payload: null };
 }
 
-export function validateCaptcha(token) {
+export function validateCaptcha(token: Token) {
   const endpoint: string = `${URL}captcha`;
   console.log("lo que llega al action:", token);
   return async (dispatch: Dispatch) => {
