@@ -47,3 +47,10 @@ export type DriverNative = {
   teams: string;
   description: string;
 };
+
+export interface CaptchaRequest {
+  success: boolean;
+  challenge_ts?: string;
+  hostname?: string;
+  "error-codes"?: string[];
+}
