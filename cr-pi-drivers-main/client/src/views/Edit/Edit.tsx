@@ -26,6 +26,7 @@ export default function Edit() {
     teams: driver?.teams,
   });
 
+  console.log(formData);
   const { id } = useParams();
   const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
 
@@ -36,18 +37,33 @@ export default function Edit() {
     );
   }
 
-  function handleTeamChange(event: React.ChangeEvent<HTMLInputElement>) {
+  function handleTeamChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const teamName: string = event.target.value;
-    const isChecked: boolean = event.target.checked;
+    //const isChecked: boolean = event.target.checked;
 
-    let updatedTeams: Team[];
+    let updatedTeams: Team[] = [...formData.teams];
+    let isSelected: boolean = updatedTeams.some(
+      (team) => team.name === teamName
+    );
 
-    if (isChecked) {
-      updatedTeams = [...formData.teams, { name: teamName }];
-    } else {
-      updatedTeams = formData.teams.filter((team) => team.name !== teamName);
+    // if (isChecked) {
+    //   updatedTeams = [...formData.teams, { name: teamName }];
+    // } else {
+    //   updatedTeams = formData.teams.filter((team) => team.name !== teamName);
+    // }
+
+    if (!isSelected) {
+      updatedTeams.push({ name: teamName });
     }
 
+    setFormData({ ...formData, teams: updatedTeams });
+    setErrors(validateForm({ ...formData, teams: updatedTeams }));
+  }
+
+  function handleTeamClose(teamName: string): void {
+    const updatedTeams: Team[] = formData.teams.filter(
+      (team) => team.name !== teamName
+    );
     setFormData({ ...formData, teams: updatedTeams });
     setErrors(validateForm({ ...formData, teams: updatedTeams }));
   }
@@ -58,6 +74,12 @@ export default function Edit() {
       dispatch(updateDriver(formData, id));
     }
   }
+
+  // function handleDisabled() {
+  //   if (Object.keys(errors).length > 0) {
+
+  //   }
+  // }
 
   useEffect(() => {
     dispatch(getTeams());
@@ -198,7 +220,29 @@ export default function Edit() {
       <div className="mb-3 row mt-4">
         <label className="col-sm-2 col-form-label">Escuderias:</label>
         <div className="col-sm-10">
-          {allTeams?.map((team) => (
+          <select className="form-select" onChange={handleTeamChange}>
+            <option value="NONE">Seleccione equipos</option>
+            {allTeams?.map((team) => (
+              <option value={team.name} key={team.id}>
+                {team.name}
+              </option>
+            ))}
+          </select>
+          <span className="text-danger">{errors.teams}</span>
+
+          {formData.teams?.map((team) => (
+            <div className="rounded-pill bg-light p-2 m-2 d-inline-block">
+              <span>{team.name}</span>
+              <button
+                className="btn btn-outline-danger btn-sm rounded-circle"
+                type="button"
+                onClick={() => handleTeamClose(team.name)}
+              >
+                X
+              </button>
+            </div>
+          ))}
+          {/* {allTeams?.map((team) => (
             <div key={team.id} className="form-check form-check-inline">
               <input
                 className="form-check-input"
@@ -210,12 +254,16 @@ export default function Edit() {
               />
               <label className="form-check-label">{team.name}</label>
             </div>
-          ))}
+          ))} */}
         </div>
       </div>
       <div className="row">
         <div className="col-md-6">
-          <button type="submit" className="btn btn-primary">
+          <button
+            type="submit"
+            className="btn btn-primary"
+            disabled={Object.keys(errors).length > 0}
+          >
             SUBIR
           </button>
           {msj === "Solicitud en proceso" && (
