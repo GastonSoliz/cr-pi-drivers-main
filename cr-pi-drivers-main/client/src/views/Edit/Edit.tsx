@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getDriverById, getTeams, updateDriver } from "../../redux/actions.ts";
 import { useParams } from "react-router-dom";
 import validateForm from "../../utils/validateForm.ts";
-import style from "./Edit.module.css";
+//import style from "./Edit.module.css";
 import React from "react";
 import { ThunkDispatch } from "redux-thunk";
 import { AnyAction } from "redux";
@@ -11,22 +11,23 @@ import { Team, Driver, DriverError, State } from "../../types/types.ts";
 
 export default function Edit() {
   const allTeams: Team[] = useSelector((state: State) => state.allTeams);
-  const driver: Driver = useSelector((state) => state.driverDetail);
+  const driver: Driver | null = useSelector(
+    (state: State) => state.driverDetail
+  );
   const msj: string | null = useSelector((state: State) => state.msjUpdate);
 
   const [errors, setErrors] = useState<DriverError>({});
 
   const [formData, setFormData] = useState<Driver>({
-    name: driver?.name,
-    surname: driver?.surname,
-    nationality: driver?.nationality,
-    image: driver?.image,
-    birthdate: driver?.birthdate,
-    description: driver?.description,
-    teams: driver?.teams,
+    name: driver?.name ?? "",
+    surname: driver?.surname ?? "",
+    nationality: driver?.nationality ?? "",
+    image: driver?.image ?? "",
+    birthdate: driver?.birthdate ?? "",
+    description: driver?.description ?? "",
+    teams: driver?.teams ?? [],
   });
 
-  console.log(formData);
   const { id } = useParams();
   const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
 
