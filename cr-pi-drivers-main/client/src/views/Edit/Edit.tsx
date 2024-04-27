@@ -40,18 +40,11 @@ export default function Edit() {
 
   function handleTeamChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const teamName: string = event.target.value;
-    //const isChecked: boolean = event.target.checked;
 
     let updatedTeams: Team[] = [...formData.teams];
     let isSelected: boolean = updatedTeams.some(
       (team) => team.name === teamName
     );
-
-    // if (isChecked) {
-    //   updatedTeams = [...formData.teams, { name: teamName }];
-    // } else {
-    //   updatedTeams = formData.teams.filter((team) => team.name !== teamName);
-    // }
 
     if (!isSelected) {
       updatedTeams.push({ name: teamName });
@@ -75,12 +68,6 @@ export default function Edit() {
       dispatch(updateDriver(formData, id));
     }
   }
-
-  // function handleDisabled() {
-  //   if (Object.keys(errors).length > 0) {
-
-  //   }
-  // }
 
   useEffect(() => {
     dispatch(getTeams());
@@ -243,19 +230,6 @@ export default function Edit() {
               </button>
             </div>
           ))}
-          {/* {allTeams?.map((team) => (
-            <div key={team.id} className="form-check form-check-inline">
-              <input
-                className="form-check-input"
-                type="checkbox"
-                name="teams"
-                value={team.name}
-                checked={formData.teams?.some((t) => t.name === team.name)}
-                onChange={handleTeamChange}
-              />
-              <label className="form-check-label">{team.name}</label>
-            </div>
-          ))} */}
         </div>
       </div>
       <div className="row">
@@ -265,7 +239,7 @@ export default function Edit() {
             className="btn btn-primary"
             disabled={Object.keys(errors).length > 0}
           >
-            SUBIR
+            EDITAR
           </button>
           {msj === "Solicitud en proceso" && (
             <img
