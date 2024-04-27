@@ -3,7 +3,6 @@ import { Request, Response } from "express";
 
 export const validateCaptchaHandler = async (req: Request, res: Response) => {
   const { token } = req.body;
-  console.log("llego?: ", req.body);
   try {
     const captchaInfo = await validateCaptcha(token);
     res.status(200).json(captchaInfo);
