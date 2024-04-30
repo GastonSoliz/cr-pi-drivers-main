@@ -1,4 +1,4 @@
-import  getAllTeams  from "../controllers/teamControllers";
+import getAllTeams from "../controllers/teamControllers";
 import { Request, Response } from "express";
 
 const getTeams = async (req: Request, res: Response) => {

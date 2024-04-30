@@ -12,7 +12,7 @@ export const getDrivers = async (req: Request, res: Response) => {
   try {
     let { name } = req.query;
     const drivers = name
-      ? await searchDriversByName(name)
+      ? await searchDriversByName(name as string)
       : await getAllDrivers();
     res.status(200).json(drivers);
   } catch (error) {
