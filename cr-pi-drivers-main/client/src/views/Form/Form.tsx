@@ -13,10 +13,10 @@ export default function Form() {
   const allTeams: Team[] = useSelector((state: State) => state.allTeams);
   const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
   const msj: string | null = useSelector((state: State) => state.msjPost);
-  const msjCaptcha = useSelector((state) => state.captchaRequest);
+  const msjCaptcha: boolean = useSelector(
+    (state: State) => state.captchaRequest
+  );
   const [eState, setEState] = useState(false);
-  console.log("errores: ", eState);
-  console.log("captcha: ", msjCaptcha);
 
   const [driver, setDriver] = useState<Driver>({
     name: "",
@@ -29,8 +29,6 @@ export default function Form() {
   });
 
   const [errors, setErrors] = useState<DriverError>({});
-  console.log(errors);
-  console.log("dato: ", Object.keys(errors).length);
 
   function handleDisabled() {
     let hasError = false;
@@ -57,13 +55,9 @@ export default function Form() {
       (team) => team.name === teamName
     );
 
-    console.log(isSelected);
-
     if (!isSelected) {
       updateTeams.push({ name: teamName });
     }
-
-    console.log(updateTeams);
 
     setDriver({ ...driver, teams: updateTeams });
     setErrors(validateForm({ ...driver, teams: updateTeams }));
@@ -85,14 +79,13 @@ export default function Form() {
   }
 
   function handleCaptcha(value: string) {
-    console.log("en el form: ", value);
     const token = { token: value };
     dispatch(validateCaptcha(token));
   }
 
   useEffect(() => {
     dispatch(getTeams());
-  }, [driver]);
+  }, []);
 
   return (
     <form onSubmit={handleSubmit} className="container mt-4">
@@ -236,7 +229,7 @@ export default function Form() {
           <button
             type="submit"
             className="btn btn-primary me-2"
-            disabled={!eState && !msjCaptcha}
+            disabled={!eState || !msjCaptcha}
           >
             SUBIR
           </button>
