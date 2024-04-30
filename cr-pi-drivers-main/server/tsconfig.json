@@ -6,7 +6,12 @@
     "strict": true, // Habilita todas las opciones estrictas de TypeScript
     "esModuleInterop": true, // Habilita la interoperabilidad de módulos entre ESM y CommonJS
     "skipLibCheck": true, // Omitir la comprobación de las declaraciones de tipo de las librerías externas
-    "forceConsistentCasingInFileNames": true // Forzar consistencia de mayúsculas y minúsculas en los nombres de los archivos
+    "forceConsistentCasingInFileNames": true, // Forzar consistencia de mayúsculas y minúsculas en los nombres de los archivos
+    "types": [
+      "express",
+      "node" // Agrega esta línea si no está presente
+    ]
+    //"typeRoots": ["./node_modules/@types", "./src"]
   },
   // "include": [
   //   "src/**/*.ts" // Especifica los archivos a incluir en la compilación
