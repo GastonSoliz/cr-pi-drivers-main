@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { cleanDetail, getDriverById } from "../../redux/actions.ts";
 import { useParams } from "react-router-dom";
-import style from "./Detail.module.css";
+//import style from "./Detail.module.css";
 import React from "react";
 import { Driver, State } from "../../types/types.ts";
 import { ThunkDispatch } from "redux-thunk";
@@ -11,7 +11,9 @@ import { AnyAction } from "redux";
 export default function Detail() {
   const [showMore, setShowMore] = useState<boolean>(false);
 
-  const driver: Driver = useSelector((state) => state.driverDetail);
+  const driver: Driver | null = useSelector(
+    (state: State) => state.driverDetail
+  );
 
   const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
 
