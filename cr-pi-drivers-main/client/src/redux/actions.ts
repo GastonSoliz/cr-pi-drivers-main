@@ -2,24 +2,6 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import { Team, Driver, Action, Token } from "../types/types";
 
-// type Action =
-//   | { type: "GET_TEAMS"; payload: Team[] }
-//   //[{Driver}]
-//   | { type: "GET_DRIVER_BY_NAME"; payload: Driver[] | Driver }
-//   | { type: "GET_DRIVER_BY_ID"; payload: Driver }
-//   | { type: "GET_DRIVERS"; payload: Driver[] }
-//   //{newDriver:{Driver}} deberia ir todo de la misma manera... sino lo hace... ARREGLAR TODO EL PROYECTO
-//   //Si no, es quilombo de tipo de datos
-//   | { type: "POST_DRIVER"; payload: Driver }
-//   | { type: "DELETE_DRIVER"; payload: number }
-//   | { type: "UPDATE_DRIVER"; payload: Driver }
-//   | { type: "SORT_ORIGIN"; payload: string }
-//   | { type: "SORT_DATE"; payload: string }
-//   //Falta implementar
-//   | { type: "SORT_NAME"; payload: string }
-//   | { type: "SORT_TEAM"; payload: string }
-//   | { type: "CLEAN_DETAIL"; payload: null };
-
 const URL: string = "http://localhost:3001/";
 
 export function getTeams() {
@@ -96,6 +78,16 @@ export function updateDriver(
   };
 }
 
+export function validateCaptcha(
+  token: Token
+): (dispatch: Dispatch<Action>) => Promise<void> {
+  const endpoint: string = `${URL}captcha`;
+  return async (dispatch: Dispatch<Action>) => {
+    const { data } = await axios.post(endpoint, token);
+    dispatch({ type: "VALIDATE_CAPTCHA", payload: data });
+  };
+}
+
 export function sortOrigin(origin_id: string): Action {
   return { type: "SORT_ORIGIN", payload: origin_id };
 }
@@ -114,14 +106,4 @@ export function sortTeam(team: string): Action {
 
 export function cleanDetail(): Action {
   return { type: "CLEAN_DETAIL", payload: null };
-}
-
-export function validateCaptcha(token: Token) {
-  const endpoint: string = `${URL}captcha`;
-  console.log("lo que llega al action:", token);
-  return async (dispatch: Dispatch) => {
-    const { data } = await axios.post(endpoint, token);
-    console.log("devuelve el back: ", data);
-    dispatch({ type: "VALIDATE_CAPTCHA", payload: data });
-  };
 }
