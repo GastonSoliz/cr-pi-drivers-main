@@ -1,4 +1,4 @@
-import { DriverError, State, Action } from "../types/types";
+import { DriverError, State, Action, Driver } from "../types/types";
 
 const initialState: State = {
   allDrivers: [],
@@ -18,9 +18,7 @@ export default function rootReducer(
   state: State = initialState,
   action: Action
 ): State {
-  // let previousFilters;
-  // let filteredDrivers;
-  let copyDrivers: DriverError[];
+  let copyDrivers: Driver[];
   switch (action.type) {
     case "GET_DRIVERS":
       return {
@@ -53,7 +51,7 @@ export default function rootReducer(
         ...state,
         filteredDrivers: [
           ...state.filteredDrivers.filter(
-            (driver) => driver.id !== action.payload
+            (driver: Driver) => driver.id !== action.payload
           ),
         ],
       };
@@ -83,7 +81,7 @@ export default function rootReducer(
       return { ...state, allTeams: action.payload };
     case "SORT_ORIGIN":
       copyDrivers = [...state.allDrivers];
-      let filterOriginDriversRaw: DriverError[];
+      let filterOriginDriversRaw: Driver[];
       if (action.payload === "ID") {
         filterOriginDriversRaw = copyDrivers.filter((driver) =>
           regExID.test(driver.id?.toString() ?? "")
@@ -99,7 +97,7 @@ export default function rootReducer(
 
     case "SORT_DATE":
       copyDrivers = [...state.allDrivers];
-      let filterDateDriversRaw: DriverError[] = [];
+      let filterDateDriversRaw: Driver[] = [];
       if (action.payload === "ASCENDENTE") {
         filterDateDriversRaw = copyDrivers.sort((a, b) => {
           const dateA = new Date(a.birthdate ?? "").getTime();
@@ -118,25 +116,14 @@ export default function rootReducer(
       return { ...state, filteredDrivers: filterDateDriversRaw };
     case "SORT_TEAM":
       copyDrivers = [...state.allDrivers];
-      let filterTeamDriversRaw: DriverError[] = [];
+      let filterTeamDriversRaw: Driver[] = [];
       if (action.payload === "NONE") {
         filterTeamDriversRaw = copyDrivers;
       } else {
+        console.log("lo que hay: ", action.payload);
         filterTeamDriversRaw = copyDrivers.filter((driver) => {
-          if (regExUUID.test(driver.id?.toString() ?? "")) {
-            //FALTA DEFINIR COMO VIENE TEAMS
-            const teams = driver.teams || [];
-            const teamNames = teams.map((team) => team.name.trim());
-
-            return teamNames.includes(action.payload);
-          } else if (regExID.test(driver.id?.toString() ?? "")) {
-            const teams = driver.teams
-              ? driver.teams.split(",").map((teamName) => teamName.trim())
-              : [];
-            return teams.length > 0 && teams.includes(action.payload);
-          }
-          //backup por si no entra al if?
-          // return false;
+          console.log(driver.teams);
+          return driver.teams?.includes(action.payload);
         });
       }
       return { ...state, filteredDrivers: filterTeamDriversRaw };
