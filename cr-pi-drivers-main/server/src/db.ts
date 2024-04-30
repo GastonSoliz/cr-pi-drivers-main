@@ -3,18 +3,33 @@ require("dotenv").config();
 
 //const fs = require("fs");
 //const path = require("path");
-const { DB_USER, DB_PASSWORD, DB_HOST } = process.env;
+const { DB_USER, DB_PASSWORD, DB_HOST, DB_POSTGRE_URL } = process.env;
 import { Sequelize } from "sequelize";
 import fs from "fs";
 import path from "path";
 
+// export const sequelize = new Sequelize(
+//   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/drivers`,
+//   {
+//     logging: false,
+//     native: false,
+//   }
+// );
+
 export const sequelize = new Sequelize(
-  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/drivers`,
+  DB_POSTGRE_URL || `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/drivers`,
   {
     logging: false,
     native: false,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   }
 );
+
 const basename = path.basename(__filename);
 
 const modelDefiners: any[] = [];
