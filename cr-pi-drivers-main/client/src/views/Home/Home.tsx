@@ -78,7 +78,6 @@ export default function Home() {
           </select>
         </div>
         <div className="col-md-4">
-          {/* Aquí debería ser "col-md-4" en lugar de "col-md-6" para alinear correctamente con los otros select */}
           <select className="form-select" onChange={handleTeams}>
             <option value="NONE">EQUIPOS</option>
             {allTeams?.map((team) => (
