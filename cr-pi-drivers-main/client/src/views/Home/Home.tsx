@@ -24,6 +24,7 @@ export default function Home() {
   );
   const allTeams: Team[] = useSelector((state: State) => state.allTeams);
   //const allDrivers = useSelector((state) => state.allDrivers);
+  const msj: string | null = useSelector((state: State) => state.msjDrivers);
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const driversPerPage: number = 9;
@@ -77,7 +78,6 @@ export default function Home() {
           </select>
         </div>
         <div className="col-md-4">
-          {" "}
           {/* Aquí debería ser "col-md-4" en lugar de "col-md-6" para alinear correctamente con los otros select */}
           <select className="form-select" onChange={handleTeams}>
             <option value="NONE">EQUIPOS</option>
@@ -92,6 +92,26 @@ export default function Home() {
           <SearchBar />
         </div>
       </div>
+
+      <div className="d-flex justify-content-center align-items-center">
+        {msj === "Solicitud en proceso" && (
+          <div>
+            <img
+              src="../../../public/loading.gif"
+              alt="Cargando..."
+              style={{ maxWidth: "200px", maxHeight: "200px" }}
+            />
+            <span>Cargando conductores...</span>
+          </div>
+        )}
+
+        {msj === "Solicitud fallida" && (
+          <span className="text-danger">
+            Hubo un error al cargar los conductores...
+          </span>
+        )}
+      </div>
+
       <CardList allDrivers={currentDrivers} />
       <Pagination
         page={pageHandler}
