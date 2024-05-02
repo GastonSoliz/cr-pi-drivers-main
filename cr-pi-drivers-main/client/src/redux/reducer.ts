@@ -5,6 +5,7 @@ const initialState: State = {
   filteredDrivers: [],
   driverDetail: null,
   allTeams: [],
+  msjDrivers: null,
   msjPost: null,
   msjUpdate: null,
   captchaRequest: false,
@@ -20,11 +21,19 @@ export default function rootReducer(
 ): State {
   let copyDrivers: Driver[];
   switch (action.type) {
-    case "GET_DRIVERS":
+    case "GET_DRIVERS_REQUEST":
+      return { ...state, msjDrivers: action.payload };
+    case "GET_DRIVERS_SUCCESS":
       return {
         ...state,
         allDrivers: action.payload,
         filteredDrivers: action.payload,
+        msjDrivers: "Solicitud exitosa",
+      };
+    case "GET_DRIVERS_FAILURE":
+      return {
+        ...state,
+        msjDrivers: action.payload,
       };
     case "GET_DRIVER_BY_ID":
       return { ...state, driverDetail: action.payload };
