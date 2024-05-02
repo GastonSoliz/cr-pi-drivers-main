@@ -34,6 +34,7 @@ export type State = {
   filteredDrivers: Driver[] | Driver;
   driverDetail: Driver | null;
   allTeams: Team[];
+  msjDrivers: string | null;
   msjPost: string | null;
   msjUpdate: string | null;
   captchaRequest: boolean;
@@ -50,7 +51,9 @@ export type Action =
   | { type: "GET_TEAMS"; payload: Team[] }
   | { type: "GET_DRIVER_BY_NAME"; payload: Driver[] | Driver }
   | { type: "GET_DRIVER_BY_ID"; payload: Driver }
-  | { type: "GET_DRIVERS"; payload: Driver[] }
+  | { type: "GET_DRIVERS_REQUEST"; payload: string }
+  | { type: "GET_DRIVERS_SUCCESS"; payload: Driver[] }
+  | { type: "GET_DRIVERS_FAILURE"; payload: string }
   | { type: "POST_DRIVER_REQUEST"; payload: string }
   | { type: "POST_DRIVER_SUCCESS"; payload: Driver }
   | { type: "POST_DRIVER_FAILURE"; payload: string }
