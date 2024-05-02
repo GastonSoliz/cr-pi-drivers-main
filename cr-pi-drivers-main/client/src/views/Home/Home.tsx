@@ -96,7 +96,7 @@ export default function Home() {
         {msj === "Solicitud en proceso" && (
           <div>
             <img
-              src="../../../public/loading.gif"
+              src="/loading.gif"
               alt="Cargando..."
               style={{ maxWidth: "200px", maxHeight: "200px" }}
             />
