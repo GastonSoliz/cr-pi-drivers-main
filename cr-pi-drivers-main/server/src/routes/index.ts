@@ -1,4 +1,5 @@
 import { Router, Request, Response, NextFunction } from "express";
+import multer from "multer";
 import {
   getDriverById,
   getDrivers,
@@ -8,6 +9,7 @@ import {
 } from "../handlers/driversHandlers";
 import getTeams from "../handlers/teamsHandlers";
 import { validateCaptchaHandler } from "../handlers/captchaHandlers";
+import { cloudHandler } from "../handlers/cloudHandlers";
 
 const router = Router();
 
@@ -28,6 +30,8 @@ const validateDriver = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
+const upload = multer({ dest: "uploads/" });
+
 router.get("/drivers", getDrivers);
 router.get("/drivers/:idDriver", getDriverById);
 router.post("/drivers", validateDriver, postDrivers);
@@ -35,5 +39,6 @@ router.get("/teams", getTeams);
 router.delete("/drivers/:idDriver", deleteDriver);
 router.put("/drivers/:idDriver", validateDriver, updateDriver);
 router.post("/captcha", validateCaptchaHandler);
+router.post("/cloud", upload.single("img"), cloudHandler);
 
 export default router;
