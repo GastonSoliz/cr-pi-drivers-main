@@ -28,6 +28,8 @@ export default function Form() {
     teams: [],
   });
 
+  console.log(driver);
+
   const [errors, setErrors] = useState<DriverError>({});
 
   function handleDisabled() {
@@ -37,6 +39,23 @@ export default function Form() {
     } else hasError = true;
     setEState(hasError);
   }
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (files) {
+      //const file = files[0];
+      // const reader = new FileReader();
+
+      // reader.onloadend = () => {
+      //   const base64Image = reader.result as string;
+      setDriver({ ...driver, image: files[0] });
+      // };
+
+      // if (file) {
+      //   reader.readAsDataURL(file);
+      // }
+    }
+  };
 
   function handleChange(event: React.ChangeEvent<HTMLInputElement>): void {
     if (event.target.name !== "teams") {
@@ -146,7 +165,7 @@ export default function Form() {
             name="image"
             className="form-control"
             type="file"
-            onChange={handleChange}
+            onChange={handleImageUpload}
           />
           <input
             name="image"
