@@ -7,7 +7,7 @@ export type Driver = {
   id?: number | string;
   birthdate: string;
   description: string;
-  image: string;
+  image: File | string;
   name: string;
   nationality: string;
   surname: string;
