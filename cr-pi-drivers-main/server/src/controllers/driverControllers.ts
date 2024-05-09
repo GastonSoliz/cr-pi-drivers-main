@@ -1,9 +1,12 @@
 import axios from "axios";
 import { DriverNative, Drivers, Teams } from "../types/types";
+import { cloudHandler } from "../handlers/cloudHandlers";
 const { Driver, Team } = require("../db");
 const URL: string = "http://localhost:5000/drivers/";
 const default_image: string =
   "https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg";
+const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
+import { response } from "express";
 
 export const cleanArray = (arr: DriverNative[]) =>
   arr.map((elem) => {
@@ -28,6 +31,14 @@ export const createDriver = async (
   birthdate: string,
   teams: Teams[]
 ) => {
+  //if (image instanceof File) {
+  const url_image = await cloudHandler(image);
+  // console.log("llega al back:", image);
+  //console.log("driver tiene esto:", url_image);
+  image = url_image.secure_url;
+  //}
+  console.log("controller", image);
+
   const newDriver = await Driver.create({
     name,
     surname,
@@ -38,6 +49,7 @@ export const createDriver = async (
   });
 
   for (let i = 0; i < teams.length; i++) {
+    console.log("teams", teams[i]);
     const teamName = await Team.findOne({ where: { name: teams[i].name } });
     await newDriver.addTeam(teamName);
   }
