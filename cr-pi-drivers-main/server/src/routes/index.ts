@@ -34,11 +34,12 @@ const upload = multer({ dest: "uploads/" });
 
 router.get("/drivers", getDrivers);
 router.get("/drivers/:idDriver", getDriverById);
-router.post("/drivers", validateDriver, postDrivers);
+//router.post("/drivers", validateDriver, postDrivers);
+router.post("/drivers", upload.single("image"), postDrivers);
 router.get("/teams", getTeams);
 router.delete("/drivers/:idDriver", deleteDriver);
 router.put("/drivers/:idDriver", validateDriver, updateDriver);
 router.post("/captcha", validateCaptchaHandler);
-router.post("/cloud", upload.single("img"), cloudHandler);
+//router.post("/cloud", upload.single("img"), cloudHandler);
 
 export default router;
