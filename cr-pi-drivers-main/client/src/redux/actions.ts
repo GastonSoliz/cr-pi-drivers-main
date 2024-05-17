@@ -2,8 +2,8 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import { Team, Driver, Action, Token } from "../types/types";
 
-// const URL: string = "http://localhost:3001/";
-const URL: string = "https://cr-pi-drivers-main.onrender.com/";
+const URL: string = "http://localhost:3001/";
+//const URL: string = "https://cr-pi-drivers-main.onrender.com/";
 
 export function getTeams() {
   const endpoint: string = `${URL}teams`;
