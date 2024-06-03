@@ -49,7 +49,11 @@ export function postDriver(driver: Driver) {
   return async (dispatch: Dispatch<Action>) => {
     dispatch({ type: "POST_DRIVER_REQUEST", payload: "Solicitud en proceso" });
     try {
-      const { data } = await axios.post<Driver>(endpoint, driver);
+      const { data } = await axios.post<Driver>(endpoint, driver,{
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
       dispatch({ type: "POST_DRIVER_SUCCESS", payload: data });
     } catch (error) {
       dispatch({ type: "POST_DRIVER_FAILURE", payload: "Solicitud fallida" });
