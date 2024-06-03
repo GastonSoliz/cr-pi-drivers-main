@@ -35,8 +35,8 @@ export default function Detail() {
   return (
     <div className="container mt-4">
       <div className="row justify-content-center align-items-center">
-        <img src={driver?.image} alt="Imagen corredor" className="col-md-4" />
-        <div className="col-md-6 border bg-light p-4">
+         {typeof driver?.image === "string" && <img src={driver?.image} alt="Imagen corredor" className="col-md-4" />}
+         <div className="col-md-6 border bg-light p-4">
           <p>ID: {driver?.id}</p>
           <p>Nombre: {driver?.name}</p>
           <p>Apellido: {driver?.surname}</p>
@@ -57,8 +57,8 @@ export default function Detail() {
           <p>Fecha de nacimiento: {driver?.birthdate}</p>
           <ul className="list-unstyled">
             <li>Teams:</li>
-            {driver?.teams.map((team) => (
-              <li key={team.id}>{team.name}</li>
+            {driver?.teams.map((team,index) => (
+              <li key={index}>{team.name}</li>
             ))}
           </ul>
         </div>
