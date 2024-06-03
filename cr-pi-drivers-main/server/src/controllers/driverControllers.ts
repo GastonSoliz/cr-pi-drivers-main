@@ -37,7 +37,7 @@ export const createDriver = async (
   //console.log("driver tiene esto:", url_image);
   image = url_image.secure_url;
   //}
-  console.log("controller", image);
+  //console.log("controller", image);
 
   const newDriver = await Driver.create({
     name,
@@ -48,8 +48,16 @@ export const createDriver = async (
     birthdate,
   });
 
+  if (typeof teams === 'string') {
+    teams = JSON.parse(teams);
+  } 
+  
+  // console.log("todos los teams del back: ",teams);
+  // console.log("confirmame el tamaño de teams: ",teams.length);
+  // for(let i=0;i<teams.length;i++){
+  //   console.log("team individual:", teams[i]);
+  // }
   for (let i = 0; i < teams.length; i++) {
-    console.log("teams", teams[i]);
     const teamName = await Team.findOne({ where: { name: teams[i].name } });
     await newDriver.addTeam(teamName);
   }
