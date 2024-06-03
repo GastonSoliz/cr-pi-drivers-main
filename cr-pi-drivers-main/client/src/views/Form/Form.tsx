@@ -93,8 +93,16 @@ export default function Form() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-
-    dispatch(postDriver(driver));
+    
+    const formData = new FormData()
+    for (const key in driver) {
+      if (key === 'teams') {
+        formData.append(key, JSON.stringify(driver[key])); // Convertir teams a cadena JSON
+      } else {
+        formData.append(key, driver[key]);
+      }    }
+    
+    dispatch(postDriver(formData));
   }
 
   function handleCaptcha(value: string) {
@@ -213,15 +221,15 @@ export default function Form() {
         <div className="col-sm-10">
           <select className="form-select" onChange={handleTeams}>
             <option value="NONE">Seleccione equipos</option>
-            {allTeams?.map((team) => (
-              <option value={team.name} key={team.id}>
+            {allTeams?.map((team,index) => (
+              <option value={team.name} key={index}>
                 {team.name}
               </option>
             ))}
           </select>
           <span className="text-danger">{errors.teams}</span>
-          {driver.teams?.map((team) => (
-            <div className="rounded-pill bg-light p-2 m-2 d-inline-block">
+          {driver.teams?.map((team,index) => (
+            <div key={index} className="rounded-pill bg-light p-2 m-2 d-inline-block">
               <span>{team.name}</span>
               <button
                 className="btn btn-outline-danger btn-sm rounded-circle"
