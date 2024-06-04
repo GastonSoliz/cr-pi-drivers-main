@@ -7,7 +7,7 @@ cloudinary.config({
   api_secret: CLOUD_SECRET,
 });
 
-export const cloudController = async (img: string) => {
+export const cloudController = async (img: File) => {
   //console.log("cloud controller: ", img);
   const cloudInfo = await cloudinary.uploader.upload(img, {
     folder: "uploads",

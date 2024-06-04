@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { cloudController } from "../controllers/cloudControllers";
 
-export const cloudHandler = async (img: string) => {
+export const cloudHandler = async (img: File) => {
   //const { img } = req.body;
   //console.log(req.file);
   //console.log("img", img);
