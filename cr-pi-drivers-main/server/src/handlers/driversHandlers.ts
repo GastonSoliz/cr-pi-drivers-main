@@ -36,20 +36,20 @@ export const postDrivers = async (req: Request, res: Response) => {
   const { name, surname, description, nationality, birthdate, teams } =
     req.body;
   let {image} = req.body;
-  //console.log("otros datos:", req.body);
+  console.log("lo que llego al body:", req.body);
   //console.log(req.file);
   // if (!req.file) {
   //   throw new Error("No se ha recibido ningún archivo.");
   // }
   //const image = req.file.path;
-  console.log(image);
+  //console.log(image);
   if(image==undefined){
     if (!req.file) {
       throw new Error("No se ha recibido ningún archivo.");
     }
     image = req.file.path;
   }
-  console.log("despues: ",image);
+  //console.log("despues: ",image);
   try {
     const newDriver = await createDriver(
       name,

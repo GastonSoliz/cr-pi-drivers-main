@@ -26,18 +26,18 @@ export const createDriver = async (
   name: string,
   surname: string,
   description: string,
-  image: string,
+  image: File | string,
   nationality: string,
   birthdate: string,
   teams: Teams[]
 ) => {
-  //if (image instanceof File) {
+  if (image instanceof File) {
   const url_image = await cloudHandler(image);
   // console.log("llega al back:", image);
   //console.log("driver tiene esto:", url_image);
   image = url_image.secure_url;
-  //}
-  //console.log("controller", image);
+  }
+  console.log("paso la parte de imagen que es: ",image);
 
   const newDriver = await Driver.create({
     name,
@@ -52,7 +52,7 @@ export const createDriver = async (
     teams = JSON.parse(teams);
   } 
   
-  // console.log("todos los teams del back: ",teams);
+  console.log("teams llego a parsearse en controller: ",teams);
   // console.log("confirmame el tamaño de teams: ",teams.length);
   // for(let i=0;i<teams.length;i++){
   //   console.log("team individual:", teams[i]);
