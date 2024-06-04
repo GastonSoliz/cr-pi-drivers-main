@@ -35,13 +35,13 @@ export const getDriverById = async (req: Request, res: Response) => {
 export const postDrivers = async (req: Request, res: Response) => {
   const { name, surname, description, nationality, birthdate, teams } =
     req.body;
-  console.log("otros datos:", req.body);
-  console.log(req.file);
+  //console.log("otros datos:", req.body);
+  //console.log(req.file);
   if (!req.file) {
     throw new Error("No se ha recibido ningún archivo.");
   }
   const image = req.file.path;
-  console.log(image);
+  //console.log(image);
   try {
     const newDriver = await createDriver(
       name,
