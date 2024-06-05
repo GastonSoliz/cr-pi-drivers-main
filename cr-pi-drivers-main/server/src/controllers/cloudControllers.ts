@@ -8,7 +8,7 @@ cloudinary.config({
 });
 
 export const cloudController = async (img: string) => {
-  //console.log("cloud controller: ", img);
+  console.log("cloud controller: ", img);
   const cloudInfo = await cloudinary.uploader.upload(img, {
     folder: "uploads",
   });

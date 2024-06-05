@@ -4,11 +4,11 @@ import { cloudController } from "../controllers/cloudControllers";
 export const cloudHandler = async (img: string) => {
   //const { img } = req.body;
   //console.log(req.file);
-  //console.log("img", img);
+  console.log("llega al cloud: ", img);
   //console.log("llega al cloudHandler: ", img);
   try {
     const cloudInfo = await cloudController(img);
-    //console.log("envio de handler: ", cloudInfo);
+    console.log("envio de controller: ", cloudInfo);
     //res.status(200).json(cloudInfo);
     return cloudInfo;
   } catch (error) {
