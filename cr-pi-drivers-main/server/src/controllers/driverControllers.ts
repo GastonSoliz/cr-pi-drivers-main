@@ -31,6 +31,7 @@ export const createDriver = async (
   birthdate: string,
   teams: Teams[]
 ) => {
+  console.log("tipo de imagen: ",typeof image);
   if (image instanceof File) {
   const url_image = await cloudHandler(image);
   // console.log("llega al back:", image);
