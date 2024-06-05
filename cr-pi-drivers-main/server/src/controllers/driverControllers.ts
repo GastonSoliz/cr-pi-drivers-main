@@ -33,6 +33,7 @@ export const createDriver = async (
 ) => {
   console.log("tipo de imagen: ",typeof image);
   if (Buffer.isBuffer(image)) {
+    console.log("entra?");
     const url_image : any= await cloudHandler(image);
   // console.log("llega al back:", image);
   //console.log("driver tiene esto:", url_image);
