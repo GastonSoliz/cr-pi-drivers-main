@@ -26,13 +26,13 @@ export const createDriver = async (
   name: string,
   surname: string,
   description: string,
-  image: File | string,
+  image: string,
   nationality: string,
   birthdate: string,
   teams: Teams[]
 ) => {
   console.log("tipo de imagen: ",typeof image);
-  if (image instanceof File) {
+  if (image.startsWith("uploads")) {
   const url_image = await cloudHandler(image);
   // console.log("llega al back:", image);
   //console.log("driver tiene esto:", url_image);
