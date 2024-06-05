@@ -30,7 +30,7 @@ const validateDriver = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-const upload = multer({ dest: "uploads/" });
+const upload = multer();
 
 router.get("/drivers", getDrivers);
 router.get("/drivers/:idDriver", getDriverById);
