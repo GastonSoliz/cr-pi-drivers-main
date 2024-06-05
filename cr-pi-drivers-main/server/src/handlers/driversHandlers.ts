@@ -37,6 +37,7 @@ export const postDrivers = async (req: Request, res: Response) => {
     req.body;
   let {image} = req.body;
   console.log("lo que llego al body:", req.body);
+  console.log("lo que llego al file:",req.file);
   //console.log(req.file);
   // if (!req.file) {
   //   throw new Error("No se ha recibido ningún archivo.");
@@ -47,7 +48,7 @@ export const postDrivers = async (req: Request, res: Response) => {
     if (!req.file) {
       throw new Error("No se ha recibido ningún archivo.");
     }
-    image = req.file.path;
+    image = req.file.buffer;
   }
   //console.log("despues: ",image);
   try {

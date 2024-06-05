@@ -26,17 +26,18 @@ export const createDriver = async (
   name: string,
   surname: string,
   description: string,
-  image: string,
+  image: Buffer | string,
   nationality: string,
   birthdate: string,
   teams: Teams[]
 ) => {
   console.log("tipo de imagen: ",typeof image);
-  if (image.startsWith("uploads")) {
-  const url_image = await cloudHandler(image);
+  if (Buffer.isBuffer(image)) {
+    const url_image : any= await cloudHandler(image);
   // console.log("llega al back:", image);
   //console.log("driver tiene esto:", url_image);
-  image = url_image.secure_url;
+    console.log("regresa de todo: ", url_image);
+    image = url_image.secure_url;
   }
   console.log("paso la parte de imagen que es: ",image);
 
@@ -53,7 +54,7 @@ export const createDriver = async (
     teams = JSON.parse(teams);
   } 
   
-  console.log("teams llego a parsearse en controller: ",teams);
+  // console.log("teams llego a parsearse en controller: ",teams);
   // console.log("confirmame el tamaño de teams: ",teams.length);
   // for(let i=0;i<teams.length;i++){
   //   console.log("team individual:", teams[i]);
@@ -64,6 +65,7 @@ export const createDriver = async (
   }
 
   return newDriver;
+  // return null
 };
 
 export const getDriverId = async (id: number | string, source: string) => {
