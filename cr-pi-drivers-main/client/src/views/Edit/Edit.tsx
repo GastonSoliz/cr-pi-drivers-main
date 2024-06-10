@@ -184,7 +184,6 @@ export default function Edit() {
             name="image"
             className="form-control mt-2"
             type="url"
-            value={formData.image}
             onChange={handleChange}
             placeholder="Ingrese una URL..."
           />
