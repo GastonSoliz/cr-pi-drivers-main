@@ -43,7 +43,7 @@ export default function Edit() {
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
     if(files){
-      setFormData({...driver, image:files[0]})
+      setFormData({...formData, image:files[0]})
     }
   }
 
