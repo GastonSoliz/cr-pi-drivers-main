@@ -79,8 +79,15 @@ export const deleteDriver = async (req: Request, res: Response) => {
 
 export const updateDriver = async (req: Request, res: Response) => {
   const { idDriver } = req.params;
-  const { name, surname, description, image, nationality, birthdate, teams } =
+  const { name, surname, description, nationality, birthdate, teams } =
     req.body;
+    let {image}= req.body;
+  if(image===undefined){
+    if(!req.file){
+      throw new Error("No se ha recibido ningún archivo.");
+    }
+    image= req.file.buffer;
+  }
   try {
     const newDriver = await updateDriverId(
       idDriver,

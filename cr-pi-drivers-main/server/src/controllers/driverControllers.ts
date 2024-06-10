@@ -181,7 +181,10 @@ export const updateDriverId = async (
   teams: Teams[]
 ) => {
   const driverToUpdate = await Driver.findByPk(idDriver);
-
+  if(Buffer.isBuffer(image)){
+    const url_image : any = await cloudHandler(image);
+    image= url_image.secure_url;
+  }
   const updateData: Drivers = {
     name: "",
     surname: "",
@@ -213,6 +216,10 @@ export const updateDriverId = async (
   if (description) {
     updateData.description = description;
   }
+
+  if (typeof teams === 'string') {
+    teams = JSON.parse(teams);
+  } 
 
   if (driverToUpdate) {
     const dbDriverUpdate = await driverToUpdate.update(updateData);
