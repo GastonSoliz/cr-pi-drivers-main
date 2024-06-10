@@ -28,6 +28,8 @@ export default function Edit() {
     teams: driver?.teams ?? [],
   });
 
+  console.log("driver: ",formData)
+
   const { id } = useParams();
   const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
 
@@ -36,6 +38,13 @@ export default function Edit() {
     setErrors(
       validateForm({ ...formData, [event.target.name]: event.target.value })
     );
+  }
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if(files){
+      setFormData({...driver, image:files[0]})
+    }
   }
 
   function handleTeamChange(event: React.ChangeEvent<HTMLSelectElement>) {
@@ -169,7 +178,7 @@ export default function Edit() {
             name="image"
             className="form-control"
             type="file"
-            onChange={handleChange}
+            onChange={handleImageUpload}
           />
           <input
             name="image"

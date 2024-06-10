@@ -50,6 +50,8 @@ export const postDrivers = async (req: Request, res: Response) => {
     }
     image = req.file.buffer;
   }
+
+  console.log("en el back se tiene: ",image);
   //console.log("despues: ",image);
   try {
     const newDriver = await createDriver(
