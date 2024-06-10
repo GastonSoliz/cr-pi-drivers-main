@@ -256,7 +256,7 @@ export default function Form() {
           <button
             type="submit"
             className="btn btn-primary me-2"
-            disabled={!eState || !msjCaptcha}
+            // disabled={!eState || !msjCaptcha}
           >
             SUBIR
           </button>

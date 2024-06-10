@@ -64,8 +64,16 @@ export default function Edit() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    const driver = new FormData();
+    for(const key in formData){
+      if(key === "teams"){
+        driver.append(key, JSON.stringify(formData[key])); 
+      }else{
+        driver.append(key,formData[key]);
+      }
+    }
     if (typeof id === "string") {
-      dispatch(updateDriver(formData, id));
+      dispatch(updateDriver(driver, id));
     }
   }
 
