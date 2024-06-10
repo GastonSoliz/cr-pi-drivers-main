@@ -38,7 +38,8 @@ router.get("/drivers/:idDriver", getDriverById);
 router.post("/drivers", upload.single("image"), postDrivers);
 router.get("/teams", getTeams);
 router.delete("/drivers/:idDriver", deleteDriver);
-router.put("/drivers/:idDriver", validateDriver, updateDriver);
+// router.put("/drivers/:idDriver", validateDriver, updateDriver);
+router.put("/drivers/:idDriver", upload.single("image"),updateDriver);
 router.post("/captcha", validateCaptchaHandler);
 //router.post("/cloud", upload.single("img"), cloudHandler);
 
