@@ -121,3 +121,11 @@ export function sortTeam(team: string): Action {
 export function cleanDetail(): Action {
   return { type: "CLEAN_DETAIL", payload: null };
 }
+
+export function cleanPost() : Action{
+  return { type: "CLEAN_POST", payload: null}
+}
+
+export function cleanUpdate() : Action{
+  return { type: "CLEAN_UPDATE", payload: null}
+}
