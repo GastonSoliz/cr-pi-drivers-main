@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import validateForm from "../../utils/validateForm.ts";
 import { useDispatch, useSelector } from "react-redux";
-import { getTeams, postDriver, validateCaptcha } from "../../redux/actions.ts";
+import { cleanPost, getTeams, postDriver, validateCaptcha } from "../../redux/actions.ts";
 //import style from "./Form.module.css";
 import React from "react";
 import { Team, Driver, DriverError, State } from "../../types/types.ts";
@@ -112,6 +112,9 @@ export default function Form() {
 
   useEffect(() => {
     dispatch(getTeams());
+    return ()=>{
+      dispatch(cleanPost());
+    }
   }, []);
 
   return (
