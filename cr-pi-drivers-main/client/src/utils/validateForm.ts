@@ -14,7 +14,7 @@ export default function validateForm(inputs: Driver) {
     errors.nationality = "Se debe ingresar una nacionalidad";
   else if (!regexLetters.test(inputs.nationality))
     errors.nationality = "La nacionalidad no puede contener numeros";
-  if (inputs.image.length === 0) errors.image = "Se debe ingresar una imagen";
+  if (!inputs.image) errors.image = "Se debe ingresar una imagen";
   if (!inputs.birthdate) errors.birthdate = "Se debe ingresar una fecha";
   if (!inputs.description)
     errors.description = "Se debe ingresar una descripcion";

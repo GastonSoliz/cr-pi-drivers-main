@@ -16,7 +16,7 @@ export default function Form() {
   const msjCaptcha: boolean = useSelector(
     (state: State) => state.captchaRequest
   );
-  const [eState, setEState] = useState(false);
+  const [eState, setEState] = useState(true);
 
   const [driver, setDriver] = useState<Driver>({
     name: "",
@@ -33,27 +33,18 @@ export default function Form() {
   const [errors, setErrors] = useState<DriverError>({});
 
   function handleDisabled() {
-    let hasError = false;
-    if (Object.keys(errors).length > 0) {
-      hasError = false;
-    } else hasError = true;
+    const hasError = Object.keys(errors).length > 0;
     setEState(hasError);
   }
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if (files) {
-      //const file = files[0];
-      // const reader = new FileReader();
-
-      // reader.onloadend = () => {
-      //   const base64Image = reader.result as string;
+    if (files && files.length > 0) {
       setDriver({ ...driver, image: files[0] });
-      // };
-
-      // if (file) {
-      //   reader.readAsDataURL(file);
-      // }
+      setErrors(validateForm({ ...driver, image: files[0] }));
+    }else {
+      setDriver({...driver, image: ""})
+      setErrors(validateForm({ ...driver, image: "" }));
     }
   };
 
@@ -116,6 +107,14 @@ export default function Form() {
       dispatch(cleanPost());
     }
   }, []);
+
+  useEffect(() => {
+    const hasError = Object.keys(errors).length > 0 || !msjCaptcha;
+    setEState(hasError);
+  }, [errors, msjCaptcha]);
+
+  console.log("eState: ", eState);
+  console.log("errors: ", errors);
 
   return (
     <form onSubmit={handleSubmit} className="container mt-4">
@@ -246,7 +245,7 @@ export default function Form() {
         </div>
       </div>
       <div className="mb-3 row">
-        <div className="col-sm-10 offset-sm-2">
+        <div className="col-sm-10  offset-sm-2">
           {msjCaptcha ? null : (
             <span className="text-success">
               Asegurate de validar el captcha!
@@ -259,7 +258,7 @@ export default function Form() {
           <button
             type="submit"
             className="btn btn-primary me-2"
-            // disabled={!eState || !msjCaptcha}
+            disabled={eState || !msjCaptcha}
           >
             SUBIR
           </button>
