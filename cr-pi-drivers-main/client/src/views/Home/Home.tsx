@@ -52,8 +52,12 @@ export default function Home() {
   }
 
   useEffect(() => {
-    dispatch(getDrivers());
-    dispatch(getTeams());
+    if(allDrivers.length === 0){
+      dispatch(getDrivers());
+    }
+    if(allTeams.length === 0){
+      dispatch(getTeams());
+    }
   }, [dispatch]);
 
   return (
