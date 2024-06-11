@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getDriverById, getTeams, updateDriver } from "../../redux/actions.ts";
+import { cleanUpdate, getDriverById, getTeams, updateDriver } from "../../redux/actions.ts";
 import { useParams } from "react-router-dom";
 import validateForm from "../../utils/validateForm.ts";
 //import style from "./Edit.module.css";
@@ -108,15 +108,18 @@ export default function Edit() {
   }, [driver, dispatch]);
 
   useEffect(() => {
-    return setFormData({
-      name: "",
-      surname: "",
-      nationality: "",
-      image: "",
-      birthdate: "",
-      description: "",
-      teams: [],
-    });
+    return ()=>{
+      setFormData({
+        name: "",
+        surname: "",
+        nationality: "",
+        image: "",
+        birthdate: "",
+        description: "",
+        teams: [],
+      });
+      dispatch(cleanUpdate())
+    }
   }, []);
 
   return (
@@ -153,7 +156,7 @@ export default function Edit() {
           <span className="text-danger">{errors.surname}</span>
         </div>
       </div>
-      <div className="row">
+      <div className="row mt-2">
         <div className="col-md-6">
           <label htmlFor="nationality" className="form-label">
             Nacionalidad:
@@ -169,7 +172,7 @@ export default function Edit() {
           />
           <span className="text-danger">{errors.nationality}</span>
         </div>
-        <div className="col-md-6">
+        <div className="col-md-3">
           <label htmlFor="image" className="form-label">
             Imagen:
           </label>
@@ -189,8 +192,11 @@ export default function Edit() {
           />
           <span className="text-danger">{errors.image}</span>
         </div>
+        {typeof formData.image === "string" && <div className="col-md-2">
+          <img src={formData.image} className="img-fluid"/>
+        </div>}
       </div>
-      <div className="row">
+      <div className="row mt-2">
         <div className="col-md-6">
           <label htmlFor="birthdate" className="form-label">
             Fecha de nacimiento:
