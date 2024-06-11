@@ -140,6 +140,11 @@ export default function rootReducer(
       if (action.payload.success) {
         return { ...state, captchaRequest: true };
       } else return { ...state, captchaRequest: false };
+    case "CLEAN_POST":
+      return {...state, msjPost: action.payload};
+    case "CLEAN_UPDATE":
+      return {...state, msjUpdate: action.payload};
+    
     default:
       return { ...state };
   }
