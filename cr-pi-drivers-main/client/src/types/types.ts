@@ -66,4 +66,6 @@ export type Action =
   | { type: "SORT_NAME"; payload: string }
   | { type: "SORT_TEAM"; payload: string }
   | { type: "CLEAN_DETAIL"; payload: null }
-  | { type: "VALIDATE_CAPTCHA"; payload: CaptchaRequest };
+  | { type: "VALIDATE_CAPTCHA"; payload: CaptchaRequest }
+  | { type: "CLEAN_POST", payload: null}
+  | { type: "CLEAN_UPDATE", payload: null};
