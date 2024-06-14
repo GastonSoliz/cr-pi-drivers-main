@@ -49,10 +49,10 @@ export function postDriver(driver: Driver) {
   return async (dispatch: Dispatch<Action>) => {
     dispatch({ type: "POST_DRIVER_REQUEST", payload: "Solicitud en proceso" });
     try {
-      const { data } = await axios.post<Driver>(endpoint, driver,{
+      const { data } = await axios.post<Driver>(endpoint, driver, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
       dispatch({ type: "POST_DRIVER_SUCCESS", payload: data });
     } catch (error) {
@@ -61,11 +61,21 @@ export function postDriver(driver: Driver) {
   };
 }
 
-export function deleteDriver(id: string) {
+export function deleteDriver(
+  id: string
+): (dispatch: Dispatch<Action>) => Promise<void> {
   const endpoint: string = `${URL}drivers/${id}`;
   return async (dispatch: Dispatch<Action>) => {
-    await axios.delete(endpoint);
-    return dispatch({ type: "DELETE_DRIVER", payload: id });
+    dispatch({
+      type: "DELETE_DRIVER_REQUEST",
+      payload: "Solicitud en proceso",
+    });
+    try {
+      await axios.delete(endpoint);
+      dispatch({ type: "DELETE_DRIVER_SUCCESS", payload: id });
+    } catch (error) {
+      dispatch({ type: "DELETE_DRIVER_FAILURE", payload: "Solicitud fallida" });
+    }
   };
 }
 
@@ -82,8 +92,8 @@ export function updateDriver(
     try {
       const { data } = await axios.put(endpoint, driver, {
         headers: {
-          'Content-Type': 'multipart/form-data'
-        }
+          "Content-Type": "multipart/form-data",
+        },
       });
       dispatch({ type: "UPDATE_DRIVER_SUCCESS", payload: data });
     } catch (error) {
@@ -122,10 +132,14 @@ export function cleanDetail(): Action {
   return { type: "CLEAN_DETAIL", payload: null };
 }
 
-export function cleanPost() : Action{
-  return { type: "CLEAN_POST", payload: null}
+export function cleanPost(): Action {
+  return { type: "CLEAN_POST", payload: null };
 }
 
-export function cleanUpdate() : Action{
-  return { type: "CLEAN_UPDATE", payload: null}
+export function cleanUpdate(): Action {
+  return { type: "CLEAN_UPDATE", payload: null };
+}
+
+export function cleanDelete(): Action {
+  return { type: "CLEAN_DELETE", payload: null };
 }
