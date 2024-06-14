@@ -8,6 +8,7 @@ const initialState: State = {
   msjDrivers: null,
   msjPost: null,
   msjUpdate: null,
+  msjDelete: "Solicitud Exitosa",
   captchaRequest: false,
 };
 
@@ -55,7 +56,9 @@ export default function rootReducer(
         ...state,
         msjPost: action.payload,
       };
-    case "DELETE_DRIVER":
+    case "DELETE_DRIVER_REQUEST":
+      return { ...state, msjDelete: action.payload };
+    case "DELETE_DRIVER_SUCCESS":
       return {
         ...state,
         filteredDrivers: [
@@ -63,7 +66,10 @@ export default function rootReducer(
             (driver: Driver) => driver.id !== action.payload
           ),
         ],
+        msjDelete: "Solicitud Exitosa",
       };
+    case "DELETE_DRIVER_FAILURE":
+      return { ...state, msjDelete: action.payload };
     case "UPDATE_DRIVER_REQUEST":
       return {
         ...state,
@@ -141,10 +147,11 @@ export default function rootReducer(
         return { ...state, captchaRequest: true };
       } else return { ...state, captchaRequest: false };
     case "CLEAN_POST":
-      return {...state, msjPost: action.payload};
+      return { ...state, msjPost: action.payload };
     case "CLEAN_UPDATE":
-      return {...state, msjUpdate: action.payload};
-    
+      return { ...state, msjUpdate: action.payload };
+    case "CLEAN_DELETE":
+      return { ...state, msjDelete: action.payload };
     default:
       return { ...state };
   }
