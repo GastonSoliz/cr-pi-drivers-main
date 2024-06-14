@@ -1,7 +1,12 @@
 import { useEffect, useState } from "react";
 import validateForm from "../../utils/validateForm.ts";
 import { useDispatch, useSelector } from "react-redux";
-import { cleanPost, getTeams, postDriver, validateCaptcha } from "../../redux/actions.ts";
+import {
+  cleanPost,
+  getTeams,
+  postDriver,
+  validateCaptcha,
+} from "../../redux/actions.ts";
 //import style from "./Form.module.css";
 import React from "react";
 import { Team, Driver, DriverError, State } from "../../types/types.ts";
@@ -28,7 +33,7 @@ export default function Form() {
     teams: [],
   });
 
-  console.log(driver);
+  console.log("msj: ", msj);
 
   const [errors, setErrors] = useState<DriverError>({});
 
@@ -42,8 +47,8 @@ export default function Form() {
     if (files && files.length > 0) {
       setDriver({ ...driver, image: files[0] });
       setErrors(validateForm({ ...driver, image: files[0] }));
-    }else {
-      setDriver({...driver, image: ""})
+    } else {
+      setDriver({ ...driver, image: "" });
       setErrors(validateForm({ ...driver, image: "" }));
     }
   };
@@ -84,15 +89,16 @@ export default function Form() {
 
   function handleSubmit(event: React.FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-    
-    const formData = new FormData()
+
+    const formData = new FormData();
     for (const key in driver) {
-      if (key === 'teams') {
+      if (key === "teams") {
         formData.append(key, JSON.stringify(driver[key])); // Convertir teams a cadena JSON
       } else {
         formData.append(key, driver[key]);
-      }    }
-    
+      }
+    }
+
     dispatch(postDriver(formData));
   }
 
@@ -103,9 +109,9 @@ export default function Form() {
 
   useEffect(() => {
     dispatch(getTeams());
-    return ()=>{
+    return () => {
       dispatch(cleanPost());
-    }
+    };
   }, []);
 
   useEffect(() => {
@@ -223,15 +229,18 @@ export default function Form() {
         <div className="col-sm-10">
           <select className="form-select" onChange={handleTeams}>
             <option value="NONE">Seleccione equipos</option>
-            {allTeams?.map((team,index) => (
+            {allTeams?.map((team, index) => (
               <option value={team.name} key={index}>
                 {team.name}
               </option>
             ))}
           </select>
           <span className="text-danger">{errors.teams}</span>
-          {driver.teams?.map((team,index) => (
-            <div key={index} className="rounded-pill bg-light p-2 m-2 d-inline-block">
+          {driver.teams?.map((team, index) => (
+            <div
+              key={index}
+              className="rounded-pill bg-light p-2 m-2 d-inline-block"
+            >
               <span>{team.name}</span>
               <button
                 className="btn btn-outline-danger btn-sm rounded-circle"
@@ -258,20 +267,23 @@ export default function Form() {
           <button
             type="submit"
             className="btn btn-primary me-2"
-            disabled={eState || !msjCaptcha}
+            // disabled={eState || !msjCaptcha}
           >
             SUBIR
           </button>
           {msj === "Solicitud en proceso" && (
-            <img
-              src="../../../public/loading.gif"
-              className="img-fluid"
-              alt="Cargando..."
-              style={{ maxWidth: "200px", maxHeight: "200px" }}
-            />
+            <div className="alert alert-secondary d-flex align-items-center gap-4">
+              <img
+                src="/loading.gif"
+                className="img-fluid"
+                alt="Cargando..."
+                style={{ maxWidth: "50px", maxHeight: "50px" }}
+              />
+              <p className="m-0">Cargando...</p>
+            </div>
           )}
-          {msj === "Solicitud exitosa" && (
-            <span className="text-success">
+          {msj === null && (
+            <span className="alert alert-success">
               El conductor ha sido creado correctamente
             </span>
           )}
