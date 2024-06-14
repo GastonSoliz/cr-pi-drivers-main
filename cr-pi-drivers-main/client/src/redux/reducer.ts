@@ -8,7 +8,7 @@ const initialState: State = {
   msjDrivers: null,
   msjPost: null,
   msjUpdate: null,
-  msjDelete: "Solicitud Exitosa",
+  msjDelete: null,
   captchaRequest: false,
 };
 
