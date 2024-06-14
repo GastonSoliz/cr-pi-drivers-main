@@ -37,6 +37,7 @@ export type State = {
   msjDrivers: string | null;
   msjPost: string | null;
   msjUpdate: string | null;
+  msjDelete: string | null;
   captchaRequest: boolean;
 };
 
@@ -57,7 +58,9 @@ export type Action =
   | { type: "POST_DRIVER_REQUEST"; payload: string }
   | { type: "POST_DRIVER_SUCCESS"; payload: Driver }
   | { type: "POST_DRIVER_FAILURE"; payload: string }
-  | { type: "DELETE_DRIVER"; payload: string }
+  | { type: "DELETE_DRIVER_REQUEST"; payload: string }
+  | { type: "DELETE_DRIVER_SUCCESS"; payload: string }
+  | { type: "DELETE_DRIVER_FAILURE"; payload: string }
   | { type: "UPDATE_DRIVER_REQUEST"; payload: string }
   | { type: "UPDATE_DRIVER_SUCCESS"; payload: Driver }
   | { type: "UPDATE_DRIVER_FAILURE"; payload: string }
@@ -67,5 +70,6 @@ export type Action =
   | { type: "SORT_TEAM"; payload: string }
   | { type: "CLEAN_DETAIL"; payload: null }
   | { type: "VALIDATE_CAPTCHA"; payload: CaptchaRequest }
-  | { type: "CLEAN_POST", payload: null}
-  | { type: "CLEAN_UPDATE", payload: null};
+  | { type: "CLEAN_POST"; payload: null }
+  | { type: "CLEAN_UPDATE"; payload: null }
+  | { type: "CLEAN_DELETE"; payload: null };
