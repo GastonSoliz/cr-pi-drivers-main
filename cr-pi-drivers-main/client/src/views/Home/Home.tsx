@@ -25,6 +25,9 @@ export default function Home() {
   const allTeams: Team[] = useSelector((state: State) => state.allTeams);
   //const allDrivers = useSelector((state) => state.allDrivers);
   const msj: string | null = useSelector((state: State) => state.msjDrivers);
+  const msjDelete: string | null = useSelector(
+    (state: State) => state.msjDelete
+  );
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const driversPerPage: number = 9;
@@ -52,10 +55,10 @@ export default function Home() {
   }
 
   useEffect(() => {
-    if(allDrivers.length === 0){
+    if (allDrivers.length === 0) {
       dispatch(getDrivers());
     }
-    if(allTeams.length === 0){
+    if (allTeams.length === 0) {
       dispatch(getTeams());
     }
   }, [dispatch]);
@@ -96,13 +99,13 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="d-flex justify-content-center align-items-center">
+      <div className="d-flex justify-content-center align-items-center mt-4">
         {msj === "Solicitud en proceso" && (
           <div>
             <img
               src="/loading.gif"
               alt="Cargando..."
-              style={{ maxWidth: "200px", maxHeight: "200px" }}
+              style={{ maxWidth: "100px", maxHeight: "100px" }}
             />
             <span>Cargando conductores...</span>
           </div>
@@ -121,6 +124,29 @@ export default function Home() {
         total={totalPages}
         currentPage={currentPage}
       />
+
+      {msjDelete === "Solicitud Exitosa" && (
+        <div className="alert alert-success position-fixed bottom-0 mb-4">
+          <p className="m-0">El conductor ha sido eliminado con éxito!</p>
+        </div>
+      )}
+      {msjDelete === "Solicitud fallida" && (
+        <div className="alert alert-danger position-fixed bottom-0 mb-4">
+          <p className="m-0">
+            Ocurrio un error tratando de eliminar al conductor...
+          </p>
+        </div>
+      )}
+      {msjDelete === "Solicitud en proceso" && (
+        <div className="alert alert-secondary position-fixed bottom-0 mb-4 d-flex align-items-center gap-2">
+          <img
+            src="/loading.gif"
+            alt="Cargando..."
+            style={{ maxWidth: "25px", maxHeight: "25px" }}
+          />
+          <p className="m-0">Cargando... </p>
+        </div>
+      )}
     </div>
   );
 }

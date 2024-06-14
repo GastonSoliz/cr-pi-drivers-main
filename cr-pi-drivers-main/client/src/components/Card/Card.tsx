@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 //import style from "./Card.module.css";
 import { useDispatch } from "react-redux";
-import { deleteDriver } from "../../redux/actions";
+import { cleanDelete, deleteDriver } from "../../redux/actions";
 import React from "react";
 import { DriverError, State } from "../../types/types";
 import { ThunkDispatch } from "redux-thunk";
@@ -16,6 +16,9 @@ export default function Card({ driver }: CardProps) {
 
   function handleClose(id: string): void {
     dispatch(deleteDriver(id));
+    setTimeout(() => {
+      dispatch(cleanDelete());
+    }, 4000);
   }
 
   return (
