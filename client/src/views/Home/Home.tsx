@@ -36,7 +36,7 @@ export default function Home() {
   const endIndex: number = startIndex + driversPerPage;
 
   const currentDrivers: DriverError[] = allDrivers?.slice(startIndex, endIndex);
-  const totalPages: number = Math.ceil(allDrivers.length / driversPerPage);
+  const totalPages: number = Math.floor(allDrivers.length / driversPerPage);
 
   function pageHandler(pageNumber: number): void {
     setCurrentPage(pageNumber);
@@ -99,13 +99,14 @@ export default function Home() {
         </div>
       </div>
 
-      <div className="d-flex justify-content-center align-items-center mt-4">
+      <div className="d-flex justify-content-center align-items-center mt-4 gap-4">
         {msj === "Solicitud en proceso" && (
           <div>
             <img
               src="/loading.gif"
               alt="Cargando..."
-              style={{ maxWidth: "100px", maxHeight: "100px" }}
+              className="img-fluid"
+              style={{ maxWidth: "50px", maxHeight: "50px" }}
             />
             <span>Cargando conductores...</span>
           </div>
@@ -142,6 +143,7 @@ export default function Home() {
           <img
             src="/loading.gif"
             alt="Cargando..."
+            className="img-fluid"
             style={{ maxWidth: "25px", maxHeight: "25px" }}
           />
           <p className="m-0">Cargando... </p>
