@@ -119,9 +119,6 @@ export default function Form() {
     setEState(hasError);
   }, [errors, msjCaptcha]);
 
-  console.log("eState: ", eState);
-  console.log("errors: ", errors);
-
   return (
     <form onSubmit={handleSubmit} className="container mt-4">
       <div className="mb-3 row">
@@ -264,35 +261,37 @@ export default function Form() {
             sitekey="6Le368MpAAAAAFK8yYYtnzY30wUnZzmLdkNIDEWo"
             onChange={handleCaptcha}
           ></ReCAPTCHA>
-          <button
-            type="submit"
-            className="btn btn-primary me-2"
-            // disabled={eState || !msjCaptcha}
-          >
-            SUBIR
-          </button>
-          {msj === "Solicitud en proceso" && (
-            <div className="alert alert-secondary d-flex align-items-center gap-4">
-              <img
-                src="/loading.gif"
-                className="img-fluid"
-                alt="Cargando..."
-                style={{ maxWidth: "50px", maxHeight: "50px" }}
-              />
-              <p className="m-0">Cargando...</p>
-            </div>
-          )}
-          {msj === null && (
-            <span className="alert alert-success">
-              El conductor ha sido creado correctamente
-            </span>
-          )}
-          {msj === "Solicitud fallida" && (
-            <span className="text-danger">
-              Hubo un error al crear un conductor
-            </span>
-          )}
         </div>
+      </div>
+      <div>
+        <button
+          type="submit"
+          className="btn btn-primary me-2"
+          disabled={eState || !msjCaptcha}
+        >
+          SUBIR
+        </button>
+        {msj === "Solicitud en proceso" && (
+          <div className="alert alert-secondary d-flex align-items-center gap-4">
+            <img
+              src="/loading.gif"
+              className="img-fluid"
+              alt="Cargando..."
+              style={{ maxWidth: "50px", maxHeight: "50px" }}
+            />
+            <p className="m-0">Cargando...</p>
+          </div>
+        )}
+        {msj === null && (
+          <span className="alert alert-success">
+            El conductor ha sido creado correctamente
+          </span>
+        )}
+        {msj === "Solicitud fallida" && (
+          <span className="text-danger">
+            Hubo un error al crear un conductor
+          </span>
+        )}
       </div>
     </form>
   );
