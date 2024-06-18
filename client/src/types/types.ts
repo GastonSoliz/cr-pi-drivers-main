@@ -38,6 +38,7 @@ export type State = {
   msjPost: string | null;
   msjUpdate: string | null;
   msjDelete: string | null;
+  msjDetail: string | null;
   captchaRequest: boolean;
 };
 
@@ -51,7 +52,9 @@ interface CaptchaRequest {
 export type Action =
   | { type: "GET_TEAMS"; payload: Team[] }
   | { type: "GET_DRIVER_BY_NAME"; payload: Driver[] | Driver }
-  | { type: "GET_DRIVER_BY_ID"; payload: Driver }
+  | { type: "GET_DRIVERID_REQUEST"; payload: string }
+  | { type: "GET_DRIVERID_SUCCESS"; payload: Driver }
+  | { type: "GET_DRIVERID_FAILURE"; payload: string }
   | { type: "GET_DRIVERS_REQUEST"; payload: string }
   | { type: "GET_DRIVERS_SUCCESS"; payload: Driver[] }
   | { type: "GET_DRIVERS_FAILURE"; payload: string }
