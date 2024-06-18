@@ -34,6 +34,7 @@ export type State = {
   filteredDrivers: Driver[] | Driver;
   driverDetail: Driver | null;
   allTeams: Team[];
+  msjSearch: string | null;
   msjDrivers: string | null;
   msjPost: string | null;
   msjUpdate: string | null;
@@ -51,7 +52,9 @@ interface CaptchaRequest {
 
 export type Action =
   | { type: "GET_TEAMS"; payload: Team[] }
-  | { type: "GET_DRIVER_BY_NAME"; payload: Driver[] | Driver }
+  | { type: "GET_DRIVER_BY_NAME_REQUEST"; payload: string }
+  | { type: "GET_DRIVER_BY_NAME_SUCCESS"; payload: Driver[] | Driver }
+  | { type: "GET_DRIVER_BY_NAME_FAILURE"; payload: string }
   | { type: "GET_DRIVERID_REQUEST"; payload: string }
   | { type: "GET_DRIVERID_SUCCESS"; payload: Driver }
   | { type: "GET_DRIVERID_FAILURE"; payload: string }
