@@ -28,6 +28,9 @@ export default function Home() {
   const msjDelete: string | null = useSelector(
     (state: State) => state.msjDelete
   );
+  const msjSearch: string | null = useSelector(
+    (state: State) => state.msjSearch
+  );
 
   const [currentPage, setCurrentPage] = useState<number>(1);
   const driversPerPage: number = 9;
@@ -54,6 +57,9 @@ export default function Home() {
     dispatch(sortTeam(event.target.value));
   }
 
+  console.log("Mensaje de getDrivers: ", msj);
+  console.log("Mensaje de search bar: ", msjSearch);
+
   useEffect(() => {
     if (allDrivers.length === 0) {
       dispatch(getDrivers());
@@ -65,43 +71,44 @@ export default function Home() {
 
   return (
     <div className="container mt-4">
-      <div className="row mb-6">
-        <div className="col-md-1">
-          <select
-            className="form-select"
-            onChange={handleOrigin}
-            defaultValue="ALL"
-          >
-            <option value="ALL">ALL</option>
-            <option value="ID">API</option>
-            <option value="BDD">BDD</option>
-          </select>
+      {msj === "Solicitud exitosa" && (
+        <div className="row mb-6">
+          <div className="col-md-1">
+            <select
+              className="form-select"
+              onChange={handleOrigin}
+              defaultValue="ALL"
+            >
+              <option value="ALL">ALL</option>
+              <option value="ID">API</option>
+              <option value="BDD">BDD</option>
+            </select>
+          </div>
+          <div className="col-md-2">
+            <select className="form-select" onChange={handleDate}>
+              <option value="NONE">AÑO</option>
+              <option value="ASCENDENTE">ASCENDENTE</option>
+              <option value="DESCENDENTE">DESCENDENTE</option>
+            </select>
+          </div>
+          <div className="col-md-4">
+            <select className="form-select" onChange={handleTeams}>
+              <option value="NONE">EQUIPOS</option>
+              {allTeams?.map((team) => (
+                <option value={team.name} key={team.id}>
+                  {team.name}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col-md-4">
+            <SearchBar />
+          </div>
         </div>
-        <div className="col-md-2">
-          <select className="form-select" onChange={handleDate}>
-            <option value="NONE">AÑO</option>
-            <option value="ASCENDENTE">ASCENDENTE</option>
-            <option value="DESCENDENTE">DESCENDENTE</option>
-          </select>
-        </div>
-        <div className="col-md-4">
-          <select className="form-select" onChange={handleTeams}>
-            <option value="NONE">EQUIPOS</option>
-            {allTeams?.map((team) => (
-              <option value={team.name} key={team.id}>
-                {team.name}
-              </option>
-            ))}
-          </select>
-        </div>
-        <div className="col-md-4">
-          <SearchBar />
-        </div>
-      </div>
-
+      )}
       <div className="d-flex justify-content-center align-items-center mt-4 gap-4">
         {msj === "Solicitud en proceso" && (
-          <div>
+          <>
             <img
               src="/loading.gif"
               alt="Cargando..."
@@ -109,7 +116,7 @@ export default function Home() {
               style={{ maxWidth: "50px", maxHeight: "50px" }}
             />
             <span>Cargando conductores...</span>
-          </div>
+          </>
         )}
 
         {msj === "Solicitud fallida" && (
@@ -119,12 +126,35 @@ export default function Home() {
         )}
       </div>
 
-      <CardList allDrivers={currentDrivers} />
-      <Pagination
-        page={pageHandler}
-        total={totalPages}
-        currentPage={currentPage}
-      />
+      {msjSearch === "Solicitud en proceso" && (
+        <div className="d-flex justify-content-center align-items-center mt-4 gap-4">
+          <img
+            src="/loading.gif"
+            alt="Cargando..."
+            className="img-fluid"
+            style={{ maxWidth: "50px", maxHeight: "50px" }}
+          />
+          <span>Cargando conductores...</span>
+        </div>
+      )}
+
+      {msjSearch === "Solicitud fallida" && (
+        <span className="text-danger">
+          Hubo un error al cargar los conductores...
+        </span>
+      )}
+
+      {msjSearch !== "Solicitud en proceso" &&
+        msjSearch !== "Solicitud fallida" && (
+          <>
+            <CardList allDrivers={currentDrivers} />
+            <Pagination
+              page={pageHandler}
+              total={totalPages}
+              currentPage={currentPage}
+            />
+          </>
+        )}
 
       {msjDelete === "Solicitud Exitosa" && (
         <div className="alert alert-success position-fixed bottom-0 mb-4">
