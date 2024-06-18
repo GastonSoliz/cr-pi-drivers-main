@@ -16,9 +16,22 @@ export function getTeams() {
 export function getDriverByName(name: string) {
   const endpoint: string = `${URL}drivers?name=${name}`;
   return async (dispatch: Dispatch<Action>) => {
-    const { data } = await axios.get<Driver[] | Driver>(endpoint);
-    console.log(data);
-    return dispatch({ type: "GET_DRIVER_BY_NAME", payload: data });
+    dispatch({
+      type: "GET_DRIVER_BY_NAME_REQUEST",
+      payload: "Solicitud en proceso",
+    });
+    try {
+      const { data } = await axios.get<Driver[] | Driver>(endpoint);
+      dispatch({ type: "GET_DRIVER_BY_NAME_SUCCESS", payload: data });
+    } catch (error) {
+      dispatch({
+        type: "GET_DRIVER_BY_NAME_FAILURE",
+        payload: "Solicitud fallida",
+      });
+    }
+    // const { data } = await axios.get<Driver[] | Driver>(endpoint);
+    // console.log(data);
+    // return dispatch({ type: "GET_DRIVER_BY_NAME", payload: data });
   };
 }
 
