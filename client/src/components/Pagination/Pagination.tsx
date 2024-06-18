@@ -12,29 +12,72 @@ export default function Pagination({
   total,
   currentPage,
 }: PaginationProps) {
-  const pageNumbers: number[] = [];
+  // const pageNumbers: number[] = [];
 
-  for (let i: number = 1; i <= total; i++) {
-    pageNumbers.push(i);
-  }
+  // for (let i: number = 1; i <= total; i++) {
+  //   pageNumbers.push(i);
+  // }
 
-  const maxButtons: number = 8;
-  const visiblePageNumbers: number[] = pageNumbers.slice(
-    Math.max(currentPage - Math.floor(maxButtons / 2), 0),
-    Math.min(currentPage + Math.floor(maxButtons / 2), total)
-  );
+  // const maxButtons: number = 8;
+  // const visiblePageNumbers: number[] = pageNumbers.slice(
+  //   Math.max(currentPage - Math.floor(maxButtons / 2), 0),
+  //   Math.min(currentPage + Math.floor(maxButtons / 2), total)
+  // );
+  const getPageNumbers = (): number[] => {
+    const totalPageNumbers: number = 5;
+    const totalButtonsToShow: number = Math.min(totalPageNumbers, total);
+
+    const halfButtonsToShow: number = Math.floor(totalButtonsToShow / 2);
+    let startPage: number = Math.max(1, currentPage - halfButtonsToShow);
+    let endPage: number = Math.min(total, currentPage + halfButtonsToShow);
+
+    if (currentPage - halfButtonsToShow <= 0) {
+      endPage = totalButtonsToShow;
+    }
+
+    if (currentPage + halfButtonsToShow > total) {
+      startPage = total - totalButtonsToShow + 1;
+    }
+
+    const pageNumbers: number[] = [];
+    for (let i = startPage; i <= endPage; i++) {
+      pageNumbers.push(i);
+    }
+
+    return pageNumbers;
+  };
+
+  const visiblePageNumbers: number[] = getPageNumbers();
 
   return (
-    <div className={style.paginationContainer}>
+    <div className="d-flex justify-content-center gap-2  m-4 ">
+      {currentPage > 1 && (
+        <button
+          onClick={() => page(currentPage - 1)}
+          className="btn btn-outline-primary btn-sm"
+        >
+          {"<"}
+        </button>
+      )}
       {visiblePageNumbers.map((pageNumber) => (
         <button
           key={pageNumber}
           onClick={() => page(pageNumber)}
-          className={pageNumber === currentPage ? "active" : ""}
+          className={`btn btn-outline-primary btn-sm ${
+            pageNumber === currentPage ? "active" : ""
+          }`}
         >
           {pageNumber}
         </button>
       ))}
+      {currentPage < total && (
+        <button
+          onClick={() => page(currentPage + 1)}
+          className="btn btn-outline-primary btn-sm"
+        >
+          {">"}
+        </button>
+      )}
     </div>
   );
 }
