@@ -17,6 +17,7 @@ export function getDriverByName(name: string) {
   const endpoint: string = `${URL}drivers?name=${name}`;
   return async (dispatch: Dispatch<Action>) => {
     const { data } = await axios.get<Driver[] | Driver>(endpoint);
+    console.log(data);
     return dispatch({ type: "GET_DRIVER_BY_NAME", payload: data });
   };
 }
@@ -24,10 +25,16 @@ export function getDriverByName(name: string) {
 export function getDriverById(id: number | string) {
   const endpoint: string = `${URL}drivers/${id}`;
   return async (dispatch: Dispatch<Action>) => {
-    const { data } = await axios.get<Driver>(endpoint);
-    if (data) {
-      return dispatch({ type: "GET_DRIVER_BY_ID", payload: data });
+    dispatch({ type: "GET_DRIVERID_REQUEST", payload: "Solicitud en proceso" });
+    try {
+      const { data } = await axios.get<Driver>(endpoint);
+      dispatch({ type: "GET_DRIVERID_SUCCESS", payload: data });
+    } catch (error) {
+      dispatch({ type: "GET_DRIVERID_FAILURE", payload: "Solicitud fallida" });
     }
+    // if (data) {
+    //   return dispatch({ type: "GET_DRIVER_BY_ID", payload: data });
+    // }
   };
 }
 
