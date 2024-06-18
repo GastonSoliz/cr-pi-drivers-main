@@ -10,6 +10,7 @@ const initialState: State = {
   msjUpdate: null,
   msjDelete: null,
   msjDetail: null,
+  msjSearch: null,
   captchaRequest: false,
 };
 
@@ -49,8 +50,19 @@ export default function rootReducer(
       };
     case "GET_DRIVERID_FAILURE":
       return { ...state, msjDetail: action.payload };
-    case "GET_DRIVER_BY_NAME":
-      return { ...state, filteredDrivers: action.payload };
+    case "GET_DRIVER_BY_NAME_REQUEST":
+      return { ...state, msjSearch: action.payload };
+    case "GET_DRIVER_BY_NAME_SUCCESS":
+      return {
+        ...state,
+        filteredDrivers: action.payload,
+        msjSearch: "Solicitud exitosa",
+      };
+    case "GET_DRIVER_BY_NAME_FAILURE":
+      return {
+        ...state,
+        msjSearch: action.payload,
+      };
     case "POST_DRIVER_REQUEST":
       return {
         ...state,
