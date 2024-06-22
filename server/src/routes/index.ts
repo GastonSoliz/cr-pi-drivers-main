@@ -20,7 +20,8 @@ const validateDriver = (req: Request, res: Response, next: NextFunction) => {
   if (!surname) return res.status(400).json({ error: "FALTA EL APELLIDO" });
   if (!description)
     return res.status(400).json({ error: "FALTA LA DESCRIPCION" });
-  if (!image) return res.status(400).json({ error: "FALTA LA IMAGEN" });
+  if (!image)
+    if (!req.file) return res.status(400).json({ error: "FALTA LA IMAGEN" });
   if (!nationality)
     return res.status(400).json({ error: "FALTA LA NACIONALIDAD" });
   if (!birthdate)
@@ -34,13 +35,16 @@ const upload = multer();
 
 router.get("/drivers", getDrivers);
 router.get("/drivers/:idDriver", getDriverById);
-//router.post("/drivers", validateDriver, postDrivers);
-router.post("/drivers", upload.single("image"), postDrivers);
+//router.post("/drivers", upload.single("image"), postDrivers);
+router.post("/drivers", upload.single("image"), validateDriver, postDrivers);
 router.get("/teams", getTeams);
 router.delete("/drivers/:idDriver", deleteDriver);
-// router.put("/drivers/:idDriver", validateDriver, updateDriver);
-router.put("/drivers/:idDriver", upload.single("image"),updateDriver);
+router.put(
+  "/drivers/:idDriver",
+  upload.single("image"),
+  validateDriver,
+  updateDriver
+);
 router.post("/captcha", validateCaptchaHandler);
-//router.post("/cloud", upload.single("img"), cloudHandler);
 
 export default router;
