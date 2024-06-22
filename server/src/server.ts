@@ -2,7 +2,6 @@ const express = require("express");
 const bodyParser = require("body-parser");
 require("dotenv").config();
 
-//const router = require("./routes/index");
 import router from "./routes/index";
 
 const morgan = require("morgan");
@@ -17,5 +16,4 @@ server.use(cors());
 
 server.use(router);
 
-//module.exports = server;
 export default server;
