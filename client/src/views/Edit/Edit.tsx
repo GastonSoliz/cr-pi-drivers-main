@@ -270,7 +270,7 @@ export default function Edit() {
           </button>
           {msj === "Solicitud en proceso" && (
             <img
-              src="../../../public/loading.gif"
+              src="/loading.gif"
               className="img-fluid"
               alt="Cargando..."
               style={{ maxWidth: "200px", maxHeight: "200px" }}
