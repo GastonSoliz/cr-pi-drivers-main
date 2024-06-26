@@ -4,27 +4,27 @@ import { Sequelize } from "sequelize";
 import fs from "fs";
 import path from "path";
 
-export const sequelize = new Sequelize(
-  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/drivers`,
-  {
-    logging: false,
-    native: false,
-  }
-);
-
-// export const sequelize = new Sequelize(
-//   DB_POSTGRE_URL || `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/drivers`,
+//export const sequelize = new Sequelize(
+//   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/drivers`,
 //   {
 //     logging: false,
 //     native: false,
-//     dialectOptions: {
-//       ssl: {
-//         require: true,
-//         rejectUnauthorized: false,
-//       },
-//     },
 //   }
 // );
+
+export const sequelize = new Sequelize(
+  DB_POSTGRE_URL || `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/drivers`,
+  {
+    logging: false,
+    native: false,
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
+  }
+);
 
 const basename = path.basename(__filename);
 
