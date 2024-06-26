@@ -12,17 +12,6 @@ export default function Pagination({
   total,
   currentPage,
 }: PaginationProps) {
-  // const pageNumbers: number[] = [];
-
-  // for (let i: number = 1; i <= total; i++) {
-  //   pageNumbers.push(i);
-  // }
-
-  // const maxButtons: number = 8;
-  // const visiblePageNumbers: number[] = pageNumbers.slice(
-  //   Math.max(currentPage - Math.floor(maxButtons / 2), 0),
-  //   Math.min(currentPage + Math.floor(maxButtons / 2), total)
-  // );
   const getPageNumbers = (): number[] => {
     const totalPageNumbers: number = 5;
     const totalButtonsToShow: number = Math.min(totalPageNumbers, total);
