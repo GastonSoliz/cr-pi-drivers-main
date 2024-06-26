@@ -57,9 +57,6 @@ export default function Home() {
     dispatch(sortTeam(event.target.value));
   }
 
-  console.log("Mensaje de getDrivers: ", msj);
-  console.log("Mensaje de search bar: ", msjSearch);
-
   useEffect(() => {
     if (allDrivers.length === 0) {
       dispatch(getDrivers());
