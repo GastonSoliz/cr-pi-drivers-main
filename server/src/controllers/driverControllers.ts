@@ -6,7 +6,6 @@ const URL: string = "http://localhost:5000/drivers/";
 const default_image: string =
   "https://upload.wikimedia.org/wikipedia/commons/3/33/F1.svg";
 const urlRegex = /^(ftp|http|https):\/\/[^ "]+$/;
-import { response } from "express";
 
 export const cleanArray = (arr: DriverNative[]) =>
   arr.map((elem) => {
@@ -31,16 +30,10 @@ export const createDriver = async (
   birthdate: string,
   teams: Teams[]
 ) => {
-  console.log("tipo de imagen: ",typeof image);
   if (Buffer.isBuffer(image)) {
-    console.log("entra?");
-    const url_image : any= await cloudHandler(image);
-  // console.log("llega al back:", image);
-  //console.log("driver tiene esto:", url_image);
-    console.log("regresa de todo: ", url_image);
+    const url_image: any = await cloudHandler(image);
     image = url_image.secure_url;
   }
-  console.log("paso la parte de imagen que es: ",image);
 
   const newDriver = await Driver.create({
     name,
@@ -51,22 +44,15 @@ export const createDriver = async (
     birthdate,
   });
 
-  if (typeof teams === 'string') {
+  if (typeof teams === "string") {
     teams = JSON.parse(teams);
-  } 
-  
-  // console.log("teams llego a parsearse en controller: ",teams);
-  // console.log("confirmame el tamaño de teams: ",teams.length);
-  // for(let i=0;i<teams.length;i++){
-  //   console.log("team individual:", teams[i]);
-  // }
+  }
   for (let i = 0; i < teams.length; i++) {
     const teamName = await Team.findOne({ where: { name: teams[i].name } });
     await newDriver.addTeam(teamName);
   }
 
   return newDriver;
-  // return null
 };
 
 export const getDriverId = async (id: number | string, source: string) => {
@@ -181,9 +167,9 @@ export const updateDriverId = async (
   teams: Teams[]
 ) => {
   const driverToUpdate = await Driver.findByPk(idDriver);
-  if(Buffer.isBuffer(image)){
-    const url_image : any = await cloudHandler(image);
-    image= url_image.secure_url;
+  if (Buffer.isBuffer(image)) {
+    const url_image: any = await cloudHandler(image);
+    image = url_image.secure_url;
   }
   const updateData: Drivers = {
     name: "",
@@ -217,9 +203,9 @@ export const updateDriverId = async (
     updateData.description = description;
   }
 
-  if (typeof teams === 'string') {
+  if (typeof teams === "string") {
     teams = JSON.parse(teams);
-  } 
+  }
 
   if (driverToUpdate) {
     const dbDriverUpdate = await driverToUpdate.update(updateData);
@@ -230,7 +216,6 @@ export const updateDriverId = async (
           (currentTeam: Teams) => currentTeam.name === newTeam.name
         );
       });
-      //console.log("teamsToAdd:", teamsToAdd);
 
       const teamsToRemoveNames = currentTeams
         .filter(
@@ -238,16 +223,7 @@ export const updateDriverId = async (
             !teams.some((newTeam) => newTeam.name === currentTeam.name)
         )
         .map((team: Teams) => team.name);
-      //console.log("teamsOut", teamsToRemoveNames);
 
-      // if (teamsToAdd.length > 0) {
-      //   const teamsToAddInstances = await Team.findAll({
-      //     where: {
-      //       name: teamsToAdd,
-      //     },
-      //   });
-      //   await driverToUpdate.addTeams(teamsToAddInstances);
-      // }
       if (teamsToAdd.length > 0) {
         teamsToAdd.map(async (team) => {
           const teamsToAddInstances = await Team.findAll({
@@ -271,12 +247,3 @@ export const updateDriverId = async (
     return dbDriverUpdate;
   } else throw new Error("NO SE ENCONTRO EL DRIVER CON ESE ID");
 };
-
-// module.exports = {
-//   createDriver,
-//   getDriverId,
-//   getAllDrivers,
-//   searchDriversByName,
-//   deleteDriverId,
-//   updateDriverId,
-// };
