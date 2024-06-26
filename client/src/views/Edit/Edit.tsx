@@ -273,7 +273,7 @@ export default function Edit() {
               src="/loading.gif"
               className="img-fluid"
               alt="Cargando..."
-              style={{ maxWidth: "200px", maxHeight: "200px" }}
+              style={{ maxWidth: "25px", maxHeight: "25px" }}
             />
           )}
           {msj === "Solicitud exitosa" && (
