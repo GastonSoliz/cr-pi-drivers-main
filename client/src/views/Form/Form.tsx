@@ -270,23 +270,23 @@ export default function Form() {
           SUBIR
         </button>
         {msj === "Solicitud en proceso" && (
-          <div className="alert alert-secondary d-flex align-items-center gap-4">
+          <div className="alert alert-secondary d-inline-flex align-items-center gap-2">
             <img
               src="/loading.gif"
               className="img-fluid"
               alt="Cargando..."
-              style={{ maxWidth: "50px", maxHeight: "50px" }}
+              style={{ maxWidth: "25px", maxHeight: "25px" }}
             />
             <p className="m-0">Cargando...</p>
           </div>
         )}
-        {msj === null && (
+        {msj === "Solicitud exitosa" && (
           <span className="alert alert-success">
             El conductor ha sido creado correctamente
           </span>
         )}
         {msj === "Solicitud fallida" && (
-          <span className="text-danger">
+          <span className="alert alert-danger">
             Hubo un error al crear un conductor
           </span>
         )}
