@@ -35,7 +35,6 @@ const upload = multer();
 
 router.get("/drivers", getDrivers);
 router.get("/drivers/:idDriver", getDriverById);
-//router.post("/drivers", upload.single("image"), postDrivers);
 router.post("/drivers", upload.single("image"), validateDriver, postDrivers);
 router.get("/teams", getTeams);
 router.delete("/drivers/:idDriver", deleteDriver);
