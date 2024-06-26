@@ -9,7 +9,6 @@ import {
 } from "../handlers/driversHandlers";
 import getTeams from "../handlers/teamsHandlers";
 import { validateCaptchaHandler } from "../handlers/captchaHandlers";
-import { cloudHandler } from "../handlers/cloudHandlers";
 
 const router = Router();
 
