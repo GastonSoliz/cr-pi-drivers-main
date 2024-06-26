@@ -1,6 +1,7 @@
 import axios from "axios";
 import { DriverNative, Drivers, Teams } from "../types/types";
 import { cloudHandler } from "../handlers/cloudHandlers";
+import { Op } from "sequelize";
 const { Driver, Team } = require("../db");
 const URL: string = "http://localhost:5000/drivers/";
 const default_image: string =
@@ -123,28 +124,22 @@ export const getAllDrivers = async () => {
 };
 
 export const searchDriversByName = async (name: string) => {
-  let dbDrivers = await Driver.findAll({ where: { name: name } });
-  let apiDriversRaw = (await axios.get(URL)).data;
-  let apiDrivers = cleanArray(apiDriversRaw);
-  let apiFiltered = apiDrivers.filter((elem) => elem.name === name);
+  const dbDrivers = await Driver.findAll({
+    where: { name: { [Op.like]: `%${name}%` } },
+  });
+  const apiDriversRaw = (await axios.get(URL)).data;
+  const apiDrivers = cleanArray(apiDriversRaw);
+  let apiFiltered = apiDrivers.filter(
+    (elem) =>
+      elem.name.toLowerCase().includes(name.toLowerCase()) ||
+      elem.surname.toLowerCase().includes(name.toLowerCase())
+  );
 
   let allDrivers = dbDrivers.concat(apiFiltered);
   if (allDrivers.length === 0) {
-    name = name.toLowerCase();
-    name = name.charAt(0).toUpperCase() + name.slice(1);
-    dbDrivers = await Driver.findAll({ where: { name: name } });
-    apiDriversRaw = (await axios.get(URL)).data;
-    apiDrivers = cleanArray(apiDriversRaw);
-    apiFiltered = apiDrivers.filter((elem) => elem.name === name);
-
-    allDrivers = dbDrivers.concat(apiFiltered);
-    if (allDrivers.length === 0) {
-      throw new Error("NO EXISTE NINGUN CONDUCTOR CON ESE NOMBRE");
-    } else {
-      return allDrivers.slice(0, 15);
-    }
+    throw new Error("No existe ningun conductor con ese nombre");
   } else {
-    return allDrivers.slice(0, 15);
+    return allDrivers;
   }
 };
 
