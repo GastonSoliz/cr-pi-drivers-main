@@ -35,23 +35,20 @@ export const getDriverById = async (req: Request, res: Response) => {
 export const postDrivers = async (req: Request, res: Response) => {
   const { name, surname, description, nationality, birthdate, teams } =
     req.body;
-  let {image} = req.body;
-  console.log("lo que llego al body:", req.body);
-  console.log("lo que llego al file:",req.file);
+  let { image } = req.body;
   //console.log(req.file);
   // if (!req.file) {
   //   throw new Error("No se ha recibido ningún archivo.");
   // }
   //const image = req.file.path;
   //console.log(image);
-  if(image==undefined){
+  if (image == undefined) {
     if (!req.file) {
       throw new Error("No se ha recibido ningún archivo.");
     }
     image = req.file.buffer;
   }
 
-  console.log("en el back se tiene: ",image);
   //console.log("despues: ",image);
   try {
     const newDriver = await createDriver(
@@ -83,12 +80,12 @@ export const updateDriver = async (req: Request, res: Response) => {
   const { idDriver } = req.params;
   const { name, surname, description, nationality, birthdate, teams } =
     req.body;
-    let {image}= req.body;
-  if(image===undefined){
-    if(!req.file){
+  let { image } = req.body;
+  if (image === undefined) {
+    if (!req.file) {
       throw new Error("No se ha recibido ningún archivo.");
     }
-    image= req.file.buffer;
+    image = req.file.buffer;
   }
   try {
     const newDriver = await updateDriverId(
