@@ -1,34 +1,30 @@
 require("dotenv").config();
-//const { Sequelize } = require("sequelize");
-
-//const fs = require("fs");
-//const path = require("path");
 const { DB_USER, DB_PASSWORD, DB_HOST, DB_POSTGRE_URL } = process.env;
 import { Sequelize } from "sequelize";
 import fs from "fs";
 import path from "path";
 
-// export const sequelize = new Sequelize(
-//   `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/drivers`,
-//   {
-//     logging: false,
-//     native: false,
-//   }
-// );
-
 export const sequelize = new Sequelize(
-  DB_POSTGRE_URL || `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/drivers`,
+  `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/drivers`,
   {
     logging: false,
     native: false,
-    dialectOptions: {
-      ssl: {
-        require: true,
-        rejectUnauthorized: false,
-      },
-    },
   }
 );
+
+// export const sequelize = new Sequelize(
+//   DB_POSTGRE_URL || `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}/drivers`,
+//   {
+//     logging: false,
+//     native: false,
+//     dialectOptions: {
+//       ssl: {
+//         require: true,
+//         rejectUnauthorized: false,
+//       },
+//     },
+//   }
+// );
 
 const basename = path.basename(__filename);
 
@@ -51,8 +47,6 @@ let capsEntries = entries.map((entry) => [
   entry[1],
 ]);
 
-//sequelize.models = Object.fromEntries(capsEntries);
-
 export const { Driver, Team } = sequelize.models;
 
 Driver.belongsToMany(Team, {
@@ -63,10 +57,5 @@ Team.belongsToMany(Driver, {
   through: "driver_team",
   as: "teams",
 });
-
-// module.exports = {
-//   ...sequelize.models, // para poder importar los modelos así: const { Product, User } = require('./db.js');
-//   conn: sequelize, // para importart la conexión { conn } = require('./db.js');
-// };
 
 export const conn = sequelize;
