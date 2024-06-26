@@ -158,9 +158,7 @@ export default function rootReducer(
       if (action.payload === "NONE") {
         filterTeamDriversRaw = copyDrivers;
       } else {
-        console.log("lo que hay: ", action.payload);
         filterTeamDriversRaw = copyDrivers.filter((driver) => {
-          console.log(driver.teams);
           return driver.teams?.includes(action.payload);
         });
       }

@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { cleanUpdate, getDriverById, getTeams, updateDriver } from "../../redux/actions.ts";
+import {
+  cleanUpdate,
+  getDriverById,
+  getTeams,
+  updateDriver,
+} from "../../redux/actions.ts";
 import { useParams } from "react-router-dom";
 import validateForm from "../../utils/validateForm.ts";
 //import style from "./Edit.module.css";
@@ -28,8 +33,6 @@ export default function Edit() {
     teams: driver?.teams ?? [],
   });
 
-  console.log("driver: ",formData)
-
   const { id } = useParams();
   const dispatch: ThunkDispatch<State, any, AnyAction> = useDispatch();
 
@@ -42,10 +45,10 @@ export default function Edit() {
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = e.target.files;
-    if(files){
-      setFormData({...formData, image:files[0]})
+    if (files) {
+      setFormData({ ...formData, image: files[0] });
     }
-  }
+  };
 
   function handleTeamChange(event: React.ChangeEvent<HTMLSelectElement>) {
     const teamName: string = event.target.value;
@@ -74,11 +77,11 @@ export default function Edit() {
   function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const driver = new FormData();
-    for(const key in formData){
-      if(key === "teams"){
-        driver.append(key, JSON.stringify(formData[key])); 
-      }else{
-        driver.append(key,formData[key]);
+    for (const key in formData) {
+      if (key === "teams") {
+        driver.append(key, JSON.stringify(formData[key]));
+      } else {
+        driver.append(key, formData[key]);
       }
     }
     if (typeof id === "string") {
@@ -108,7 +111,7 @@ export default function Edit() {
   }, [driver, dispatch]);
 
   useEffect(() => {
-    return ()=>{
+    return () => {
       setFormData({
         name: "",
         surname: "",
@@ -118,8 +121,8 @@ export default function Edit() {
         description: "",
         teams: [],
       });
-      dispatch(cleanUpdate())
-    }
+      dispatch(cleanUpdate());
+    };
   }, []);
 
   return (
@@ -192,9 +195,11 @@ export default function Edit() {
           />
           <span className="text-danger">{errors.image}</span>
         </div>
-        {typeof formData.image === "string" && <div className="col-md-2">
-          <img src={formData.image} className="img-fluid"/>
-        </div>}
+        {typeof formData.image === "string" && (
+          <div className="col-md-2">
+            <img src={formData.image} className="img-fluid" />
+          </div>
+        )}
       </div>
       <div className="row mt-2">
         <div className="col-md-6">

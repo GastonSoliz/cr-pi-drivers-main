@@ -33,8 +33,6 @@ export default function Form() {
     teams: [],
   });
 
-  console.log("msj: ", msj);
-
   const [errors, setErrors] = useState<DriverError>({});
 
   function handleDisabled() {

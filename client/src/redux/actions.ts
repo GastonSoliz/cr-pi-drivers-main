@@ -2,7 +2,7 @@ import axios from "axios";
 import { Dispatch } from "redux";
 import { Team, Driver, Action, Token } from "../types/types";
 
-// const URL: string = "http://localhost:3001/";
+//const URL: string = "http://localhost:3001/";
 const URL: string = "https://cr-pi-drivers-main.onrender.com/";
 
 export function getTeams() {
@@ -29,9 +29,6 @@ export function getDriverByName(name: string) {
         payload: "Solicitud fallida",
       });
     }
-    // const { data } = await axios.get<Driver[] | Driver>(endpoint);
-    // console.log(data);
-    // return dispatch({ type: "GET_DRIVER_BY_NAME", payload: data });
   };
 }
 
